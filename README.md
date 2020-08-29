@@ -1,3 +1,5 @@
+Find an object in a tree-like structure.
+
 ## Install
 
 `npm install d-forest`
@@ -20,7 +22,6 @@ const data = [{
             "lng": "81.1496"
         }
     },
-    "phone": "1-770-736-8031 x56442",
     "website": "hildegard.org",
     "company": {
         "name": "Romaguera-Crona",
@@ -38,7 +39,6 @@ const data = [{
             "lng": "-34.4618"
         }
     },
-    "phone": "010-692-6593 x09125",
     "website": "anastasia.net",
     "company": {
         "name": "Deckow-Crist",

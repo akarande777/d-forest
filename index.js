@@ -29,11 +29,11 @@ Forest.prototype.findNode = function(callback) {
     return breadthFirst.call(this, callback, actions.FIND);
 }
 
-Forest.prototype.filterLeaves = function(callback) {
+Forest.prototype.findLeaves = function(callback) {
     return depthFirst.call(this, callback, actions.FILTER);
 }
 
-Forest.prototype.filterNodes = function(callback) {
+Forest.prototype.findNodes = function(callback) {
     return breadthFirst.call(this, callback, actions.FILTER);
 }
 

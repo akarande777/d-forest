@@ -1,6 +1,6 @@
 {
   "name": "d-forest",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "keywords": ["data", "deep", "filter", "find", "forest", "search", "tree", "trie"],
@@ -8,5 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Akshay K",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akarande777/d-forest.git"
+  }
 }
