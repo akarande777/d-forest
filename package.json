@@ -1,9 +1,9 @@
 {
   "name": "d-forest",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "index.js",
-  "keywords": ["data", "deep", "filter", "find", "forest", "search", "tree", "trie"],
+  "keywords": ["deep", "find", "search", "tree", "trie"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

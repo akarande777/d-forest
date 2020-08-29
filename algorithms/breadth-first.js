@@ -17,7 +17,10 @@ function breadthFirst(callback, action) {
         else if (action === actions.FILTER && value) {
             response.push(element);
         }
-
+        else if (action === actions.GET && value === depth) {
+            response.push(element);
+            return;
+        }
         const keys = Object.keys(element);
 
         for (let i = 0; i < keys.length; i++) {
@@ -55,7 +58,8 @@ function breadthFirst(callback, action) {
     }
 
     return action === actions.FIND ? response[0]
-        : action === actions.FILTER ? response : undefined;
+        : action === actions.FILTER ? response
+        : action === actions.GET ? response : undefined;
 }
 
 module.exports = breadthFirst;

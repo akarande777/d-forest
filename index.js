@@ -41,4 +41,9 @@ Forest.prototype.mapLeaves = function(callback) {
     return depthFirst.call(this, callback, actions.MAP);
 }
 
+Forest.prototype.nodesByLevel = function(level) {
+    if (level < 1) return [];
+    return breadthFirst.call(this, () => level, actions.GET);
+}
+
 module.exports = (forest) => new Forest(forest);
