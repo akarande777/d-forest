@@ -1,3 +1,5 @@
+Find an object in a tree-like structure.
+
 ## Install
 
 `npm install d-forest`
