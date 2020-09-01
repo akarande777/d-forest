@@ -48,9 +48,8 @@ console.log(res1);
 //   bs: 'synergize scalable supply-chains'
 // }
 
-// "leaf" can be any object which don't have children
-// this is useful when you know that the object you want to find has no children i.e. bottom nodes
-// it has better performance over findNode as it skips the unnecessary comparisons
+// "leaf" can be any object which don't have children i.e. bottom nodes
+// it has better performance over findNode as it skips unnecessary comparisons
 const res2 = df(data).findLeaf(leaf => Number(leaf.lng) > 0);
 console.log(res2);
 // { lat: '-37.3159', lng: '81.1496' }
@@ -67,9 +66,11 @@ console.log(res3);
 
 * findNode
 * findNodes
-* forEachNode
 * findLeaf
 * findLeaves
+* forEachNode
 * forEachLeaf
 * mapLeaves
 * nodesByLevel
+* removeNode
+* removeLeaf

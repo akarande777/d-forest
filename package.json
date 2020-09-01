@@ -1,6 +1,6 @@
 {
   "name": "d-forest",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "",
   "main": "index.js",
   "keywords": ["deep", "find", "search", "tree", "trie"],

@@ -46,4 +46,12 @@ Forest.prototype.nodesByLevel = function(level) {
     return breadthFirst.call(this, () => level, actions.GET);
 }
 
+Forest.prototype.removeNode = function(callback) {
+    return breadthFirst.call(this, callback, actions.REMOVE);
+}
+
+Forest.prototype.removeLeaf = function(callback) {
+    return depthFirst.call(this, callback, actions.REMOVE);
+}
+
 module.exports = (forest) => new Forest(forest);

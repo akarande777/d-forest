@@ -1,7 +1,8 @@
 module.exports = Object.freeze({
 
-    FIND: 'find',
     MAP: 'map',
+    FIND: 'find',
     FILTER: 'filter',
     GET: 'get',
+    REMOVE: 'remove',
 });
