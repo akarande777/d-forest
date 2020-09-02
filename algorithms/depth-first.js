@@ -52,7 +52,7 @@ function depthFirst(callback, action) {
             }
         }
     }
-    else if (action === actions.FILTER) {
+    else if (action === actions.FIND_ALL) {
         next = (el, depth, pos) => {
             let hasChildren = iterate(el, depth);
             if (!hasChildren) {
@@ -63,7 +63,7 @@ function depthFirst(callback, action) {
             }
         }
     }
-    else if (action === actions.REMOVE) {
+    else if (action === actions.REMOVE || action === actions.REMOVE_ALL) {
         next = (el, depth, pos) => {
             let hasChildren = iterate(el, depth);
             if (!hasChildren) {
@@ -77,7 +77,9 @@ function depthFirst(callback, action) {
                         response.push({ ...pos.element[pos.key] });
                         delete pos.element[pos.key];
                     }
-                    found = true;
+                    if (action === actions.REMOVE) {
+                        found = true;
+                    }
                 }
             }
         }
@@ -104,9 +106,10 @@ function depthFirst(callback, action) {
 
     return action === actions.MAP ? response
         : action === actions.FIND ? response[0]
-            : action === actions.FILTER ? response
+            : action === actions.FIND_ALL ? response
                 : action === actions.REMOVE ? response[0]
-                    : undefined;
+                    : action === actions.REMOVE_ALL ? response
+                        : undefined;
 }
 
 module.exports = depthFirst;

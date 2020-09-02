@@ -40,7 +40,7 @@ const data = [{
     }
 }]
 
-// "node" can be any object on tree
+// "node" can be any object on the tree
 const res1 = df(data).findNode(node => node.name === 'Deckow-Crist');
 console.log(res1);
 // {
@@ -73,4 +73,6 @@ console.log(res3);
 * mapLeaves
 * nodesByLevel
 * removeNode
+* removeNodes
 * removeLeaf
+* removeLeaves

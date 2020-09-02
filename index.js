@@ -30,11 +30,11 @@ Forest.prototype.findNode = function(callback) {
 }
 
 Forest.prototype.findLeaves = function(callback) {
-    return depthFirst.call(this, callback, actions.FILTER);
+    return depthFirst.call(this, callback, actions.FIND_ALL);
 }
 
 Forest.prototype.findNodes = function(callback) {
-    return breadthFirst.call(this, callback, actions.FILTER);
+    return breadthFirst.call(this, callback, actions.FIND_ALL);
 }
 
 Forest.prototype.mapLeaves = function(callback) {
@@ -50,8 +50,16 @@ Forest.prototype.removeNode = function(callback) {
     return breadthFirst.call(this, callback, actions.REMOVE);
 }
 
+Forest.prototype.removeNodes = function(callback) {
+    return breadthFirst.call(this, callback, actions.REMOVE_ALL);
+}
+
 Forest.prototype.removeLeaf = function(callback) {
     return depthFirst.call(this, callback, actions.REMOVE);
+}
+
+Forest.prototype.removeLeaves = function(callback) {
+    return depthFirst.call(this, callback, actions.REMOVE_ALL);
 }
 
 module.exports = (forest) => new Forest(forest);

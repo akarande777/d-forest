@@ -42,7 +42,7 @@ function breadthFirst(callback, action) {
             iterate(element, depth)
         }
     }
-    else if (action === actions.FILTER) {
+    else if (action === actions.FIND_ALL) {
         next = (element, depth, pos) => {
             let value = callback(element, depth, pos);
             if (value) {
@@ -61,7 +61,7 @@ function breadthFirst(callback, action) {
             iterate(element, depth)
         }
     }
-    else if (action === actions.REMOVE) {
+    else if (action === actions.REMOVE || action === actions.REMOVE_ALL) {
         next = (element, depth, pos) => {
             let value = callback(element, depth, pos);
             if (value && pos.element) {
@@ -73,7 +73,9 @@ function breadthFirst(callback, action) {
                     response.push({ ...pos.element[pos.key] });
                     delete pos.element[pos.key];
                 }
-                found = true;
+                if (action === actions.REMOVE) {
+                    found = true;
+                }
                 return;
             }
             iterate(element, depth)
@@ -102,10 +104,11 @@ function breadthFirst(callback, action) {
     }
 
     return action === actions.FIND ? response[0]
-        : action === actions.FILTER ? response
+        : action === actions.FIND_ALL ? response
             : action === actions.GET ? response
                 : action === actions.REMOVE ? response[0]
-                    : undefined;
+                    : action === actions.REMOVE_ALL ? response
+                        : undefined;
 }
 
 module.exports = breadthFirst;
