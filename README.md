@@ -1,5 +1,10 @@
 Find an object in a tree-like structure.
 
+[![npm version](https://img.shields.io/npm/v/d-forest)](https://www.npmjs.com/package/d-forest)
+[![build status](https://img.shields.io/travis/akarande777/d-forest)](https://travis-ci.com/github/akarande777/d-forest/builds)
+[![code size](https://img.shields.io/github/languages/code-size/akarande777/d-forest)](https://github.com/akarande777/d-forest)
+[![top language](https://img.shields.io/github/languages/top/akarande777/d-forest)](https://github.com/akarande777/d-forest)
+
 ## Install
 
 `npm install d-forest`
