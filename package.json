@@ -3,14 +3,23 @@
   "version": "1.0.9",
   "description": "",
   "main": "index.js",
-  "keywords": ["deep", "find", "search", "tree", "trie"],
+  "keywords": [
+    "deep",
+    "find",
+    "search",
+    "tree",
+    "trie"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jshint index.js"
   },
   "author": "Akshay K",
   "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.com/akarande777/d-forest.git"
+  },
+  "devDependencies": {
+    "jshint": "^2.12.0"
   }
 }
