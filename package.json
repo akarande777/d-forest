@@ -1,6 +1,6 @@
 {
   "name": "d-forest",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "",
   "main": "index.js",
   "keywords": [
@@ -11,7 +11,7 @@
     "trie"
   ],
   "scripts": {
-    "test": "jshint index.js"
+    "test": "jest"
   },
   "author": "Akshay K",
   "license": "ISC",
@@ -20,6 +20,6 @@
     "url": "https://github.com/akarande777/d-forest.git"
   },
   "devDependencies": {
-    "jshint": "^2.12.0"
+    "jest": "^26.4.2"
   }
 }

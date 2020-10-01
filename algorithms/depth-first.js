@@ -4,7 +4,7 @@ function depthFirst(callback, action) {
     const { forest, isArray } = this.self();
     const response = [];
     let found = false;
-    let next = () => {};
+    let next = () => null;
 
     const iterate = (element, depth) => {
         const keys = Object.keys(element);
@@ -32,19 +32,19 @@ function depthFirst(callback, action) {
     }
 
     if (action === actions.MAP) {
-        next = (el, depth, pos) => {
+        next = (el, depth, parent) => {
             let hasChildren = iterate(el, depth);
             if (!hasChildren) {
-                let value = callback(el, depth, pos);
+                let value = callback(el, depth, parent);
                 response.push(value);
             }
         }
     }
     else if (action === actions.FIND) {
-        next = (el, depth, pos) => {
+        next = (el, depth, parent) => {
             let hasChildren = iterate(el, depth);
             if (!hasChildren) {
-                let value = callback(el, depth, pos);
+                let value = callback(el, depth, parent);
                 if (value) {
                     response.push(el);
                     found = true;
@@ -53,10 +53,10 @@ function depthFirst(callback, action) {
         }
     }
     else if (action === actions.FIND_ALL) {
-        next = (el, depth, pos) => {
+        next = (el, depth, parent) => {
             let hasChildren = iterate(el, depth);
             if (!hasChildren) {
-                let value = callback(el, depth, pos);
+                let value = callback(el, depth, parent);
                 if (value) {
                     response.push(el);
                 }
@@ -64,18 +64,18 @@ function depthFirst(callback, action) {
         }
     }
     else if (action === actions.REMOVE || action === actions.REMOVE_ALL) {
-        next = (el, depth, pos) => {
+        next = (el, depth, parent) => {
             let hasChildren = iterate(el, depth);
             if (!hasChildren) {
-                let value = callback(el, depth, pos);
-                if (value && pos.element) {
-                    if (Array.isArray(pos.element)) {
-                        response.push(pos.element[pos.key]);
-                        pos.element.splice(pos.key, 1);
+                let value = callback(el, depth, parent);
+                if (value && parent.element) {
+                    if (Array.isArray(parent.element)) {
+                        response.push(parent.element[parent.key]);
+                        parent.element.splice(parent.key, 1);
                     }
                     else {
-                        response.push({ ...pos.element[pos.key] });
-                        delete pos.element[pos.key];
+                        response.push({ ...parent.element[parent.key] });
+                        delete parent.element[parent.key];
                     }
                     if (action === actions.REMOVE) {
                         found = true;
@@ -85,10 +85,10 @@ function depthFirst(callback, action) {
         }
     }
     else {
-        next = (el, depth, pos) => {
+        next = (el, depth, parent) => {
             let hasChildren = iterate(el, depth);
             if (!hasChildren) {
-                callback(el, depth, pos);
+                callback(el, depth, parent);
             }
         }
     }

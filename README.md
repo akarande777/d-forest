@@ -15,56 +15,57 @@ Find an object in a tree-like structure.
 const df = require('d-forest');
 
 // data can be object or array of objects
-const data = [{
-    "id": 1,
-    "name": "Leanne Graham",
-    "address": {
-        "street": "Kulas Light",
-        "city": "Gwenborough",
-        "zipcode": "92998-3874",
-        "geo": { "lat": "-37.3159", "lng": "81.1496" }
+const data = [
+    { name: 'category1', active: false },
+    {
+        name: 'category2', active: true,
+        products: [
+            { name: 'product21', active: false },
+            { name: 'product22', active: true },
+            { name: 'product23', active: false },
+        ],
     },
-    "website": "hildegard.org",
-    "company": {
-        "name": "Romaguera-Crona",
-        "bs": "harness real-time e-markets"
-    }
-}, {
-    "id": 2,
-    "name": "Ervin Howell",
-    "address": {
-        "street": "Victor Plains",
-        "city": "Wisokyburgh",
-        "zipcode": "90566-7771",
-        "geo": { "lat": "-43.9509", "lng": "-34.4618" }
+    {
+        name: 'category3', active: true,
+        products: [
+            { name: 'product31', active: false },
+            { name: 'product32', active: true },
+        ],
     },
-    "website": "anastasia.net",
-    "company": {
-        "name": "Deckow-Crist",
-        "bs": "synergize scalable supply-chains"
-    }
-}]
+];
 
 // "node" can be any object on the tree
-const res1 = df(data).findNode(node => node.name === 'Deckow-Crist');
+const res1 = df(data).findNode(node => node.name === 'category3');
 console.log(res1);
 // {
-//   name: 'Deckow-Crist',
-//   bs: 'synergize scalable supply-chains'
+//   name: 'category3', active: true,
+//   products: [Object]
 // }
 
 // "leaf" can be any object which don't have children i.e. bottom nodes
 // it has better performance over findNode as it skips unnecessary comparisons
-const res2 = df(data).findLeaf(leaf => Number(leaf.lng) > 0);
+const res2 = df(data).findLeaf(leaf => leaf.name === 'product22');
 console.log(res2);
-// { lat: '-37.3159', lng: '81.1496' }
+// { name: 'product22', active: false }
 
-const res3 = df(data).nodesByLevel(2); // should be greater than 0
+const res3 = df(data).nodesByLevel(1); // should be greater than 0
 console.log(res3);
 // [
-//   { lat: '-37.3159', lng: '81.1496' },
-//   { lat: '-43.9509', lng: '-34.4618' }
+//   { name: 'product21', active: false },
+//   { name: 'product22', active: true },
+//   ...
 // ]
+
+const res4 = df(data).objectify(node => node.name);
+console.log(res4);
+// {
+//   category1: { name: 'category1', active: false },
+//   category2: {
+//     name: 'category2', active: true,
+//     products: Object
+//   },
+//   ...
+// }
 ````
 
 ## Methods
@@ -81,3 +82,4 @@ console.log(res3);
 * removeNodes
 * removeLeaf
 * removeLeaves
+* objectify

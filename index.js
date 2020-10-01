@@ -43,7 +43,7 @@ Forest.prototype.mapLeaves = function(callback) {
 
 Forest.prototype.nodesByLevel = function(level) {
     if (level < 1) return [];
-    return breadthFirst.call(this, () => level, actions.GET);
+    return breadthFirst.call(this, () => level, actions.BY_LEVEL);
 };
 
 Forest.prototype.removeNode = function(callback) {
@@ -61,5 +61,9 @@ Forest.prototype.removeLeaf = function(callback) {
 Forest.prototype.removeLeaves = function(callback) {
     return depthFirst.call(this, callback, actions.REMOVE_ALL);
 };
+
+Forest.prototype.objectify = function(callback) {
+    return breadthFirst.call(this, callback, actions.OBJECTIFY);
+}
 
 module.exports = (forest) => new Forest(forest);
