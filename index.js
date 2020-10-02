@@ -50,16 +50,8 @@ Forest.prototype.removeNode = function(callback) {
     return breadthFirst.call(this, callback, actions.REMOVE);
 };
 
-Forest.prototype.removeNodes = function(callback) {
-    return breadthFirst.call(this, callback, actions.REMOVE_ALL);
-};
-
 Forest.prototype.removeLeaf = function(callback) {
     return depthFirst.call(this, callback, actions.REMOVE);
-};
-
-Forest.prototype.removeLeaves = function(callback) {
-    return depthFirst.call(this, callback, actions.REMOVE_ALL);
 };
 
 Forest.prototype.objectify = function(callback) {

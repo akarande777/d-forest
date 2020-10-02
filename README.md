@@ -1,7 +1,6 @@
 A lightweight JavaScript library for searching and retrieving objects in a tree-like structure.
 
-[![build status](https://img.shields.io/travis/akarande777/d-forest)](https://travis-ci.com/github/akarande777/d-forest/builds)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/akarande777/d-forest)
+[![Build Status](https://travis-ci.com/akarande777/d-forest.svg?branch=master)](https://travis-ci.com/akarande777/d-forest)
 [![Coverage Status](https://coveralls.io/repos/github/akarande777/d-forest/badge.svg?branch=master)](
     https://coveralls.io/github/akarande777/d-forest?branch=master
 )
@@ -73,9 +72,7 @@ console.log(res3);
 // ]
 ````
 * removeNode
-* removeNodes
 * removeLeaf
-* removeLeaves
 * **objectify**
 
 ````javascript
