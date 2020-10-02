@@ -1,12 +1,12 @@
 const actions = require('../actions');
 
-function depthFirst(callback, action) {
+function depthFirst(callback, action, initial) {
     const { forest, isArray } = this.self();
     const response = [];
     let found = false;
     let next = () => null;
 
-    const iterate = (element, depth) => {
+    const iterate = (element, depth, acc) => {
         const keys = Object.keys(element);
         let hasChildren = false;
 
@@ -15,14 +15,14 @@ function depthFirst(callback, action) {
             if (Array.isArray(prop)) {
                 for (let j = 0; j < prop.length; j++) {
                     if (this.isObject(prop[j])) {
-                        next(prop[j], depth + 1, { element: prop, key: j });
+                        next(prop[j], depth + 1, { element: prop, key: j }, acc);
                         hasChildren = true;
                     }
                     if (found) break;
                 }
             }
             else if (this.isObject(prop)) {
-                next(prop, depth + 1, { element, key: keys[i] });
+                next(prop, depth + 1, { element, key: keys[i] }, acc);
                 hasChildren = true;
             }
             if (found) break;
@@ -84,6 +84,15 @@ function depthFirst(callback, action) {
             }
         }
     }
+    else if (action === 'reduce') {
+        next = (el, depth, parent, acc) => {
+            let current = callback(acc, el, depth, parent);
+            let hasChildren = iterate(el, depth, current);
+            if (!hasChildren) {
+                response.push(current);
+            }
+        }
+    }
     else {
         next = (el, depth, parent) => {
             let hasChildren = iterate(el, depth);
@@ -96,12 +105,12 @@ function depthFirst(callback, action) {
     if (isArray) {
         for (let i = 0; i < forest.length; i++) {
             if (this.isObject(forest[i])) {
-                next(forest[i], 0, { element: forest, key: i });
+                next(forest[i], 0, { element: forest, key: i }, initial);
             }
         }
     }
     else if (this.isObject(forest)) {
-        next(forest, 0, callback, {});
+        next(forest, 0, callback, {}, initial);
     }
 
     return action === actions.MAP ? response
@@ -109,7 +118,8 @@ function depthFirst(callback, action) {
             : action === actions.FIND_ALL ? response
                 : action === actions.REMOVE ? response[0]
                     : action === actions.REMOVE_ALL ? response
-                        : undefined;
+                        : action === actions.REDUCE ? response
+                            : undefined;
 }
 
 module.exports = depthFirst;

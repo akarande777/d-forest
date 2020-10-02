@@ -54,7 +54,6 @@ test('nodes by level', () => {
         .toStrictEqual([...data[1].products, ...data[2].products]);
 });
 
-
 test('objectify', () => {
     expect(df(data).objectify(node => node.name))
         .toStrictEqual({
@@ -75,4 +74,16 @@ test('objectify', () => {
                 },
             },
         });
+});
+
+test('reduce', () => {
+    expect(df(data).reduce((acc, cur) => acc + cur.name + '/', ''))
+        .toStrictEqual([
+            "category1/",
+            "category2/product21/",
+            "category2/product22/",
+            "category2/product23/",
+            "category3/product31/",
+            "category3/product32/",
+        ]);
 });

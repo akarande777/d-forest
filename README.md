@@ -47,25 +47,6 @@ console.log(res1);
 const res2 = df(data).findLeaf(leaf => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: false }
-
-const res3 = df(data).nodesByLevel(1); // should be greater than 0
-console.log(res3);
-// [
-//   { name: 'product21', active: false },
-//   { name: 'product22', active: true },
-//   ...
-// ]
-
-const res4 = df(data).objectify(node => node.name);
-console.log(res4);
-// {
-//   category1: { name: 'category1', active: false },
-//   category2: {
-//     name: 'category2', active: true,
-//     products: Object
-//   },
-//   ...
-// }
 ````
 
 ## Methods
@@ -78,8 +59,44 @@ console.log(res4);
 * forEachLeaf
 * mapLeaves
 * nodesByLevel
+
+````javascript
+// returns array containing all nodes at given level
+const res3 = df(data).nodesByLevel(1); // should be greater than 0
+console.log(res3);
+// [
+//   { name: 'product21', active: false },
+//   { name: 'product22', active: true },
+//   ...
+//   { name: 'product32', active: true }
+// ]
+````
 * removeNode
 * removeNodes
 * removeLeaf
 * removeLeaves
 * objectify
+
+````javascript
+// returns a copy by converting each array (if any) to object
+const res = df(data).objectify(node => node.name);
+console.log(res);
+// {
+//   category1: { name: 'category1', active: false },
+//   category2: {
+//     name: 'category2', active: true,
+//     products: Object
+//   },
+//   ...
+// }
+````
+* reduce
+
+````javascript
+// returns single output value for each path from top to bottom
+const res = df(data).reduce(
+    (acc, cur) => (acc + cur.name + '/'), '' // initial value must be provided
+);
+console.log(res);
+// ["category1/", "category2/product21/", ..., "category3/product32/"]
+````

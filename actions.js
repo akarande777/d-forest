@@ -6,4 +6,5 @@ module.exports = Object.freeze({
     REMOVE: 'remove',
     REMOVE_ALL: 'remove-all',
     OBJECTIFY: 'objectify',
+    REDUCE: 'reduce',
 });
