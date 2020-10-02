@@ -58,7 +58,7 @@ console.log(res2);
 * forEachNode
 * forEachLeaf
 * mapLeaves
-* nodesByLevel
+* **nodesByLevel**
 
 ````javascript
 // returns array containing all nodes at given level
@@ -75,7 +75,7 @@ console.log(res3);
 * removeNodes
 * removeLeaf
 * removeLeaves
-* objectify
+* **objectify**
 
 ````javascript
 // returns a copy by converting each array (if any) to object
@@ -90,7 +90,7 @@ console.log(res);
 //   ...
 // }
 ````
-* reduce
+* **reduce**
 
 ````javascript
 // returns single output value for each path from top to bottom
