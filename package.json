@@ -1,6 +1,6 @@
 {
   "name": "d-forest",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "",
   "main": "index.js",
   "keywords": [
@@ -11,7 +11,8 @@
     "trie"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "author": "Akshay K",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "url": "https://github.com/akarande777/d-forest.git"
   },
   "devDependencies": {
+    "coveralls": "^3.1.0",
     "jest": "^26.4.2"
   }
 }
