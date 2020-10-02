@@ -1,4 +1,4 @@
-A lightweight JavaScript library for searching and retrieving objects in a tree-like structure.
+A lightweight JavaScript library for searching objects in a tree-like structure.
 
 [![Build Status](https://travis-ci.com/akarande777/d-forest.svg?branch=master)](https://travis-ci.com/akarande777/d-forest)
 [![Coverage Status](https://coveralls.io/repos/github/akarande777/d-forest/badge.svg?branch=master)](
