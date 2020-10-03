@@ -23,8 +23,7 @@ test('map leaves', () => {
 
 test('remove leaf', () => {
     const copy = JSON.parse(JSON.stringify(data));
-    expect(df(copy).removeNode(leaf => leaf.name === 'product22'))
-        .toStrictEqual(data[1].products[1]);
+    expect(df(copy).removeNode(leaf => leaf.name === 'product22')).toStrictEqual(data[1].products[1]);
 });
 
 test('reduce', () => {

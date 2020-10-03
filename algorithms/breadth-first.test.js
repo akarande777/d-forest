@@ -12,14 +12,15 @@ test('find nodes', () => {
 });
 
 test('nodes by level', () => {
-    expect(df(data).nodesByLevel(1))
-        .toStrictEqual([...data[1].products, ...data[2].products]);
+    expect(df(data).nodesByLevel(1)).toStrictEqual([...data[1].products, ...data[2].products]);
 });
 
 test('remove node', () => {
     const copy = JSON.parse(JSON.stringify(data));
-    expect(df(copy).removeNode(node => node.name === 'product22'))
-        .toStrictEqual(data[1].products[1]);
+    expect(df(copy).removeNode(node => node.name === 'product22')).toStrictEqual(data[1].products[1]);
+
+    df(copy).removeNode(node => node.name === 'category2')
+    expect(copy).toStrictEqual([data[0], data[2]]);
 });
 
 test('objectify', () => {

@@ -82,7 +82,7 @@ function breadthFirst(callback, action) {
     else if (action === actions.REMOVE) {
         next = (element, depth, parent) => {
             let value = callback(element, depth, parent);
-            
+
             if (value && parent.element) {
                 if (Array.isArray(parent.element)) {
                     response.push(parent.element[parent.key]);
@@ -90,7 +90,7 @@ function breadthFirst(callback, action) {
                 }
                 else {
                     response.push({ ...parent.element[parent.key] });
-                    parent.element[parent.key];
+                    delete parent.element[parent.key];
                 }
                 found = true;
                 return;
