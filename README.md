@@ -4,6 +4,7 @@ A lightweight JavaScript library for searching objects in a tree-like structure.
 [![Coverage Status](https://coveralls.io/repos/github/akarande777/d-forest/badge.svg?branch=master)](
     https://coveralls.io/github/akarande777/d-forest?branch=master
 )
+![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/d-forest)
 
 ## Install
 
@@ -58,10 +59,12 @@ console.log(res2);
 * forEachNode
 * forEachLeaf
 * mapLeaves
+* removeNode
+* removeLeaf
 * **nodesByLevel**
 
 ````javascript
-// returns array containing all nodes at given level
+// returns an array containing all nodes at given level
 const res3 = df(data).nodesByLevel(1); // should be greater than 0
 console.log(res3);
 // [
@@ -71,8 +74,6 @@ console.log(res3);
 //   { name: 'product32', active: true }
 // ]
 ````
-* removeNode
-* removeLeaf
 * **objectify**
 
 ````javascript
