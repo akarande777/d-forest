@@ -19,6 +19,16 @@ test('find leaves', () => {
         .toStrictEqual([data[1].products[1], data[2].products[1]]);
 });
 
+test('for-each leaf', () => {
+    const expected = ['product21', 'product22', 'product23', 'product31', 'product32'];
+    const products = [];
+    df(data).forEachLeaf((leaf, depth) => depth === 1 && products.push(leaf.name));
+    expect(products).toStrictEqual(expected);
+    products.length = 0;
+    df(data2).forEachLeaf((leaf, depth) => depth === 3 && products.push(leaf.name));
+    expect(products).toStrictEqual(expected);
+});
+
 test('map leaves', () => {
     const res = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
     expect(df(data).mapLeaves(leaf => leaf.name)).toStrictEqual(res);

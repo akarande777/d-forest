@@ -1,11 +1,12 @@
 {
   "name": "d-forest",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "index.js",
   "keywords": [
     "deep",
     "find",
+    "nested",
     "object",
     "search",
     "tree",

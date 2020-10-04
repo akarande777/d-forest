@@ -18,8 +18,19 @@ test('find nodes', () => {
     );
 });
 
+test('for-each node', () => {
+    const expected = ['category2', 'category3', 'product22', 'product32'];
+    const products = [];
+    df(data).forEachNode(node => node.active && products.push(node.name));
+    expect(products).toStrictEqual(expected);
+    products.length = 0;
+    df(data2).forEachNode(node => node.active && products.push(node.name));
+    expect(products).toStrictEqual(expected);
+});
+
 test('nodes by level', () => {
     expect(df(data).nodesByLevel(1)).toStrictEqual([...data[1].products, ...data[2].products]);
+    expect(df(data).nodesByLevel(0)).toStrictEqual([]);
     const { category1, category2, category3 } = data2;
     expect(df(data2).nodesByLevel(1)).toStrictEqual([category1, category2, category3]);
 });
