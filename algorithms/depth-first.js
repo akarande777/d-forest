@@ -7,11 +7,11 @@ function depthFirst(callback, action, initial) {
     let next = () => null;
 
     const iterate = (element, depth, acc) => {
-        const keys = Object.keys(element);
         let hasChildren = false;
 
-        for (let i = 0; i < keys.length; i++) {
-            const prop = element[keys[i]];
+        for (let key of Object.keys(element)) {
+            const prop = element[key];
+
             if (Array.isArray(prop)) {
                 for (let j = 0; j < prop.length; j++) {
                     if (this.isObject(prop[j])) {
@@ -22,7 +22,7 @@ function depthFirst(callback, action, initial) {
                 }
             }
             else if (this.isObject(prop)) {
-                next(prop, depth + 1, { element, key: keys[i] }, acc);
+                next(prop, depth + 1, { element, key }, acc);
                 hasChildren = true;
             }
             if (found) break;
@@ -84,10 +84,10 @@ function depthFirst(callback, action, initial) {
     }
     else if (action === actions.REDUCE) {
         next = (el, depth, parent, acc) => {
-            let current = callback(acc, el, depth, parent);
-            let hasChildren = iterate(el, depth, current);
+            let value = callback(acc, el, depth, parent);
+            let hasChildren = iterate(el, depth, value);
             if (!hasChildren) {
-                response.push(current);
+                response.push(value);
             }
         }
     }
@@ -108,7 +108,7 @@ function depthFirst(callback, action, initial) {
         }
     }
     else if (this.isObject(forest)) {
-        next(forest, 0, callback, {}, initial);
+        next(forest, 0, {}, initial);
     }
 
     return action === actions.MAP ? response

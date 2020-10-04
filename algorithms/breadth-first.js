@@ -17,14 +17,13 @@ function breadthFirst(callback, action) {
     }
 
     const iterate = (element, depth) => {
-        const keys = Object.keys(element);
+        for (let key of Object.keys(element)) {
+            const prop = element[key];
 
-        for (let i = 0; i < keys.length; i++) {
-            const prop = element[keys[i]];
             if (Array.isArray(prop)) {
                 if (action === actions.OBJECTIFY) {
-                    element[keys[i]] = objectify(prop, depth);
-                    queue.push(() => iterate(element[keys[i]], depth + 1));
+                    element[key] = objectify(prop, depth);
+                    queue.push(() => iterate(element[key], depth + 1));
                 }
                 else {
                     for (let j = 0; j < prop.length; j++) {
@@ -38,11 +37,8 @@ function breadthFirst(callback, action) {
             }
             else if (this.isObject(prop)) {
                 action === actions.OBJECTIFY ?
-                    queue.push(() => iterate(prop, depth + 1))
-                    :
-                    queue.push(() => next(
-                        prop, depth + 1, { element, key: keys[i] }
-                    ));
+                    queue.push(() => iterate(prop, depth + 1)) :
+                    queue.push(() => next(prop, depth + 1, { element, key }));
             }
         }
 

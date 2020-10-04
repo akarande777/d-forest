@@ -1,10 +1,12 @@
 A lightweight JavaScript library for searching objects in a tree-like structure.
 
+[![npm version](https://img.shields.io/npm/v/d-forest)](https://www.npmjs.com/package/d-forest)
 [![Build Status](https://travis-ci.com/akarande777/d-forest.svg?branch=master)](https://travis-ci.com/akarande777/d-forest)
 [![Coverage Status](https://coveralls.io/repos/github/akarande777/d-forest/badge.svg?branch=master)](
     https://coveralls.io/github/akarande777/d-forest?branch=master
 )
-![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/d-forest)
+[![Known Vulnerabilities](https://snyk.io/test/npm/d-forest/badge.svg)](https://snyk.io/test/npm/d-forest)
+[![npm downloads/month](https://img.shields.io/npm/dm/d-forest)](https://www.npmjs.com/package/d-forest)
 
 ## Install
 
