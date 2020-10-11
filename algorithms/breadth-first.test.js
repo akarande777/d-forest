@@ -1,5 +1,5 @@
 const df = require('../index');
-const { data, data2 } = require('./test-data');
+const { data, data2, data3 } = require('./test-data');
 
 test('find node', () => {
     expect(df(data).findNode(node => node.name === 'product31')).toBe(data[2].products[0]);
@@ -7,6 +7,8 @@ test('find node', () => {
 
     expect(df(data2).findNode(node => node.name === 'product31')).toStrictEqual(data[2].products[0]);
     expect(df(data2).findNode(node => node.name === 'category2')).toBe(data2.category2);
+
+    expect(df(data3).findNode(node => node.name === 'product31')).toBe(data3[1][0]);
 });
 
 test('find nodes', () => {
@@ -29,10 +31,13 @@ test('for-each node', () => {
 });
 
 test('nodes by level', () => {
-    expect(df(data).nodesByLevel(1)).toStrictEqual([...data[1].products, ...data[2].products]);
+    const expected = [...data[1].products, ...data[2].products];
+    expect(df(data).nodesByLevel(1)).toStrictEqual(expected);
     expect(df(data).nodesByLevel(0)).toStrictEqual([]);
     const { category1, category2, category3 } = data2;
     expect(df(data2).nodesByLevel(1)).toStrictEqual([category1, category2, category3]);
+    expect(df(data2).nodesByLevel(3)).toStrictEqual(expected);
+    expect(df(data3).nodesByLevel(1)).toStrictEqual(expected);
 });
 
 test('remove node', () => {

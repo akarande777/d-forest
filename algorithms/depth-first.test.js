@@ -1,5 +1,5 @@
 const df = require('../index');
-const { data, data2 } = require('./test-data');
+const { data, data2, data3 } = require('./test-data');
 
 test('find leaf', () => {
     expect(df(data).findLeaf(leaf => leaf.name === 'product31')).toBe(data[2].products[0]);
@@ -10,6 +10,8 @@ test('find leaf', () => {
         .toStrictEqual({ name: 'product31', active: false });
     expect(df(data2).findLeaf(leaf => leaf.name === 'category2')).toBe(undefined);
     expect(df(data2).findLeaf(leaf => leaf.name === 'category1')).toBe(data2.category1);
+
+    expect(df(data3).findLeaf(leaf => leaf.name === 'product31')).toBe(data3[1][0]);
 });
 
 test('find leaves', () => {

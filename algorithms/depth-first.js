@@ -6,6 +6,22 @@ function depthFirst(callback, action, initial) {
     let found = false;
     let next = () => null;
 
+    const iterateArr = (arr, depth, acc) => {
+        let hasChildren = false;
+
+        for (let j = 0; j < arr.length; j++) {
+            if (this.isObject(arr[j])) {
+                next(arr[j], depth + 1, { element: arr, key: j }, acc);
+                hasChildren = true;
+            }
+            else if (Array.isArray(arr[j])) {
+                hasChildren = iterateArr(arr[j], depth + 1, acc);
+            }
+            if (found) break;
+        }
+        return hasChildren;
+    }
+
     const iterate = (element, depth, acc) => {
         let hasChildren = false;
 
@@ -13,13 +29,7 @@ function depthFirst(callback, action, initial) {
             const prop = element[key];
 
             if (Array.isArray(prop)) {
-                for (let j = 0; j < prop.length; j++) {
-                    if (this.isObject(prop[j])) {
-                        next(prop[j], depth + 1, { element: prop, key: j }, acc);
-                        hasChildren = true;
-                    }
-                    if (found) break;
-                }
+                hasChildren = iterateArr(prop, depth, acc);
             }
             else if (this.isObject(prop)) {
                 next(prop, depth + 1, { element, key }, acc);
@@ -101,11 +111,7 @@ function depthFirst(callback, action, initial) {
     }
 
     if (isArray) {
-        for (let i = 0; i < forest.length; i++) {
-            if (this.isObject(forest[i])) {
-                next(forest[i], 0, { element: forest, key: i }, initial);
-            }
-        }
+        iterateArr(forest, -1, initial);
     }
     else if (this.isObject(forest)) {
         next(forest, 0, {}, initial);
