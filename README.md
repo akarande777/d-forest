@@ -76,21 +76,6 @@ console.log(res3);
 //   { name: 'product32', active: true }
 // ]
 ````
-* **objectify**
-
-````javascript
-// returns a copy by converting each array (if any) to object
-const res = df(data).objectify(node => node.name);
-console.log(res);
-// {
-//   category1: { name: 'category1', active: false },
-//   category2: {
-//     name: 'category2', active: true,
-//     products: Object
-//   },
-//   ...
-// }
-````
 * **reduce**
 
 ````javascript

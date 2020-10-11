@@ -4,6 +4,5 @@ module.exports = Object.freeze({
     FIND_ALL: 'find-all',
     BY_LEVEL: 'by-level',
     REMOVE: 'remove',
-    OBJECTIFY: 'objectify',
     REDUCE: 'reduce',
 });

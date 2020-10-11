@@ -54,12 +54,8 @@ Forest.prototype.removeLeaf = function(callback) {
     return depthFirst.call(this, callback, actions.REMOVE);
 };
 
-Forest.prototype.objectify = function(callback) {
-    return breadthFirst.call(this, callback, actions.OBJECTIFY);
-}
-
 Forest.prototype.reduce = function(callback, initial) {
     return depthFirst.call(this, callback, actions.REDUCE, initial);
-}
+};
 
 module.exports = (forest) => new Forest(forest);

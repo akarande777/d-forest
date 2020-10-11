@@ -7,13 +7,17 @@ function breadthFirst(callback, action) {
     let found = false;
     let next = () => null;
 
-    const objectify = (array, depth) => {
-        const object = {};
-        array.forEach((child, i) => {
-            const key = callback(child, depth, array);
-            object[key ? key : i] = child;
-        });
-        return object;
+    const iterateArr = (arr, depth) => {
+        for (let j = 0; j < arr.length; j++) {
+            if (this.isObject(arr[j])) {
+                queue.push(() => next(
+                    arr[j], depth + 1, { element: arr, key: j }
+                ));
+            }
+            else if (Array.isArray(arr[j])) {
+                queue.push(() => iterateArr(arr[j], depth + 1));
+            }
+        }
     }
 
     const iterate = (element, depth) => {
@@ -21,27 +25,12 @@ function breadthFirst(callback, action) {
             const prop = element[key];
 
             if (Array.isArray(prop)) {
-                if (action === actions.OBJECTIFY) {
-                    element[key] = objectify(prop, depth);
-                    queue.push(() => iterate(element[key], depth + 1));
-                }
-                else {
-                    for (let j = 0; j < prop.length; j++) {
-                        if (this.isObject(prop[j])) {
-                            queue.push(() => next(
-                                prop[j], depth + 1, { element: prop, key: j }
-                            ));
-                        }
-                    }
-                }
+                iterateArr(prop, depth);
             }
             else if (this.isObject(prop)) {
-                action === actions.OBJECTIFY ?
-                    queue.push(() => iterate(prop, depth + 1)) :
-                    queue.push(() => next(prop, depth + 1, { element, key }));
+                queue.push(() => next(prop, depth + 1, { element, key }));
             }
         }
-
         if (queue.length) queue.shift()();
     }
 
@@ -101,29 +90,11 @@ function breadthFirst(callback, action) {
         }
     }
 
-    if (action === actions.OBJECTIFY) {
-        forest = JSON.parse(JSON.stringify(forest));
-    }
-
     if (isArray) {
-        if (action === actions.OBJECTIFY) {
-            forest = objectify(forest, 0);
-            queue.push(() => iterate(forest, 0));
-        }
-        else {
-            for (let i = 0; i < forest.length; i++) {
-                if (this.isObject(forest[i])) {
-                    queue.push(() => next(
-                        forest[i], 0, { element: forest, key: i }
-                    ));
-                }
-            }
-        }
+        iterateArr(forest, -1);
     }
     else if (this.isObject(forest)) {
-        action === actions.OBJECTIFY ?
-            queue.push(() => iterate(forest, 0))
-            : queue.push(() => next(forest, 0, {}));
+        queue.push(() => next(forest, 0, {}));
     }
 
     while (!found && queue.length) {
@@ -134,8 +105,7 @@ function breadthFirst(callback, action) {
         : action === actions.FIND_ALL ? response
             : action === actions.BY_LEVEL ? response
                 : action === actions.REMOVE ? response[0]
-                    : action === actions.OBJECTIFY ? forest
-                        : undefined;
+                    : undefined;
 }
 
 module.exports = breadthFirst;

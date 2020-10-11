@@ -47,24 +47,3 @@ test('remove node', () => {
     const { category1, category3 } = data2;
     expect(copy2).toStrictEqual({ name: 'categories', category1, category3 });
 });
-
-test('objectify', () => {
-    expect(df(data).objectify(node => node.name)).toStrictEqual({
-        category1: { name: 'category1', active: false },
-        category2: {
-            name: 'category2', active: true,
-            products: {
-                product21: { name: 'product21', active: false },
-                product22: { name: 'product22', active: true },
-                product23: { name: 'product23', active: false },
-            },
-        },
-        category3: {
-            name: 'category3', active: true,
-            products: {
-                product31: { name: 'product31', active: false },
-                product32: { name: 'product32', active: true },
-            },
-        },
-    });
-});
