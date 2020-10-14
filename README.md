@@ -18,38 +18,41 @@ A lightweight JavaScript library for searching objects in a tree-like structure.
 const df = require('d-forest');
 
 // data can be object or array of objects
-const data = [
-    { name: 'category1', active: false },
-    {
-        name: 'category2', active: true,
-        products: [
-            { name: 'product21', active: false },
-            { name: 'product22', active: true },
-            { name: 'product23', active: false },
-        ],
+const data = {
+    category1: { id: 'c1', active: false },
+    category2: {
+        id: 'c2', active: true,
+        products: {
+            product1: { id: 'p21', active: false },
+            product2: { id: 'p22', active: true },
+            product3: { id: 'p23', active: false },
+        },
     },
-    {
-        name: 'category3', active: true,
-        products: [
-            { name: 'product31', active: false },
-            { name: 'product32', active: true },
-        ],
+    category3: {
+        id: 'c3', active: true,
+        products: {
+            product1: { id: 'p31', active: false },
+            product2: { id: 'p32', active: true },
+        },
     },
-];
+};
 
 // "node" can be any object on the tree
-const res1 = df(data).findNode(node => node.name === 'category3');
+const res1 = df(data).findNode((node, depth, parent) => {
+    const { element, key } = parent;
+    return element && element.id === 'c3' && key === 'products';
+});
 console.log(res1);
 // {
-//   name: 'category3', active: true,
-//   products: [Object]
+//   product1: { id: 'p31', active: false },
+//   product2: { id: 'p32', active: true }
 // }
 
 // "leaf" can be any object which don't have children i.e. bottom nodes
 // it has better performance over findNode as it skips unnecessary comparisons
-const res2 = df(data).findLeaf(leaf => leaf.name === 'product22');
+const res2 = df(data).findLeaf(leaf => leaf.id === 'p22');
 console.log(res2);
-// { name: 'product22', active: false }
+// { id: 'p22', active: true }
 ````
 
 ## Methods
@@ -70,10 +73,9 @@ console.log(res2);
 const res3 = df(data).nodesByLevel(1); // should be greater than 0
 console.log(res3);
 // [
-//   { name: 'product21', active: false },
-//   { name: 'product22', active: true },
-//   ...
-//   { name: 'product32', active: true }
+//   { id: 'c1', active: false },
+//   { id: 'c2', active: true, products: [Object] },
+//   { id: 'c3', active: true, products: [Object] }
 // ]
 ````
 * **reduce**
@@ -81,8 +83,8 @@ console.log(res3);
 ````javascript
 // returns single output value for each path from top to bottom
 const res = df(data).reduce(
-    (acc, cur) => (acc + cur.name + '/'), '' // initial value must be provided
+    (acc, cur) => cur.id ? (acc + '/' + cur.id) : acc,
+    '' // initial value must be provided
 );
 console.log(res);
-// ["category1/", "category2/product21/", ..., "category3/product32/"]
-````
+// [ '/c1', '/c2/p21', '/c2/p22', '/c2/p23', '/c3/p31', '/c3/p32' ]
