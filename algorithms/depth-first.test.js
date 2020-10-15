@@ -6,10 +6,9 @@ test('find leaf', () => {
     expect(df(data).findLeaf(leaf => leaf.name === 'category2')).toBe(undefined);
     expect(df(data).findLeaf(leaf => leaf.name === 'category1')).toBe(data[0]);
 
-    expect(df(data2).findLeaf(leaf => leaf.name === 'product31'))
-        .toStrictEqual({ name: 'product31', active: false });
+    expect(df(data2).findLeaf(leaf => leaf.name === 'product31')).toStrictEqual({ name: 'product31', active: false });
     expect(df(data2).findLeaf(leaf => leaf.name === 'category2')).toBe(undefined);
-    expect(df(data2).findLeaf(leaf => leaf.name === 'category1')).toBe(data2.category1);
+    expect(df(data2).findLeaf(leaf => leaf.name === 'category1')).toBe(data2.c1);
 
     expect(df(data3).findLeaf(leaf => leaf.name === 'product31')).toBe(data3[1][0]);
 });
@@ -44,10 +43,10 @@ test('remove leaf', () => {
 
     const copy2 = JSON.parse(JSON.stringify(data2));
     expect(df(copy2).removeNode(leaf => leaf.name === 'product22')).toStrictEqual(data[1].products[1]);
-    expect(copy2.category2.products).toStrictEqual({
+    expect(copy2.c2.products).toStrictEqual({
         name: 'products',
-        product21: { name: 'product21', active: false },
-        product23: { name: 'product23', active: false },
+        p1: { name: 'product21', active: false },
+        p3: { name: 'product23', active: false },
     });
 });
 
@@ -61,6 +60,7 @@ test('reduce', () => {
             "category3/product31/",
             "category3/product32/",
         ]);
+
     expect(df(data2).reduce((acc, cur) => acc + cur.name + '/', ''))
         .toStrictEqual( [
             "categories/category1/",

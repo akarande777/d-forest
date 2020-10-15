@@ -20,22 +20,22 @@ module.exports = {
 
     data2: {
         name: 'categories',
-        category1: { name: 'category1', active: false },
-        category2: {
+        c1: { name: 'category1', active: false },
+        c2: {
             name: 'category2', active: true,
             products: {
                 name: 'products',
-                product21: { name: 'product21', active: false },
-                product22: { name: 'product22', active: true },
-                product23: { name: 'product23', active: false },
+                p1: { name: 'product21', active: false },
+                p2: { name: 'product22', active: true },
+                p3: { name: 'product23', active: false },
             },
         },
-        category3: {
+        c3: {
             name: 'category3', active: true,
             products: {
                 name: 'products',
-                product31: { name: 'product31', active: false },
-                product32: { name: 'product32', active: true },
+                p1: { name: 'product31', active: false },
+                p2: { name: 'product32', active: true },
             },
         },
     },
