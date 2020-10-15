@@ -49,6 +49,6 @@ module.exports = {
         [
             { name: 'product31', active: false },
             { name: 'product32', active: true },
-        ]
+        ],
     ],
 };

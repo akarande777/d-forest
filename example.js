@@ -21,15 +21,9 @@ const data = {
 };
 
 // "node" can be any object on the tree
-const res1 = df(data).findNode((node, depth, parent) => {
-    const { element, key } = parent;
-    return element && element.id === 'c3' && key === 'products';
-});
+const res1 = df(data).findNode(node => node.id === 'c3');
 console.log(res1);
-// {
-//   product1: { id: 'p31', active: false },
-//   product2: { id: 'p32', active: true }
-// }
+// { id: 'c3', active: true, products: [Object] }
 
 // "leaf" can be any object which don't have children i.e. bottom nodes
 // it has better performance over findNode as it skips unnecessary comparisons
