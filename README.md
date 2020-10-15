@@ -70,8 +70,8 @@ console.log(res2);
 
 ````javascript
 // returns an array containing all nodes at given level
-const res3 = df(data).nodesByLevel(1); // should be greater than 0
-console.log(res3);
+const res = df(data).nodesByLevel(1); // should be greater than 0
+console.log(res);
 // [
 //   { id: 'c1', active: false },
 //   { id: 'c2', active: true, products: [Object] },
