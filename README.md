@@ -1,4 +1,4 @@
-A lightweight JavaScript library for searching objects in a tree-like structure.
+A lightweight JavaScript library for searching object in a tree-like structure.
 
 [![npm version](https://img.shields.io/npm/v/d-forest)](https://www.npmjs.com/package/d-forest)
 [![Build Status](https://travis-ci.com/akarande777/d-forest.svg?branch=master)](https://travis-ci.com/akarande777/d-forest)
@@ -46,10 +46,13 @@ console.log(res1);
 // { name: 'category3', active: true, products: [Object] }
 
 // "leaf" can be any object which don't have children i.e. bottom nodes
-// it has better performance over findNode as it skips unnecessary comparisons
 const res2 = df(data).findLeaf(leaf => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: true }
+
+// this is useful when you know that the object you want to find is a leaf
+// it has better performance over "findNode" as it skips unnecessary comparisons
+// note that every leaf is a node but not every node is a leaf
 ````
 
 ## Methods
