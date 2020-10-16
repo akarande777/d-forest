@@ -29,7 +29,6 @@ console.log(res1);
 // { name: 'category3', active: true, products: [Object] }
 
 // "leaf" can be any object which don't have children i.e. bottom nodes
-// it has better performance over findNode as it skips unnecessary comparisons
 const res2 = df(data).findLeaf(leaf => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: true }
