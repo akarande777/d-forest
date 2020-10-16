@@ -50,7 +50,7 @@ const res2 = df(data).findLeaf(leaf => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: true }
 
-// this is useful when you know that the object you want to find is a leaf
+// it is useful when you know that the object you want to find is a leaf
 // it has better performance over "findNode" as it skips unnecessary comparisons
 // note that every leaf is a node but not every node is a leaf
 ````
