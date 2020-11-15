@@ -1,6 +1,6 @@
 {
   "name": "d-forest",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "",
   "main": "index.js",
   "keywords": [
@@ -17,7 +17,7 @@
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "author": "Akshay K",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/akarande777/d-forest.git"
