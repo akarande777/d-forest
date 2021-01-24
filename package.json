@@ -1,29 +1,30 @@
 {
-  "name": "d-forest",
-  "version": "1.2.4",
-  "description": "",
-  "main": "index.js",
-  "keywords": [
-    "deep",
-    "find",
-    "nested",
-    "object",
-    "search",
-    "tree",
-    "trie"
-  ],
-  "scripts": {
-    "test": "jest",
-    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
-  },
-  "author": "Akshay K",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/akarande777/d-forest.git"
-  },
-  "devDependencies": {
-    "coveralls": "^3.1.0",
-    "jest": "^26.4.2"
-  }
+    "name": "d-forest",
+    "version": "1.2.5",
+    "description": "",
+    "main": "index.js",
+    "keywords": [
+        "array",
+        "deep",
+        "find",
+        "nested",
+        "object",
+        "search",
+        "tree",
+        "trie"
+    ],
+    "scripts": {
+        "test": "jest",
+        "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+    },
+    "author": "Akshay K",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/akarande777/d-forest.git"
+    },
+    "devDependencies": {
+        "coveralls": "^3.1.0",
+        "jest": "^26.4.2"
+    }
 }
