@@ -1,4 +1,4 @@
-const df = require('./index.ts');
+const df = require('./index');
 
 // data can be object or array of objects
 const data = {
