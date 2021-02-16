@@ -1,11 +1,12 @@
-const df = require('./index');
+const df = require('./index.ts');
 
 // data can be object or array of objects
 const data = {
     name: 'categories',
     c1: { name: 'category1', active: false },
     c2: {
-        name: 'category2', active: true,
+        name: 'category2',
+        active: true,
         products: {
             name: 'products',
             p1: { name: 'product21', active: false },
@@ -14,7 +15,8 @@ const data = {
         },
     },
     c3: {
-        name: 'category3', active: true,
+        name: 'category3',
+        active: true,
         products: {
             name: 'products',
             p1: { name: 'product31', active: false },
@@ -24,12 +26,12 @@ const data = {
 };
 
 // "node" can be any object on the tree
-const res1 = df(data).findNode(node => node.name === 'category3');
+const res1 = df(data).findNode((node) => node.name === 'category3');
 console.log(res1);
 // { name: 'category3', active: true, products: [Object] }
 
 // "leaf" can be any object which don't have children i.e. bottom nodes
-const res2 = df(data).findLeaf(leaf => leaf.name === 'product22');
+const res2 = df(data).findLeaf((leaf) => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: true }
 
@@ -37,6 +39,7 @@ const res3 = df(data).nodesByLevel(1); // should be greater than 0
 console.log(res3);
 
 const res4 = df(data).reduce(
-    (acc, cur) => (acc + '/' + cur.name), '' // initial value must be provided
+    (acc, cur) => acc + '/' + cur.name,
+    '' // initial value must be provided
 );
 console.log(res4);
