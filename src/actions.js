@@ -3,6 +3,5 @@ module.exports = {
     FIND: 'find',
     FIND_ALL: 'find-all',
     BY_LEVEL: 'by-level',
-    REMOVE: 'remove',
     REDUCE: 'reduce',
 };

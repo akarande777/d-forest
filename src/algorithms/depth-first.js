@@ -98,8 +98,6 @@ function depthFirst(callback, action, initial) {
             return response[0];
         case actions.FIND_ALL:
             return response;
-        case actions.REMOVE:
-            return response[0];
         case actions.REDUCE:
             return response;
         default:

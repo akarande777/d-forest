@@ -13,7 +13,5 @@ declare class Forest {
     findNodes(callback: any): any;
     mapLeaves(callback: any): any;
     nodesByLevel(level: any): any;
-    removeNode(callback: any): any;
-    removeLeaf(callback: any): any;
     reduce(callback: any, initial: any): any;
 }
