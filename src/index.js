@@ -1,12 +1,9 @@
-const depthFirst = require('./algorithms/depth-first');
-const breadthFirst = require('./algorithms/breadth-first');
-const actions = require('./actions');
+var depthFirst = require('./algorithms/depth-first');
+var breadthFirst = require('./algorithms/breadth-first');
+var actions = require('./actions');
 
 function Forest(forest) {
-    this.data = () => ({
-        forest: forest,
-        isArray: Array.isArray(forest),
-    });
+    this.forest = forest;
 }
 
 Forest.prototype.isObject = function (element) {

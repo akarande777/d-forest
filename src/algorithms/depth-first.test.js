@@ -43,24 +43,6 @@ test('map leaves', () => {
     expect(df(data2).mapLeaves((leaf) => leaf.name)).toStrictEqual(res);
 });
 
-test('remove leaf', () => {
-    const copy = JSON.parse(JSON.stringify(data));
-    expect(df(copy).removeNode((leaf) => leaf.name === 'product22')).toStrictEqual(
-        data[1].products[1]
-    );
-    expect(copy[1].products).toStrictEqual([data[1].products[0], data[1].products[2]]);
-    // data2
-    const copy2 = JSON.parse(JSON.stringify(data2));
-    expect(df(copy2).removeNode((leaf) => leaf.name === 'product22')).toStrictEqual(
-        data[1].products[1]
-    );
-    expect(copy2.c2.products).toStrictEqual({
-        name: 'products',
-        p1: { name: 'product21', active: false },
-        p3: { name: 'product23', active: false },
-    });
-});
-
 test('reduce', () => {
     expect(df(data).reduce((acc, cur) => acc + cur.name + '/', '')).toStrictEqual([
         'category1/',

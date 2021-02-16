@@ -48,20 +48,3 @@ test('nodes by level', () => {
     expect(df(data2).nodesByLevel(3)).toStrictEqual(expected);
     expect(df(data3).nodesByLevel(1)).toStrictEqual(expected);
 });
-
-test('remove node', () => {
-    const copy = JSON.parse(JSON.stringify(data));
-    expect(df(copy).removeNode((node) => node.name === 'product22')).toStrictEqual(
-        data[1].products[1]
-    );
-    df(copy).removeNode((node) => node.name === 'category2');
-    expect(copy).toStrictEqual([data[0], data[2]]);
-    // data2
-    const copy2 = JSON.parse(JSON.stringify(data2));
-    expect(df(copy2).removeNode((node) => node.name === 'product22')).toStrictEqual(
-        data[1].products[1]
-    );
-    df(copy2).removeNode((node) => node.name === 'category2');
-    const { c1, c3 } = data2;
-    expect(copy2).toStrictEqual({ name: 'categories', c1, c3 });
-});

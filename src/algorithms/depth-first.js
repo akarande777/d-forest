@@ -1,7 +1,6 @@
 const actions = require('../actions');
 
 function depthFirst(callback, action, initial) {
-    const { forest, isArray } = this.data();
     const response = [];
     let found = false;
     let next = () => null;
@@ -68,24 +67,6 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
-        case actions.REMOVE:
-            next = (el, depth, parent) => {
-                let hasChildren = iterate(el, depth);
-                if (!hasChildren) {
-                    let value = callback(el, depth, parent);
-                    if (value && parent.element) {
-                        if (Array.isArray(parent.element)) {
-                            response.push(parent.element[parent.key]);
-                            parent.element.splice(parent.key, 1);
-                        } else {
-                            response.push({ ...parent.element[parent.key] });
-                            delete parent.element[parent.key];
-                        }
-                        found = true;
-                    }
-                }
-            };
-            break;
         case actions.REDUCE:
             next = (el, depth, parent, acc) => {
                 let value = callback(acc, el, depth, parent);
@@ -104,10 +85,10 @@ function depthFirst(callback, action, initial) {
             };
     }
 
-    if (isArray) {
-        iterateArr(forest, -1, initial);
-    } else if (this.isObject(forest)) {
-        next(forest, 0, {}, initial);
+    if (Array.isArray(this.forest)) {
+        iterateArr(this.forest, -1, initial);
+    } else if (this.isObject(this.forest)) {
+        next(this.forest, 0, {}, initial);
     }
 
     switch (action) {

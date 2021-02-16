@@ -1,7 +1,6 @@
 const actions = require('../actions');
 
 function breadthFirst(callback, action) {
-    let { forest, isArray } = this.data();
     const queue = [];
     const response = [];
     let found = false;
@@ -60,23 +59,6 @@ function breadthFirst(callback, action) {
                 iterate(element, depth);
             };
             break;
-        case actions.REMOVE:
-            next = (element, depth, parent) => {
-                let value = callback(element, depth, parent);
-                if (value && parent.element) {
-                    if (Array.isArray(parent.element)) {
-                        response.push(parent.element[parent.key]);
-                        parent.element.splice(parent.key, 1);
-                    } else {
-                        response.push({ ...parent.element[parent.key] });
-                        delete parent.element[parent.key];
-                    }
-                    found = true;
-                    return;
-                }
-                iterate(element, depth);
-            };
-            break;
         default:
             next = (el, depth, parent) => {
                 callback(el, depth, parent);
@@ -84,10 +66,10 @@ function breadthFirst(callback, action) {
             };
     }
 
-    if (isArray) {
-        iterateArr(forest, -1);
-    } else if (this.isObject(forest)) {
-        queue.push(() => next(forest, 0, {}));
+    if (Array.isArray(this.forest)) {
+        iterateArr(this.forest, -1);
+    } else if (this.isObject(this.forest)) {
+        queue.push(() => next(this.forest, 0, {}));
     }
 
     while (!found && queue.length) {
@@ -101,8 +83,6 @@ function breadthFirst(callback, action) {
             return response;
         case actions.BY_LEVEL:
             return response;
-        case actions.REMOVE:
-            return response[0];
         default:
             return undefined;
     }
