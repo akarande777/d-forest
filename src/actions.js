@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = Object.freeze({
     MAP: 'map',
     FIND: 'find',
     FIND_ALL: 'find-all',
@@ -8,4 +8,4 @@ module.exports = {
     MAX_HEIGHT: 'max-height',
     BY_LEVEL: 'by-level',
     REDUCE: 'reduce',
-};
+});

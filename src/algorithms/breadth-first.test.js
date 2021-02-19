@@ -38,9 +38,9 @@ test('for-each node', () => {
 });
 
 test('every node', () => {
-    expect(df(data).everyLeaf((node) => node.name?.includes('product'))).toBe(false);
-    expect(df(data2).everyLeaf((node) => node.name?.includes('product'))).toBe(false);
-    expect(df(data3).everyLeaf((node) => node.name?.includes('product'))).toBe(true);
+    expect(df(data).everyNode((node) => node.hasOwnProperty('active'))).toBe(true);
+    expect(df(data2).everyNode((node) => node.hasOwnProperty('active'))).toBe(false);
+    expect(df(data3).everyNode((node) => node.hasOwnProperty('active'))).toBe(true);
 });
 
 test('nodes by level', () => {

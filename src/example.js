@@ -35,11 +35,9 @@ const res2 = df(data).findLeaf((leaf) => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: true }
 
-const res3 = df(data).nodesByLevel(1); // should be greater than 0
-console.log(res3);
+// similar to Array.prototype.every
+const res3 = df(data).everyNode((node) => node.hasOwnProperty('active'));
+console.log(res3); // false
 
-const res4 = df(data).reduce(
-    (acc, cur) => acc + '/' + cur.name,
-    '' // initial value must be provided
-);
-console.log(res4);
+const res4 = df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
+console.log(res4); // true

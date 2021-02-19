@@ -8,11 +8,11 @@ function depthFirst(callback, action, initial) {
     const iterateArr = (arr, depth, acc) => {
         let hasChildren = false;
         for (let j = 0; j < arr.length; j++) {
-            if (this.isObject(arr[j])) {
+            if (Array.isArray(arr[j])) {
+                hasChildren = iterateArr(arr[j], depth + 1, acc);
+            } else if (this.isObject(arr[j])) {
                 next(arr[j], depth + 1, { element: arr, key: j }, acc);
                 hasChildren = true;
-            } else if (Array.isArray(arr[j])) {
-                hasChildren = iterateArr(arr[j], depth + 1, acc);
             }
             if (found) break;
         }

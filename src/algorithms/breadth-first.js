@@ -8,10 +8,10 @@ function breadthFirst(callback, action) {
 
     const iterateArr = (arr, depth) => {
         for (let j = 0; j < arr.length; j++) {
-            if (this.isObject(arr[j])) {
-                queue.push(() => next(arr[j], depth + 1, { element: arr, key: j }));
-            } else if (Array.isArray(arr[j])) {
+            if (Array.isArray(arr[j])) {
                 queue.push(() => iterateArr(arr[j], depth + 1));
+            } else if (this.isObject(arr[j])) {
+                queue.push(() => next(arr[j], depth + 1, { element: arr, key: j }));
             }
         }
     };
@@ -54,7 +54,7 @@ function breadthFirst(callback, action) {
             next = (element, depth, parent) => {
                 let value = callback(element, depth, parent);
                 if (!value) {
-                    response.push(false);
+                    response[0] = false;
                     found = true;
                     return;
                 }

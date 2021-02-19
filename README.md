@@ -53,6 +53,13 @@ console.log(res2);
 // it is useful when you know that the object you want to find is a leaf
 // it has better performance over "findNode" as it skips unnecessary comparisons
 // note that every leaf is a node but not every node is a leaf
+
+// similar to Array.prototype.every
+const res3 = df(data).everyNode((node) => node.hasOwnProperty('active'));
+console.log(res3); // false
+
+const res4 = df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
+console.log(res4); // true
 ```
 
 ## Methods
@@ -64,6 +71,8 @@ console.log(res2);
 -   forEachNode
 -   forEachLeaf
 -   mapLeaves
+-   everyNode
+-   everyLeaf
 -   **nodesByLevel**
 
 ```javascript
