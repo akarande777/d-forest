@@ -5,9 +5,7 @@ test('find node', () => {
     expect(df(data).findNode((node) => node.name === 'product31')).toBe(data[2].products[0]);
     expect(df(data).findNode((node) => node.name === 'category2')).toBe(data[1]);
     // data2
-    expect(df(data2).findNode((node) => node.name === 'product31')).toStrictEqual(
-        data[2].products[0]
-    );
+    expect(df(data2).findNode((node) => node.name === 'product31')).toBe(data2.c3.products.p1);
     expect(df(data2).findNode((node) => node.name === 'category2')).toBe(data2.c2);
     // data3
     expect(df(data3).findNode((node) => node.name === 'product31')).toBe(data3[1][0]);
@@ -37,6 +35,12 @@ test('for-each node', () => {
     products.length = 0;
     df(data2).forEachNode((node) => node.active && products.push(node.name));
     expect(products).toStrictEqual(expected);
+});
+
+test('every node', () => {
+    expect(df(data).everyLeaf((node) => node.name?.includes('product'))).toBe(false);
+    expect(df(data2).everyLeaf((node) => node.name?.includes('product'))).toBe(false);
+    expect(df(data3).everyLeaf((node) => node.name?.includes('product'))).toBe(true);
 });
 
 test('nodes by level', () => {

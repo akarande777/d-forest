@@ -67,6 +67,54 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
+        case actions.EVERY:
+            response.push(true);
+            next = (el, depth, parent) => {
+                let hasChildren = iterate(el, depth);
+                if (!hasChildren) {
+                    let value = callback(el, depth, parent);
+                    if (!value) {
+                        response[0] = false;
+                        found = true;
+                    }
+                }
+            };
+            break;
+        case actions.SOME:
+            response.push(false);
+            next = (el, depth, parent) => {
+                let hasChildren = iterate(el, depth);
+                if (!hasChildren) {
+                    let value = callback(el, depth, parent);
+                    if (value) {
+                        response[0] = true;
+                        found = true;
+                    }
+                }
+            };
+            break;
+        case actions.MIN_HEIGHT:
+            response.push(Infinity);
+            next = (el, depth) => {
+                let hasChildren = iterate(el, depth);
+                if (!hasChildren) {
+                    if (depth < response[0]) {
+                        response[0] = depth;
+                    }
+                }
+            };
+            break;
+        case actions.MAX_HEIGHT:
+            response.push(-1);
+            next = (el, depth) => {
+                let hasChildren = iterate(el, depth);
+                if (!hasChildren) {
+                    if (depth > response[0]) {
+                        response[0] = depth;
+                    }
+                }
+            };
+            break;
         case actions.REDUCE:
             next = (el, depth, parent, acc) => {
                 let value = callback(acc, el, depth, parent);
@@ -98,6 +146,12 @@ function depthFirst(callback, action, initial) {
             return response[0];
         case actions.FIND_ALL:
             return response;
+        case actions.EVERY:
+            return response[0];
+        case actions.MIN_HEIGHT:
+            return response[0] + 1;
+        case actions.MAX_HEIGHT:
+            return response[0] + 1;
         case actions.REDUCE:
             return response;
         default:

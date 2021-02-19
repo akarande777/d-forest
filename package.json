@@ -1,6 +1,6 @@
 {
     "name": "d-forest",
-    "version": "1.3.6",
+    "version": "1.4.0",
     "description": "search nested object",
     "main": "src/index.js",
     "types": "dist/index.d.ts",

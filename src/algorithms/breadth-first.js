@@ -49,6 +49,18 @@ function breadthFirst(callback, action) {
                 iterate(element, depth);
             };
             break;
+        case actions.EVERY:
+            response.push(true);
+            next = (element, depth, parent) => {
+                let value = callback(element, depth, parent);
+                if (!value) {
+                    response.push(false);
+                    found = true;
+                    return;
+                }
+                iterate(element, depth);
+            };
+            break;
         case actions.BY_LEVEL:
             next = (element, depth) => {
                 let value = callback(); // () => level
@@ -81,6 +93,8 @@ function breadthFirst(callback, action) {
             return response[0];
         case actions.FIND_ALL:
             return response;
+        case actions.EVERY:
+            return response[0];
         case actions.BY_LEVEL:
             return response;
         default:

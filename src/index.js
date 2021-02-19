@@ -11,11 +11,11 @@ Forest.prototype.isObject = function (element) {
 };
 
 Forest.prototype.forEachLeaf = function (callback) {
-    depthFirst.call(this, callback);
+    depthFirst.call(this, callback, actions.FOR_EACH);
 };
 
 Forest.prototype.forEachNode = function (callback) {
-    breadthFirst.call(this, callback);
+    breadthFirst.call(this, callback, actions.FOR_EACH);
 };
 
 Forest.prototype.findLeaf = function (callback) {
@@ -24,6 +24,14 @@ Forest.prototype.findLeaf = function (callback) {
 
 Forest.prototype.findNode = function (callback) {
     return breadthFirst.call(this, callback, actions.FIND);
+};
+
+Forest.prototype.everyLeaf = function (callback) {
+    return depthFirst.call(this, callback, actions.EVERY);
+};
+
+Forest.prototype.everyNode = function (callback) {
+    return breadthFirst.call(this, callback, actions.EVERY);
 };
 
 Forest.prototype.findLeaves = function (callback) {
@@ -36,6 +44,14 @@ Forest.prototype.findNodes = function (callback) {
 
 Forest.prototype.mapLeaves = function (callback) {
     return depthFirst.call(this, callback, actions.MAP);
+};
+
+Forest.prototype.minHeight = function () {
+    return depthFirst.call(this, () => null, actions.MIN_HEIGHT);
+};
+
+Forest.prototype.maxHeight = function () {
+    return depthFirst.call(this, () => null, actions.MAX_HEIGHT);
 };
 
 Forest.prototype.nodesByLevel = function (level) {
