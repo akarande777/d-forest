@@ -6,10 +6,6 @@ function Forest(forest) {
     this.forest = forest;
 }
 
-Forest.prototype.isObject = function (element) {
-    return typeof element === 'object' && element !== null;
-};
-
 Forest.prototype.forEachLeaf = function (callback) {
     depthFirst.call(this, callback, actions.FOR_EACH);
 };

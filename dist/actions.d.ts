@@ -1,9 +1,12 @@
-export const MAP: string;
-export const FIND: string;
-export const FIND_ALL: string;
-export const FOR_EACH: string;
-export const EVERY: string;
-export const MIN_HEIGHT: string;
-export const MAX_HEIGHT: string;
-export const BY_LEVEL: string;
-export const REDUCE: string;
+declare const _exports: {
+    readonly MAP: string;
+    readonly FIND: string;
+    readonly FIND_ALL: string;
+    readonly FOR_EACH: string;
+    readonly EVERY: string;
+    readonly MIN_HEIGHT: string;
+    readonly MAX_HEIGHT: string;
+    readonly BY_LEVEL: string;
+    readonly REDUCE: string;
+};
+export = _exports;

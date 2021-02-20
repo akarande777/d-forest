@@ -4,7 +4,6 @@ declare function Forest(forest: any): void;
 declare class Forest {
     constructor(forest: any);
     forest: any;
-    isObject(element: any): boolean;
     forEachLeaf(callback: any): void;
     forEachNode(callback: any): void;
     findLeaf(callback: any): any;

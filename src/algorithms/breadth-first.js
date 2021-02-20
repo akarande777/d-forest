@@ -1,5 +1,9 @@
 const actions = require('../actions');
 
+function isObject(element) {
+    return typeof element === 'object' && element !== null;
+}
+
 function breadthFirst(callback, action) {
     const queue = [];
     const response = [];
@@ -10,7 +14,7 @@ function breadthFirst(callback, action) {
         for (let j = 0; j < arr.length; j++) {
             if (Array.isArray(arr[j])) {
                 queue.push(() => iterateArr(arr[j], depth + 1));
-            } else if (this.isObject(arr[j])) {
+            } else if (isObject(arr[j])) {
                 queue.push(() => next(arr[j], depth + 1, { element: arr, key: j }));
             }
         }
@@ -21,7 +25,7 @@ function breadthFirst(callback, action) {
             const prop = element[key];
             if (Array.isArray(prop)) {
                 iterateArr(prop, depth);
-            } else if (this.isObject(prop)) {
+            } else if (isObject(prop)) {
                 queue.push(() => next(prop, depth + 1, { element, key }));
             }
         }
@@ -80,7 +84,7 @@ function breadthFirst(callback, action) {
 
     if (Array.isArray(this.forest)) {
         iterateArr(this.forest, -1);
-    } else if (this.isObject(this.forest)) {
+    } else if (isObject(this.forest)) {
         queue.push(() => next(this.forest, 0, {}));
     }
 

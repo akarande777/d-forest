@@ -1,5 +1,9 @@
 const actions = require('../actions');
 
+function isObject(element) {
+    return typeof element === 'object' && element !== null;
+}
+
 function depthFirst(callback, action, initial) {
     const response = [];
     let found = false;
@@ -10,7 +14,7 @@ function depthFirst(callback, action, initial) {
         for (let j = 0; j < arr.length; j++) {
             if (Array.isArray(arr[j])) {
                 hasChildren = iterateArr(arr[j], depth + 1, acc);
-            } else if (this.isObject(arr[j])) {
+            } else if (isObject(arr[j])) {
                 next(arr[j], depth + 1, { element: arr, key: j }, acc);
                 hasChildren = true;
             }
@@ -25,7 +29,7 @@ function depthFirst(callback, action, initial) {
             const prop = element[key];
             if (Array.isArray(prop)) {
                 hasChildren = iterateArr(prop, depth, acc);
-            } else if (this.isObject(prop)) {
+            } else if (isObject(prop)) {
                 next(prop, depth + 1, { element, key }, acc);
                 hasChildren = true;
             }
@@ -135,7 +139,7 @@ function depthFirst(callback, action, initial) {
 
     if (Array.isArray(this.forest)) {
         iterateArr(this.forest, -1, initial);
-    } else if (this.isObject(this.forest)) {
+    } else if (isObject(this.forest)) {
         next(this.forest, 0, {}, initial);
     }
 
