@@ -2,18 +2,16 @@ const df = require('../index');
 const { data, data2, data3 } = require('./test-data');
 
 test('for-each leaf', () => {
-    const expected = ['product21', 'product22', 'product23', 'product31', 'product32'];
+    const expected = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
     const products = [];
-    let maxHeight = df(data).maxHeight();
-    df(data).forEachLeaf((leaf, depth) => depth + 1 === maxHeight && products.push(leaf.name));
+    df(data).forEachLeaf((leaf) => products.push(leaf.name));
     expect(products).toStrictEqual(expected);
     products.length = 0;
-    maxHeight = df(data2).maxHeight();
-    df(data2).forEachLeaf((leaf, depth) => depth + 1 === maxHeight && products.push(leaf.name));
+    df(data2).forEachLeaf((leaf) => products.push(leaf.name));
     expect(products).toStrictEqual(expected);
     products.length = 0;
     df(data3).forEachLeaf((leaf) => products.push(leaf.name));
-    expect(products).toStrictEqual(expected);
+    expect(products).toStrictEqual(expected.slice(1));
 });
 
 test('find leaf', () => {
@@ -36,10 +34,10 @@ test('find leaves', () => {
 });
 
 test('map leaves', () => {
-    const res = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
-    expect(df(data).mapLeaves((leaf) => leaf.name)).toStrictEqual(res);
-    expect(df(data2).mapLeaves((leaf) => leaf.name)).toStrictEqual(res);
-    expect(df(data3).mapLeaves((leaf) => leaf.name)).toStrictEqual(res.slice(1));
+    const expected = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
+    expect(df(data).mapLeaves((leaf) => leaf.name)).toStrictEqual(expected);
+    expect(df(data2).mapLeaves((leaf) => leaf.name)).toStrictEqual(expected);
+    expect(df(data3).mapLeaves((leaf) => leaf.name)).toStrictEqual(expected.slice(1));
 });
 
 test('every leaf', () => {
