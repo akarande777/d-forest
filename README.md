@@ -93,7 +93,7 @@ console.log(df(data).nodesByLevel(1)); // should be greater than 0
 // ]
 ```
 
-#### reduce
+-   #### reduce
 
 ```javascript
 // returns single output value for each path from top to bottom
