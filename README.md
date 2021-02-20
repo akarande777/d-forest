@@ -57,15 +57,15 @@ console.log(res2);
 
 ## Methods
 
-#### findNode / findLeaf
+#### findNode | findLeaf
 
-#### findNodes / findLeaves
+#### findNodes | findLeaves
 
-#### forEachNode / forEachLeaf
+#### forEachNode | forEachLeaf
 
 #### mapLeaves
 
-#### everyNode / everyLeaf
+#### everyNode | everyLeaf
 
 ```javascript
 const res1 = df(data).everyNode((node) => node.hasOwnProperty('active'));
@@ -74,7 +74,7 @@ const res2 = df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
 console.log(res2); // true
 ```
 
-#### minHeight / maxHeight
+#### minHeight | maxHeight
 
 ```javascript
 console.log(df(data).minHeight()); // 2
