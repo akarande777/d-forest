@@ -34,10 +34,3 @@ console.log(res1);
 const res2 = df(data).findLeaf((leaf) => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: true }
-
-// similar to Array.prototype.every
-const res3 = df(data).everyNode((node) => node.hasOwnProperty('active'));
-console.log(res3); // false
-
-const res4 = df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
-console.log(res4); // true

@@ -53,32 +53,39 @@ console.log(res2);
 // it is useful when you know that the object you want to find is a leaf
 // it has better performance over "findNode" as it skips unnecessary comparisons
 // note that every leaf is a node but not every node is a leaf
-
-// similar to Array.prototype.every
-const res3 = df(data).everyNode((node) => node.hasOwnProperty('active'));
-console.log(res3); // false
-
-const res4 = df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
-console.log(res4); // true
 ```
 
 ## Methods
 
--   findNode
--   findNodes
--   findLeaf
--   findLeaves
--   forEachNode
--   forEachLeaf
--   mapLeaves
--   everyNode
--   everyLeaf
--   **nodesByLevel**
+#### findNode / findLeaf
+
+#### findNodes / findLeaves
+
+#### forEachNode / forEachLeaf
+
+#### mapLeaves
+
+#### everyNode / everyLeaf
+
+```javascript
+const res1 = df(data).everyNode((node) => node.hasOwnProperty('active'));
+console.log(res1); // false
+const res2 = df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
+console.log(res2); // true
+```
+
+#### minHeight / maxHeight
+
+```javascript
+console.log(df(data).minHeight()); // 2
+console.log(df(data).maxHeight()); // 4
+```
+
+#### nodesByLevel
 
 ```javascript
 // returns an array containing all nodes at given level
-const res = df(data).nodesByLevel(1); // should be greater than 0
-console.log(res);
+console.log(df(data).nodesByLevel(1)); // should be greater than 0
 // [
 //   { name: 'category1', active: false },
 //   { name: 'category2', active: true, products: [Object] },
@@ -86,15 +93,12 @@ console.log(res);
 // ]
 ```
 
--   **reduce**
+#### reduce
 
 ```javascript
 // returns single output value for each path from top to bottom
-const res = df(data).reduce(
-    (acc, cur) => acc + '/' + cur.name,
-    '' // initial value must be provided
-);
-console.log(res);
+// initial value must be provided
+df(data).reduce((acc, cur) => acc + '/' + cur.name, '');
 // [
 //   '/categories/category1',
 //   '/categories/category2/products/product21',
