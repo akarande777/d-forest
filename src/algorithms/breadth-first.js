@@ -34,45 +34,44 @@ function breadthFirst(callback, action) {
 
     switch (action) {
         case actions.FIND:
-            next = (element, depth, parent) => {
-                let value = callback(element, depth, parent);
+            next = (el, depth, parent) => {
+                let value = callback(el, depth, parent);
                 if (value) {
-                    response.push(element);
+                    response.push(el);
                     found = true;
                     return;
                 }
-                iterate(element, depth);
+                iterate(el, depth);
             };
             break;
         case actions.FIND_ALL:
-            next = (element, depth, parent) => {
-                let value = callback(element, depth, parent);
+            next = (el, depth, parent) => {
+                let value = callback(el, depth, parent);
                 if (value) {
-                    response.push(element);
+                    response.push(el);
                 }
-                iterate(element, depth);
+                iterate(el, depth);
             };
             break;
         case actions.EVERY:
             response.push(true);
-            next = (element, depth, parent) => {
-                let value = callback(element, depth, parent);
+            next = (el, depth, parent) => {
+                let value = callback(el, depth, parent);
                 if (!value) {
                     response[0] = false;
                     found = true;
                     return;
                 }
-                iterate(element, depth);
+                iterate(el, depth);
             };
             break;
         case actions.BY_LEVEL:
-            next = (element, depth) => {
-                let value = callback(); // () => level
-                if (value === depth) {
-                    response.push(element);
+            next = (el, depth) => {
+                if (callback() === depth) {
+                    response.push(el);
                     return;
                 }
-                iterate(element, depth);
+                iterate(el, depth);
             };
             break;
         default:
