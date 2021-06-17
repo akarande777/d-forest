@@ -84,25 +84,12 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
-        case actions.SOME:
-            response.push(false);
-            next = (el, depth, parent) => {
-                let hasChildren = iterate(el, depth);
-                if (!hasChildren) {
-                    let value = callback(el, depth, parent);
-                    if (value) {
-                        response[0] = true;
-                        found = true;
-                    }
-                }
-            };
-            break;
         case actions.MIN_HEIGHT:
             response.push(Infinity);
             next = (el, depth) => {
-                let hasChildren = iterate(el, depth);
-                if (!hasChildren) {
-                    if (depth < response[0]) {
+                if (depth < response[0]) {
+                    let hasChildren = iterate(el, depth);
+                    if (!hasChildren) {
                         response[0] = depth;
                     }
                 }
