@@ -1,11 +1,10 @@
 {
     "name": "d-forest",
-    "version": "1.4.2",
+    "version": "1.4.5",
     "description": "search nested object",
     "main": "src/index.js",
     "types": "dist/index.d.ts",
     "keywords": [
-        "array",
         "deep",
         "find",
         "nested",
