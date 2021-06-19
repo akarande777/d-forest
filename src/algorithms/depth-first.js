@@ -9,13 +9,15 @@ function depthFirst(callback, action, initial) {
     let found = false;
     let next = () => null;
 
-    const iterateArr = (arr, depth, acc) => {
+    const iterateArray = (array, depth, acc) => {
         let hasChildren = false;
-        for (let j = 0; j < arr.length; j++) {
-            if (Array.isArray(arr[j])) {
-                hasChildren = iterateArr(arr[j], depth + 1, acc);
-            } else if (isObject(arr[j])) {
-                next(arr[j], depth + 1, { element: arr, key: j }, acc);
+        for (let i = 0; i < array.length; i++) {
+            const el = array[i];
+            if (Array.isArray(el)) {
+                hasChildren = iterateArray(el, depth + 1, acc);
+            } else if (isObject(el)) {
+                const parent = { element: el, key: i };
+                next(el, depth + 1, parent, acc);
                 hasChildren = true;
             }
             if (found) break;
@@ -28,7 +30,7 @@ function depthFirst(callback, action, initial) {
         for (let key of Object.keys(element)) {
             const prop = element[key];
             if (Array.isArray(prop)) {
-                hasChildren = iterateArr(prop, depth, acc);
+                hasChildren = iterateArray(prop, depth, acc);
             } else if (isObject(prop)) {
                 next(prop, depth + 1, { element, key }, acc);
                 hasChildren = true;
@@ -40,43 +42,43 @@ function depthFirst(callback, action, initial) {
 
     switch (action) {
         case actions.MAP:
-            next = (el, depth, parent) => {
-                let hasChildren = iterate(el, depth);
+            next = (node, depth, parent) => {
+                let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
-                    let value = callback(el, depth, parent);
+                    let value = callback(node, depth, parent);
                     response.push(value);
                 }
             };
             break;
         case actions.FIND:
-            next = (el, depth, parent) => {
-                let hasChildren = iterate(el, depth);
+            next = (node, depth, parent) => {
+                let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
-                    let value = callback(el, depth, parent);
+                    let value = callback(node, depth, parent);
                     if (value) {
-                        response.push(el);
+                        response.push(node);
                         found = true;
                     }
                 }
             };
             break;
         case actions.FIND_ALL:
-            next = (el, depth, parent) => {
-                let hasChildren = iterate(el, depth);
+            next = (node, depth, parent) => {
+                let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
-                    let value = callback(el, depth, parent);
+                    let value = callback(node, depth, parent);
                     if (value) {
-                        response.push(el);
+                        response.push(node);
                     }
                 }
             };
             break;
         case actions.EVERY:
             response.push(true);
-            next = (el, depth, parent) => {
-                let hasChildren = iterate(el, depth);
+            next = (node, depth, parent) => {
+                let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
-                    let value = callback(el, depth, parent);
+                    let value = callback(node, depth, parent);
                     if (!value) {
                         response[0] = false;
                         found = true;
@@ -86,9 +88,9 @@ function depthFirst(callback, action, initial) {
             break;
         case actions.MIN_HEIGHT:
             response.push(Infinity);
-            next = (el, depth) => {
+            next = (node, depth) => {
                 if (depth < response[0]) {
-                    let hasChildren = iterate(el, depth);
+                    let hasChildren = iterate(node, depth);
                     if (!hasChildren) {
                         response[0] = depth;
                     }
@@ -97,8 +99,8 @@ function depthFirst(callback, action, initial) {
             break;
         case actions.MAX_HEIGHT:
             response.push(-1);
-            next = (el, depth) => {
-                let hasChildren = iterate(el, depth);
+            next = (node, depth) => {
+                let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
                     if (depth > response[0]) {
                         response[0] = depth;
@@ -107,25 +109,25 @@ function depthFirst(callback, action, initial) {
             };
             break;
         case actions.REDUCE:
-            next = (el, depth, parent, acc) => {
-                let value = callback(acc, el, depth, parent);
-                let hasChildren = iterate(el, depth, value);
+            next = (node, depth, parent, acc) => {
+                let value = callback(acc, node, depth, parent);
+                let hasChildren = iterate(node, depth, value);
                 if (!hasChildren) {
                     response.push(value);
                 }
             };
             break;
         default:
-            next = (el, depth, parent) => {
-                let hasChildren = iterate(el, depth);
+            next = (node, depth, parent) => {
+                let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
-                    callback(el, depth, parent);
+                    callback(node, depth, parent);
                 }
             };
     }
 
     if (Array.isArray(this.forest)) {
-        iterateArr(this.forest, -1, initial);
+        iterateArray(this.forest, -1, initial);
     } else if (isObject(this.forest)) {
         next(this.forest, 0, {}, initial);
     }

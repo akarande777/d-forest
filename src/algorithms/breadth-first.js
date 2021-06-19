@@ -10,23 +10,25 @@ function breadthFirst(callback, action) {
     let found = false;
     let next = () => null;
 
-    const iterateArr = (arr, depth) => {
-        for (let j = 0; j < arr.length; j++) {
-            if (Array.isArray(arr[j])) {
-                queue.push(() => iterateArr(arr[j], depth + 1));
-            } else if (isObject(arr[j])) {
-                queue.push(() => next(arr[j], depth + 1, { element: arr, key: j }));
+    const iterateArray = (array, depth) => {
+        array.forEach((el, i) => {
+            if (Array.isArray(el)) {
+                queue.push(() => iterateArray(el, depth + 1));
+            } else if (isObject(el)) {
+                const parent = { element: el, key: i };
+                queue.push(() => next(el, depth + 1, parent));
             }
-        }
+        });
     };
 
     const iterate = (element, depth) => {
         for (let key of Object.keys(element)) {
             const prop = element[key];
             if (Array.isArray(prop)) {
-                iterateArr(prop, depth);
+                iterateArray(prop, depth);
             } else if (isObject(prop)) {
-                queue.push(() => next(prop, depth + 1, { element, key }));
+                const parent = { element, key };
+                queue.push(() => next(prop, depth + 1, parent));
             }
         }
         if (queue.length) queue.shift()();
@@ -34,55 +36,55 @@ function breadthFirst(callback, action) {
 
     switch (action) {
         case actions.FIND:
-            next = (el, depth, parent) => {
-                let value = callback(el, depth, parent);
+            next = (node, depth, parent) => {
+                let value = callback(node, depth, parent);
                 if (value) {
-                    response.push(el);
+                    response.push(node);
                     found = true;
                     return;
                 }
-                iterate(el, depth);
+                iterate(node, depth);
             };
             break;
         case actions.FIND_ALL:
-            next = (el, depth, parent) => {
-                let value = callback(el, depth, parent);
+            next = (node, depth, parent) => {
+                let value = callback(node, depth, parent);
                 if (value) {
-                    response.push(el);
+                    response.push(node);
                 }
-                iterate(el, depth);
+                iterate(node, depth);
             };
             break;
         case actions.EVERY:
             response.push(true);
-            next = (el, depth, parent) => {
-                let value = callback(el, depth, parent);
+            next = (node, depth, parent) => {
+                let value = callback(node, depth, parent);
                 if (!value) {
                     response[0] = false;
                     found = true;
                     return;
                 }
-                iterate(el, depth);
+                iterate(node, depth);
             };
             break;
         case actions.BY_LEVEL:
-            next = (el, depth) => {
+            next = (node, depth) => {
                 if (callback() === depth) {
-                    response.push(el);
+                    response.push(node);
                     return;
                 }
-                iterate(el, depth);
+                iterate(node, depth);
             };
             break;
         default:
-            next = (el, depth, parent) => {
-                callback(el, depth, parent);
-                iterate(el, depth);
+            next = (node, depth, parent) => {
+                callback(node, depth, parent);
+                iterate(node, depth);
             };
     }
 
     if (Array.isArray(this.forest)) {
-        iterateArr(this.forest, -1);
+        iterateArray(this.forest, -1);
     } else if (isObject(this.forest)) {
         queue.push(() => next(this.forest, 0, {}));
     }
