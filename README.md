@@ -68,10 +68,8 @@ console.log(res2);
 -   #### everyNode | everyLeaf
 
 ```javascript
-const res1 = df(data).everyNode((node) => node.hasOwnProperty('active'));
-console.log(res1); // false
-const res2 = df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
-console.log(res2); // true
+const res = df(data).everyNode((node) => node.hasOwnProperty('name'));
+console.log(res); // true
 ```
 
 -   #### minHeight | maxHeight
@@ -85,7 +83,7 @@ console.log(df(data).maxHeight()); // 4
 
 ```javascript
 // returns an array containing all nodes at given level
-console.log(df(data).nodesByLevel(1)); // should be greater than 0
+console.log(df(data).nodesByLevel(1)); // level >= 0
 // [
 //   { name: 'category1', active: false },
 //   { name: 'category2', active: true, products: [Object] },

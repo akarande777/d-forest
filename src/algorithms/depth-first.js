@@ -1,13 +1,13 @@
-const actions = require('../actions');
+const Actions = require('../actions');
 
 function isObject(element) {
     return typeof element === 'object' && element !== null;
 }
 
-function depthFirst(callback, action, initial) {
+function depthFirst(callback, action, payload = {}) {
     const response = [];
     let found = false;
-    let next = () => null;
+    let next = () => {};
 
     const iterateArray = (array, depth, acc) => {
         let hasChildren = false;
@@ -41,7 +41,7 @@ function depthFirst(callback, action, initial) {
     };
 
     switch (action) {
-        case actions.MAP:
+        case Actions.MAP:
             next = (node, depth, parent) => {
                 let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
@@ -50,7 +50,7 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
-        case actions.FIND:
+        case Actions.FIND:
             next = (node, depth, parent) => {
                 let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
@@ -62,7 +62,7 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
-        case actions.FIND_ALL:
+        case Actions.FIND_ALL:
             next = (node, depth, parent) => {
                 let hasChildren = iterate(node, depth);
                 if (!hasChildren) {
@@ -73,7 +73,7 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
-        case actions.EVERY:
+        case Actions.EVERY:
             response.push(true);
             next = (node, depth, parent) => {
                 let hasChildren = iterate(node, depth);
@@ -86,7 +86,7 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
-        case actions.MIN_HEIGHT:
+        case Actions.MIN_HEIGHT:
             response.push(Infinity);
             next = (node, depth) => {
                 if (depth < response[0]) {
@@ -97,7 +97,7 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
-        case actions.MAX_HEIGHT:
+        case Actions.MAX_HEIGHT:
             response.push(-1);
             next = (node, depth) => {
                 let hasChildren = iterate(node, depth);
@@ -108,7 +108,7 @@ function depthFirst(callback, action, initial) {
                 }
             };
             break;
-        case actions.REDUCE:
+        case Actions.REDUCE:
             next = (node, depth, parent, acc) => {
                 let value = callback(acc, node, depth, parent);
                 let hasChildren = iterate(node, depth, value);
@@ -126,26 +126,26 @@ function depthFirst(callback, action, initial) {
             };
     }
 
-    if (Array.isArray(this.forest)) {
-        iterateArray(this.forest, -1, initial);
-    } else if (isObject(this.forest)) {
-        next(this.forest, 0, {}, initial);
+    if (Array.isArray(this.data)) {
+        iterateArray(this.data, -1, payload.initial);
+    } else if (isObject(this.data)) {
+        next(this.data, 0, {}, payload.initial);
     }
 
     switch (action) {
-        case actions.MAP:
+        case Actions.MAP:
             return response;
-        case actions.FIND:
+        case Actions.FIND:
             return response[0];
-        case actions.FIND_ALL:
+        case Actions.FIND_ALL:
             return response;
-        case actions.EVERY:
+        case Actions.EVERY:
             return response[0];
-        case actions.MIN_HEIGHT:
+        case Actions.MIN_HEIGHT:
             return response[0] + 1;
-        case actions.MAX_HEIGHT:
+        case Actions.MAX_HEIGHT:
             return response[0] + 1;
-        case actions.REDUCE:
+        case Actions.REDUCE:
             return response;
         default:
             return undefined;

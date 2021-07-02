@@ -1,14 +1,14 @@
-const actions = require('../actions');
+const Actions = require('../actions');
 
 function isObject(element) {
     return typeof element === 'object' && element !== null;
 }
 
-function breadthFirst(callback, action) {
+function breadthFirst(callback, action, payload = {}) {
     const queue = [];
     const response = [];
     let found = false;
-    let next = () => null;
+    let next = () => {};
 
     const iterateArray = (array, depth) => {
         array.forEach((el, i) => {
@@ -35,7 +35,7 @@ function breadthFirst(callback, action) {
     };
 
     switch (action) {
-        case actions.FIND:
+        case Actions.FIND:
             next = (node, depth, parent) => {
                 let value = callback(node, depth, parent);
                 if (value) {
@@ -46,7 +46,7 @@ function breadthFirst(callback, action) {
                 iterate(node, depth);
             };
             break;
-        case actions.FIND_ALL:
+        case Actions.FIND_ALL:
             next = (node, depth, parent) => {
                 let value = callback(node, depth, parent);
                 if (value) {
@@ -55,7 +55,7 @@ function breadthFirst(callback, action) {
                 iterate(node, depth);
             };
             break;
-        case actions.EVERY:
+        case Actions.EVERY:
             response.push(true);
             next = (node, depth, parent) => {
                 let value = callback(node, depth, parent);
@@ -67,9 +67,9 @@ function breadthFirst(callback, action) {
                 iterate(node, depth);
             };
             break;
-        case actions.BY_LEVEL:
+        case Actions.BY_LEVEL:
             next = (node, depth) => {
-                if (callback() === depth) {
+                if (payload['level'] === depth) {
                     response.push(node);
                     return;
                 }
@@ -83,10 +83,10 @@ function breadthFirst(callback, action) {
             };
     }
 
-    if (Array.isArray(this.forest)) {
-        iterateArray(this.forest, -1);
-    } else if (isObject(this.forest)) {
-        queue.push(() => next(this.forest, 0, {}));
+    if (Array.isArray(this.data)) {
+        iterateArray(this.data, -1);
+    } else if (isObject(this.data)) {
+        queue.push(() => next(this.data, 0, {}));
     }
 
     while (!found && queue.length) {
@@ -94,13 +94,13 @@ function breadthFirst(callback, action) {
     }
 
     switch (action) {
-        case actions.FIND:
+        case Actions.FIND:
             return response[0];
-        case actions.FIND_ALL:
+        case Actions.FIND_ALL:
             return response;
-        case actions.EVERY:
+        case Actions.EVERY:
             return response[0];
-        case actions.BY_LEVEL:
+        case Actions.BY_LEVEL:
             return response;
         default:
             return undefined;

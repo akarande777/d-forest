@@ -1,2 +1,2 @@
 export = breadthFirst;
-declare function breadthFirst(callback: any, action: any): boolean | boolean[];
+declare function breadthFirst(callback: any, action: any, payload?: {}): boolean | boolean[];

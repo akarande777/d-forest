@@ -1,4 +1,4 @@
-const df = require('../index');
+const df = require('../index.ts');
 const { data, data2, data3 } = require('./test-data');
 
 test('for-each leaf', () => {

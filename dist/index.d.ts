@@ -1,20 +1,25 @@
-declare function _exports(forest: any): Forest;
-export = _exports;
-declare function Forest(forest: any): void;
+declare type Parent = {
+    element: any | any[];
+    key: string | number;
+};
+declare type Callback<T> = (node: any, depth: number, parent: Parent) => T;
+declare type Reducer = (prev: any, curr: any, depth: number, parent: Parent) => any;
 declare class Forest {
-    constructor(forest: any);
-    forest: any;
-    forEachLeaf(callback: any): void;
-    forEachNode(callback: any): void;
-    findLeaf(callback: any): any;
-    findNode(callback: any): any;
-    everyLeaf(callback: any): any;
-    everyNode(callback: any): any;
-    findLeaves(callback: any): any;
-    findNodes(callback: any): any;
-    mapLeaves(callback: any): any;
-    minHeight(): any;
-    maxHeight(): any;
-    nodesByLevel(level: any): any;
-    reduce(callback: any, initial: any): any;
+    private data;
+    constructor(data: any);
+    forEachLeaf: (callback: Callback<void>) => void;
+    forEachNode: (callback: Callback<void>) => void;
+    findLeaf: (callback: Callback<boolean>) => any;
+    findNode: (callback: Callback<boolean>) => any;
+    everyLeaf: (callback: Callback<boolean>) => boolean;
+    everyNode: (callback: Callback<boolean>) => boolean;
+    findLeaves: (callback: Callback<boolean>) => any[];
+    findNodes: (callback: Callback<boolean>) => any[];
+    mapLeaves: (callback: Callback<any>) => any[];
+    minHeight: () => number;
+    maxHeight: () => number;
+    nodesByLevel: (level: number) => any[];
+    reduce: (callback: Reducer, initial: any) => any[];
 }
+declare const _default: (data: any) => Forest;
+export default _default;
