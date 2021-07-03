@@ -1,4 +1,4 @@
-const df = require('../index.ts');
+const df = require('../index');
 const { data, data2, data3 } = require('./test-data');
 
 test('for-each leaf', () => {
@@ -67,12 +67,14 @@ test('reduce', () => {
         'category3/product31/',
         'category3/product32/',
     ]);
-    expect(df(data2).reduce((acc, cur) => acc + cur.name + '/', '')).toStrictEqual([
-        'categories/category1/',
-        'categories/category2/products/product21/',
-        'categories/category2/products/product22/',
-        'categories/category2/products/product23/',
-        'categories/category3/products/product31/',
-        'categories/category3/products/product32/',
+    expect(
+        df(data2).reduce((acc, cur) => (cur.name ? acc + cur.name + '/' : acc), '')
+    ).toStrictEqual([
+        'category1/',
+        'category2/product21/',
+        'category2/product22/',
+        'category2/product23/',
+        'category3/product31/',
+        'category3/product32/',
     ]);
 });

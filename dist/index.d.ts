@@ -1,3 +1,6 @@
+declare var depthFirst: any;
+declare var breadthFirst: any;
+declare var Actions: any;
 declare type Parent = {
     element: any | any[];
     key: string | number;
@@ -21,5 +24,3 @@ declare class Forest {
     nodesByLevel: (level: number) => any[];
     reduce: (callback: Reducer, initial: any) => any[];
 }
-declare const _default: (data: any) => Forest;
-export default _default;

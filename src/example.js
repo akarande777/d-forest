@@ -2,7 +2,6 @@ const df = require('./index');
 
 // data can be object or array of objects
 const data = {
-    name: 'categories',
     c1: { name: 'category1', active: false },
     c2: {
         name: 'category2',
@@ -18,7 +17,6 @@ const data = {
         name: 'category3',
         active: true,
         products: {
-            name: 'products',
             p1: { name: 'product31', active: false },
             p2: { name: 'product32', active: true },
         },

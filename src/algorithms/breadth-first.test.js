@@ -1,4 +1,4 @@
-const df = require('../index.ts');
+const df = require('../index');
 const { data, data2, data3 } = require('./test-data');
 
 test('find node', () => {
@@ -46,7 +46,7 @@ test('every node', () => {
 test('nodes by level', () => {
     const expected = [...data[1].products, ...data[2].products];
     expect(df(data).nodesByLevel(1)).toStrictEqual(expected);
-    expect(df(data).nodesByLevel(0)).toStrictEqual([]);
+    expect(df(data).nodesByLevel(0)).toStrictEqual(data);
     const { c1, c2, c3 } = data2;
     expect(df(data2).nodesByLevel(1)).toStrictEqual([c1, c2, c3]);
     expect(df(data2).nodesByLevel(3)).toStrictEqual(expected);

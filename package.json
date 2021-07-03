@@ -1,6 +1,6 @@
 {
     "name": "d-forest",
-    "version": "1.5.0",
+    "version": "1.5.3",
     "description": "search nested object",
     "main": "src/index.ts",
     "types": "dist/index.d.ts",
@@ -13,6 +13,8 @@
         "tree"
     ],
     "scripts": {
+        "build": "tsc --build",
+        "clean": "tsc --build --clean",
         "test": "jest",
         "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
     },
@@ -23,11 +25,8 @@
         "url": "https://github.com/akarande777/d-forest.git"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.23",
-        "@types/node": "^15.14.0",
         "coveralls": "^3.1.0",
         "jest": "^26.6.3",
-        "ts-jest": "^27.0.3",
         "ts-node": "^10.0.0",
         "typescript": "^4.3.5"
     }

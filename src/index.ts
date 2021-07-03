@@ -64,7 +64,7 @@ class Forest {
     };
 
     reduce = (callback: Reducer, initial: any): any[] => {
-        return depthFirst.call(this, callback, Actions.REDUCE, initial);
+        return depthFirst.call(this, callback, Actions.REDUCE, { initial });
     };
 }
 

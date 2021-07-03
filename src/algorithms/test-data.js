@@ -21,13 +21,11 @@ module.exports = {
     ],
 
     data2: {
-        name: 'categories',
         c1: { name: 'category1', active: false },
         c2: {
             name: 'category2',
             active: true,
             products: {
-                name: 'products',
                 p1: { name: 'product21', active: false },
                 p2: { name: 'product22', active: true },
                 p3: { name: 'product23', active: false },
@@ -37,7 +35,6 @@ module.exports = {
             name: 'category3',
             active: true,
             products: {
-                name: 'products',
                 p1: { name: 'product31', active: false },
                 p2: { name: 'product32', active: true },
             },
