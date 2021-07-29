@@ -60,10 +60,17 @@ df(data).findLeaf((leaf) => leaf.name === 'product22');
 
 -   #### mapLeaves
 
+```javascript
+df(data).mapLeaves((leaf) => leaf.name);
+// ['category1', 'product21', 'product22', 'product23', 'product31', 'product32']
+```
+
 -   #### everyNode | everyLeaf
 
 ```javascript
-df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active');
+df(data).everyNode((node) => node.hasOwnProperty('active'));
+// false
+df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
 // true
 ```
 

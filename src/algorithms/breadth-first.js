@@ -5,8 +5,8 @@ function isObject(element) {
 }
 
 function breadthFirst(callback, action, payload = {}) {
-    const queue = [];
-    const response = [];
+    let queue = [];
+    let response = [];
     let found = false;
     let next = () => {};
 
@@ -15,7 +15,7 @@ function breadthFirst(callback, action, payload = {}) {
             if (Array.isArray(el)) {
                 queue.push(() => iterateArray(el, depth + 1));
             } else if (isObject(el)) {
-                const parent = { element: el, key: i };
+                const parent = { element: array, key: i };
                 queue.push(() => next(el, depth + 1, parent));
             }
         });

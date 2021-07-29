@@ -5,7 +5,7 @@ function isObject(element) {
 }
 
 function depthFirst(callback, action, payload = {}) {
-    const response = [];
+    let response = [];
     let found = false;
     let next = () => {};
 
@@ -16,7 +16,7 @@ function depthFirst(callback, action, payload = {}) {
             if (Array.isArray(el)) {
                 hasChildren = iterateArray(el, depth + 1, acc);
             } else if (isObject(el)) {
-                const parent = { element: el, key: i };
+                const parent = { element: array, key: i };
                 next(el, depth + 1, parent, acc);
                 hasChildren = true;
             }
