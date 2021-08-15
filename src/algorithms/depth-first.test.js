@@ -59,22 +59,22 @@ test('max height', () => {
 });
 
 test('reduce', () => {
-    expect(df(data).reduce((acc, cur) => acc + cur.name + '/', '')).toStrictEqual([
-        'category1/',
-        'category2/product21/',
-        'category2/product22/',
-        'category2/product23/',
-        'category3/product31/',
-        'category3/product32/',
+    expect(df(data).reduce((acc, cur) => `${acc}/${cur.name}`, '')).toStrictEqual([
+        '/category1',
+        '/category2/product21',
+        '/category2/product22',
+        '/category2/product23',
+        '/category3/product31',
+        '/category3/product32',
     ]);
     expect(
-        df(data2).reduce((acc, cur) => (cur.name ? acc + cur.name + '/' : acc), '')
+        df(data2).reduce((acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc), '')
     ).toStrictEqual([
-        'category1/',
-        'category2/product21/',
-        'category2/product22/',
-        'category2/product23/',
-        'category3/product31/',
-        'category3/product32/',
+        '/category1',
+        '/category2/product21',
+        '/category2/product22',
+        '/category2/product23',
+        '/category3/product31',
+        '/category3/product32',
     ]);
 });

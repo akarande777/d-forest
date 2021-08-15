@@ -98,15 +98,15 @@ df(data).nodesByLevel(1); // level >= 0
 ```javascript
 // returns single output value for each path from top to bottom
 df(data2).reduce(
-    (acc, cur) => (cur.name ? acc + cur.name + '/' : acc),
+    (acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc),
     '' // initial value must be provided
 );
 // [
-//    'category1/',
-//    'category2/product21/',
-//    'category2/product22/',
-//    'category2/product23/',
-//    'category3/product31/',
-//    'category3/product32/'
+//    '/category1',
+//    '/category2/product21',
+//    '/category2/product22',
+//    '/category2/product23',
+//    '/category3/product31',
+//    '/category3/product32'
 // ]
 ```
