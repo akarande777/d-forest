@@ -20,6 +20,7 @@ declare class Forest {
     maxHeight: () => number;
     nodesByLevel: (level: number) => any[];
     reduce: (callback: Reducer, initial: any) => any[];
+    hierarchy: (callback: Callback<boolean>) => any[];
 }
 declare const _default: (data: any) => Forest;
 export default _default;

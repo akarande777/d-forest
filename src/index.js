@@ -33,20 +33,25 @@ var Forest = /** @class */ (function () {
             return depthFirst.call(_this, callback, Actions.MAP);
         };
         this.minHeight = function () {
-            return depthFirst.call(_this, function () { }, Actions.MIN_HEIGHT);
+            return depthFirst.call(_this, function () {}, Actions.MIN_HEIGHT);
         };
         this.maxHeight = function () {
-            return depthFirst.call(_this, function () { }, Actions.MAX_HEIGHT);
+            return depthFirst.call(_this, function () {}, Actions.MAX_HEIGHT);
         };
         this.nodesByLevel = function (level) {
-            if (level <= 0)
-                return _this.data;
-            return breadthFirst.call(_this, function () { }, Actions.BY_LEVEL, { level: level });
+            if (level <= 0) return _this.data;
+            return breadthFirst.call(_this, function () {}, Actions.BY_LEVEL, { level: level });
         };
         this.reduce = function (callback, initial) {
             return depthFirst.call(_this, callback, Actions.REDUCE, { initial: initial });
         };
+        this.hierarchy = function (callback) {
+            var payload = { initial: [] };
+            return depthFirst.call(_this, callback, Actions.HIERARCHY, payload);
+        };
     }
     return Forest;
-}());
-module.exports = function (data) { return new Forest(data); };
+})();
+module.exports = function (data) {
+    return new Forest(data);
+};

@@ -2,14 +2,14 @@ const df = require('../index');
 const { data, data2, data3 } = require('./test-data');
 
 test('for-each leaf', () => {
-    const expected = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
-    const products = [];
+    let expected = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
+    let products = [];
     df(data).forEachLeaf((leaf) => products.push(leaf.name));
     expect(products).toStrictEqual(expected);
-    products.length = 0;
+    products = [];
     df(data2).forEachLeaf((leaf) => products.push(leaf.name));
     expect(products).toStrictEqual(expected);
-    products.length = 0;
+    products = [];
     df(data3).forEachLeaf((leaf) => products.push(leaf.name));
     expect(products).toStrictEqual(expected.slice(1));
 });
@@ -27,14 +27,14 @@ test('find leaf', () => {
 });
 
 test('find leaves', () => {
-    const expected = [data[1].products[1], data[2].products[1]];
+    let expected = [data[1].products[1], data[2].products[1]];
     expect(df(data).findLeaves((leaf) => leaf.active)).toStrictEqual(expected);
     expect(df(data2).findLeaves((leaf) => leaf.active)).toStrictEqual(expected);
     expect(df(data3).findLeaves((leaf) => leaf.active)).toStrictEqual(expected);
 });
 
 test('map leaves', () => {
-    const expected = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
+    let expected = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
     expect(df(data).mapLeaves((leaf) => leaf.name)).toStrictEqual(expected);
     expect(df(data2).mapLeaves((leaf) => leaf.name)).toStrictEqual(expected);
     expect(df(data3).mapLeaves((leaf) => leaf.name)).toStrictEqual(expected.slice(1));
@@ -77,4 +77,14 @@ test('reduce', () => {
         '/category3/product31',
         '/category3/product32',
     ]);
+});
+
+test('hierarchy', () => {
+    let expected = [data[1], data[1].products[1]];
+    expect(df(data).hierarchy((node) => node.name === 'product22')).toStrictEqual(expected);
+    let { products } = data2.c2;
+    expected = [data2, data2.c2, products, products.p2];
+    expect(df(data2).hierarchy((node) => node.name === 'product22')).toStrictEqual(expected);
+    expected = [data2, data2.c3];
+    expect(df(data2).hierarchy((node) => node.name === 'category3')).toStrictEqual(expected);
 });

@@ -66,6 +66,11 @@ class Forest {
     reduce = (callback: Reducer, initial: any): any[] => {
         return depthFirst.call(this, callback, Actions.REDUCE, { initial });
     };
+
+    hierarchy = (callback: Callback<boolean>): any[] => {
+        var payload = { initial: [] };
+        return depthFirst.call(this, callback, Actions.HIERARCHY, payload);
+    };
 }
 
 module.exports = (data) => new Forest(data);

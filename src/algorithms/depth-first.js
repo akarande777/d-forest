@@ -117,6 +117,17 @@ function depthFirst(callback, action, payload = {}) {
                 }
             };
             break;
+        case Actions.HIERARCHY:
+            next = (node, depth, parent, acc) => {
+                let value = callback(node, depth, parent);
+                if (!value) {
+                    iterate(node, depth, [...acc, node]);
+                } else {
+                    response = [...acc, node];
+                    found = true;
+                }
+            };
+            break;
         default:
             next = (node, depth, parent) => {
                 let hasChildren = iterate(node, depth);
@@ -146,6 +157,8 @@ function depthFirst(callback, action, payload = {}) {
         case Actions.MAX_HEIGHT:
             return response[0] + 1;
         case Actions.REDUCE:
+            return response;
+        case Actions.HIERARCHY:
             return response;
         default:
             return undefined;
