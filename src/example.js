@@ -7,7 +7,6 @@ const data = {
         name: 'category2',
         active: true,
         products: {
-            name: 'products',
             p1: { name: 'product21', active: false },
             p2: { name: 'product22', active: true },
             p3: { name: 'product23', active: false },
@@ -32,3 +31,7 @@ console.log(res1);
 const res2 = df(data).findLeaf((leaf) => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: true }
+
+const hierarchy = df(data).hierarchy((node) => node.name === 'product22');
+const path = hierarchy.map((node) => node.name).filter(Boolean);
+console.log(path);

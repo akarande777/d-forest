@@ -15,7 +15,7 @@ A lightweight JavaScript library for searching object in a tree-like structure.
 ```javascript
 const df = require('d-forest');
 
-// data can be object or array of objects
+// data can have array of objects
 const data = {
     c1: { name: 'category1', active: false },
     c2: {
@@ -97,7 +97,7 @@ df(data).nodesByLevel(1); // level >= 0
 
 ```javascript
 // returns single output value for each path from top to bottom
-df(data2).reduce(
+df(data).reduce(
     (acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc),
     '' // initial value must be provided
 );
@@ -109,4 +109,13 @@ df(data2).reduce(
 //    '/category3/product31',
 //    '/category3/product32'
 // ]
+```
+
+-   #### hierarchy
+
+```javascript
+// returns object hierarchy from root
+const hierarchy = df(data).hierarchy((node) => node.name === 'product22');
+hierarchy.map((node) => node.name).filter(Boolean);
+// ['category2', 'product22']
 ```
