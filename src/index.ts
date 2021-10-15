@@ -2,75 +2,78 @@ var depthFirst = require('./algorithms/depth-first');
 var breadthFirst = require('./algorithms/breadth-first');
 var Actions = require('./actions');
 
-type Parent = {
-    element: any | any[];
-    key: string | number;
-};
+type Path = Array<string | number>;
 
-type Callback<T> = (node: any, depth: number, parent: Parent) => T;
+type Callback<T> = (node: any, depth: number, path: Path) => T;
 
-type Reducer = (prev: any, curr: any, depth: number, parent: Parent) => any;
+type Reducer = (prev: any, curr: any, depth: number, path: Path) => any;
 
 class Forest {
-    constructor(private data) {}
+    forEachLeaf(data, callback: Callback<void>) {
+        depthFirst(data, callback, Actions.FOR_EACH);
+    }
 
-    forEachLeaf = (callback: Callback<void>) => {
-        depthFirst.call(this, callback, Actions.FOR_EACH);
-    };
+    forEachNode(data, callback: Callback<void>) {
+        breadthFirst(data, callback, Actions.FOR_EACH);
+    }
 
-    forEachNode = (callback: Callback<void>) => {
-        breadthFirst.call(this, callback, Actions.FOR_EACH);
-    };
+    findLeaf(data, callback: Callback<boolean>) {
+        return depthFirst(data, callback, Actions.FIND);
+    }
 
-    findLeaf = (callback: Callback<boolean>) => {
-        return depthFirst.call(this, callback, Actions.FIND);
-    };
+    findNode(data, callback: Callback<boolean>) {
+        return breadthFirst(data, callback, Actions.FIND);
+    }
 
-    findNode = (callback: Callback<boolean>) => {
-        return breadthFirst.call(this, callback, Actions.FIND);
-    };
+    everyLeaf(data, callback: Callback<boolean>): boolean {
+        return depthFirst(data, callback, Actions.EVERY);
+    }
 
-    everyLeaf = (callback: Callback<boolean>): boolean => {
-        return depthFirst.call(this, callback, Actions.EVERY);
-    };
+    everyNode(data, callback: Callback<boolean>): boolean {
+        return breadthFirst(data, callback, Actions.EVERY);
+    }
 
-    everyNode = (callback: Callback<boolean>): boolean => {
-        return breadthFirst.call(this, callback, Actions.EVERY);
-    };
+    findLeaves(data, callback: Callback<boolean>): any[] {
+        return depthFirst(data, callback, Actions.FIND_ALL);
+    }
 
-    findLeaves = (callback: Callback<boolean>): any[] => {
-        return depthFirst.call(this, callback, Actions.FIND_ALL);
-    };
+    findNodes(data, callback: Callback<boolean>): any[] {
+        return breadthFirst(data, callback, Actions.FIND_ALL);
+    }
 
-    findNodes = (callback: Callback<boolean>): any[] => {
-        return breadthFirst.call(this, callback, Actions.FIND_ALL);
-    };
+    mapLeaves(data, callback: Callback<any>): any[] {
+        return depthFirst(data, callback, Actions.MAP);
+    }
 
-    mapLeaves = (callback: Callback<any>): any[] => {
-        return depthFirst.call(this, callback, Actions.MAP);
-    };
+    minHeight(data): number {
+        return depthFirst(data, () => {}, Actions.MIN_HEIGHT);
+    }
 
-    minHeight = (): number => {
-        return depthFirst.call(this, () => {}, Actions.MIN_HEIGHT);
-    };
+    maxHeight(data): number {
+        return depthFirst(data, () => {}, Actions.MAX_HEIGHT);
+    }
 
-    maxHeight = (): number => {
-        return depthFirst.call(this, () => {}, Actions.MAX_HEIGHT);
-    };
+    nodesByLevel(data, level: number): any[] {
+        if (level <= 0) return data;
+        return breadthFirst(data, () => {}, Actions.BY_LEVEL, { level });
+    }
 
-    nodesByLevel = (level: number): any[] => {
-        if (level <= 0) return this.data;
-        return breadthFirst.call(this, () => {}, Actions.BY_LEVEL, { level });
-    };
+    reduce(data, callback: Reducer, initial: any): any[] {
+        return depthFirst(data, callback, Actions.REDUCE, { initial });
+    }
 
-    reduce = (callback: Reducer, initial: any): any[] => {
-        return depthFirst.call(this, callback, Actions.REDUCE, { initial });
-    };
-
-    hierarchy = (callback: Callback<boolean>): any[] => {
+    hierarchy(data, callback: Callback<boolean>): any[] {
         var payload = { initial: [] };
-        return depthFirst.call(this, callback, Actions.HIERARCHY, payload);
-    };
+        var path = depthFirst(data, callback, Actions.PATH, payload);
+        var last = data;
+        var nodes = path.map((key) => (last = last[key]));
+        return [data, ...nodes].filter((el) => !Array.isArray(el));
+    }
+
+    findPath(data, callback: Callback<boolean>): Path {
+        var payload = { initial: [] };
+        return depthFirst(data, callback, Actions.PATH, payload);
+    }
 }
 
-module.exports = (data) => new Forest(data);
+module.exports = new Forest();

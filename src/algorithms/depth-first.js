@@ -1,168 +1,151 @@
 const Actions = require('../actions');
 
-function isObject(element) {
-    return typeof element === 'object' && element !== null;
+function isPlainObject(el) {
+    return typeof el === 'object' && el?.constructor === Object;
 }
 
-function depthFirst(callback, action, payload = {}) {
-    let response = [];
+function depthFirst(data, callback, action, payload = {}) {
+    let response;
     let found = false;
     let next = () => {};
 
-    const iterateArray = (array, depth, acc) => {
+    const iterateArray = (array, depth, path, acc) => {
         let hasChildren = false;
-        for (let i = 0; i < array.length; i++) {
-            const el = array[i];
-            if (Array.isArray(el)) {
-                hasChildren = iterateArray(el, depth + 1, acc);
-            } else if (isObject(el)) {
-                const parent = { element: array, key: i };
-                next(el, depth + 1, parent, acc);
+        array.some((el, i) => {
+            const nextPath = [...path, i];
+            if (isPlainObject(el)) {
+                next(el, depth + 1, nextPath, acc);
                 hasChildren = true;
+            } else if (Array.isArray(el)) {
+                hasChildren = iterateArray(el, depth + 1, nextPath, acc) || hasChildren;
             }
-            if (found) break;
-        }
+            return found;
+        });
         return hasChildren;
     };
 
-    const iterate = (element, depth, acc) => {
+    const iterate = (element, depth, path, acc) => {
         let hasChildren = false;
-        for (let key of Object.keys(element)) {
-            const prop = element[key];
-            if (Array.isArray(prop)) {
-                hasChildren = iterateArray(prop, depth, acc);
-            } else if (isObject(prop)) {
-                next(prop, depth + 1, { element, key }, acc);
+        Object.entries(element).some(([key, value]) => {
+            const nextPath = [...path, key];
+            if (isPlainObject(value)) {
+                next(value, depth + 1, nextPath, acc);
                 hasChildren = true;
+            } else if (Array.isArray(value)) {
+                hasChildren = iterateArray(value, depth, nextPath, acc) || hasChildren;
             }
-            if (found) break;
-        }
+            return found;
+        });
         return hasChildren;
     };
 
     switch (action) {
         case Actions.MAP:
-            next = (node, depth, parent) => {
-                let hasChildren = iterate(node, depth);
+            response = [];
+            next = (node, depth, path) => {
+                let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    let value = callback(node, depth, parent);
-                    response.push(value);
+                    let value = callback(node, depth, path);
+                    response = [...response, value];
                 }
             };
             break;
         case Actions.FIND:
-            next = (node, depth, parent) => {
-                let hasChildren = iterate(node, depth);
+            next = (node, depth, path) => {
+                let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    let value = callback(node, depth, parent);
+                    let value = callback(node, depth, path);
                     if (value) {
-                        response.push(node);
+                        response = node;
                         found = true;
                     }
                 }
             };
             break;
         case Actions.FIND_ALL:
-            next = (node, depth, parent) => {
-                let hasChildren = iterate(node, depth);
+            response = [];
+            next = (node, depth, path) => {
+                let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    let value = callback(node, depth, parent);
+                    let value = callback(node, depth, path);
                     if (value) {
-                        response.push(node);
+                        response = [...response, node];
                     }
                 }
             };
             break;
         case Actions.EVERY:
-            response.push(true);
-            next = (node, depth, parent) => {
-                let hasChildren = iterate(node, depth);
+            response = true;
+            next = (node, depth, path) => {
+                let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    let value = callback(node, depth, parent);
+                    let value = callback(node, depth, path);
                     if (!value) {
-                        response[0] = false;
+                        response = false;
                         found = true;
                     }
                 }
             };
             break;
         case Actions.MIN_HEIGHT:
-            response.push(Infinity);
-            next = (node, depth) => {
-                if (depth < response[0]) {
-                    let hasChildren = iterate(node, depth);
+            response = Infinity;
+            next = (node, depth, path) => {
+                if (depth + 1 < response) {
+                    let hasChildren = iterate(node, depth, path);
                     if (!hasChildren) {
-                        response[0] = depth;
+                        response = depth + 1;
                     }
                 }
             };
             break;
         case Actions.MAX_HEIGHT:
-            response.push(-1);
-            next = (node, depth) => {
-                let hasChildren = iterate(node, depth);
+            response = -1;
+            next = (node, depth, path) => {
+                let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    if (depth > response[0]) {
-                        response[0] = depth;
+                    if (depth + 1 > response) {
+                        response = depth + 1;
                     }
                 }
             };
             break;
         case Actions.REDUCE:
-            next = (node, depth, parent, acc) => {
-                let value = callback(acc, node, depth, parent);
-                let hasChildren = iterate(node, depth, value);
+            response = [];
+            next = (node, depth, path, acc) => {
+                let value = callback(acc, node, depth, path);
+                let hasChildren = iterate(node, depth, path, value);
                 if (!hasChildren) {
-                    response.push(value);
+                    response = [...response, value];
                 }
             };
             break;
-        case Actions.HIERARCHY:
-            next = (node, depth, parent, acc) => {
-                let value = callback(node, depth, parent);
+        case Actions.PATH:
+            next = (node, depth, path) => {
+                let value = callback(node, depth, path);
                 if (!value) {
-                    iterate(node, depth, [...acc, node]);
+                    iterate(node, depth, path);
                 } else {
-                    response = [...acc, node];
+                    response = path;
                     found = true;
                 }
             };
             break;
         default:
-            next = (node, depth, parent) => {
-                let hasChildren = iterate(node, depth);
+            next = (node, depth, path) => {
+                let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    callback(node, depth, parent);
+                    callback(node, depth, path);
                 }
             };
     }
 
-    if (Array.isArray(this.data)) {
-        iterateArray(this.data, -1, payload.initial);
-    } else if (isObject(this.data)) {
-        next(this.data, 0, {}, payload.initial);
+    if (isPlainObject(data)) {
+        next(data, 0, [], payload.initial);
+    } else if (Array.isArray(data)) {
+        iterateArray(data, -1, [], payload.initial);
     }
 
-    switch (action) {
-        case Actions.MAP:
-            return response;
-        case Actions.FIND:
-            return response[0];
-        case Actions.FIND_ALL:
-            return response;
-        case Actions.EVERY:
-            return response[0];
-        case Actions.MIN_HEIGHT:
-            return response[0] + 1;
-        case Actions.MAX_HEIGHT:
-            return response[0] + 1;
-        case Actions.REDUCE:
-            return response;
-        case Actions.HIERARCHY:
-            return response;
-        default:
-            return undefined;
-    }
+    return response;
 }
 
 module.exports = depthFirst;

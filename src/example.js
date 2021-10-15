@@ -1,6 +1,6 @@
 const df = require('./index');
 
-// data can be object or array of objects
+// data can have array of objects
 const data = {
     c1: { name: 'category1', active: false },
     c2: {
@@ -23,15 +23,15 @@ const data = {
 };
 
 // "node" can be any object on the tree
-const res1 = df(data).findNode((node) => node.name === 'category3');
+const res1 = df.findNode(data, (node) => node.name === 'category3');
 console.log(res1);
 // { name: 'category3', active: true, products: [Object] }
 
 // "leaf" can be any object which don't have children i.e. bottom nodes
-const res2 = df(data).findLeaf((leaf) => leaf.name === 'product22');
+const res2 = df.findLeaf(data, (leaf) => leaf.name === 'product22');
 console.log(res2);
 // { name: 'product22', active: true }
 
-const hierarchy = df(data).hierarchy((node) => node.name === 'product22');
-const path = hierarchy.map((node) => node.name).filter(Boolean);
-console.log(path);
+const res3 = df.findPath(data, (node) => node.name === 'product22');
+console.log(res3);
+// [ 'c2', 'products', 'p2' ]

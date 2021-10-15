@@ -1,110 +1,105 @@
 const Actions = require('../actions');
 
-function isObject(element) {
-    return typeof element === 'object' && element !== null;
+function isPlainObject(el) {
+    return typeof el === 'object' && el?.constructor === Object;
 }
 
-function breadthFirst(callback, action, payload = {}) {
+function breadthFirst(data, callback, action, payload = {}) {
     let queue = [];
-    let response = [];
+    let response;
     let found = false;
     let next = () => {};
 
-    const iterateArray = (array, depth) => {
-        array.forEach((el, i) => {
-            if (Array.isArray(el)) {
-                queue.push(() => iterateArray(el, depth + 1));
-            } else if (isObject(el)) {
-                const parent = { element: array, key: i };
-                queue.push(() => next(el, depth + 1, parent));
+    const iterateArray = (array, depth, path) => {
+        return array.reduce((acc, el, i) => {
+            const nextPath = [...path, i];
+            if (isPlainObject(el)) {
+                return [...acc, () => next(el, depth + 1, nextPath)];
             }
-        });
+            if (Array.isArray(el)) {
+                return [...acc, () => iterateArray(el, depth + 1, nextPath)];
+            }
+            return acc;
+        }, []);
     };
 
-    const iterate = (element, depth) => {
-        for (let key of Object.keys(element)) {
-            const prop = element[key];
-            if (Array.isArray(prop)) {
-                iterateArray(prop, depth);
-            } else if (isObject(prop)) {
-                const parent = { element, key };
-                queue.push(() => next(prop, depth + 1, parent));
+    const iterate = (element, depth, path) => {
+        const arrays = Object.entries(element).map(([key, value]) => {
+            const nextPath = [...path, key];
+            if (isPlainObject(value)) {
+                return () => next(value, depth + 1, nextPath);
             }
-        }
-        if (queue.length) queue.shift()();
+            if (Array.isArray(value)) {
+                return iterateArray(value, depth, nextPath);
+            }
+            return [];
+        });
+        return [].concat(...arrays);
     };
 
     switch (action) {
         case Actions.FIND:
-            next = (node, depth, parent) => {
-                let value = callback(node, depth, parent);
+            next = (node, depth, path) => {
+                let value = callback(node, depth, path);
                 if (value) {
-                    response.push(node);
+                    response = node;
                     found = true;
-                    return;
+                    return [];
                 }
-                iterate(node, depth);
+                return iterate(node, depth, path);
             };
             break;
         case Actions.FIND_ALL:
-            next = (node, depth, parent) => {
-                let value = callback(node, depth, parent);
+            response = [];
+            next = (node, depth, path) => {
+                let value = callback(node, depth, path);
                 if (value) {
-                    response.push(node);
+                    response = [...response, node];
                 }
-                iterate(node, depth);
+                return iterate(node, depth, path);
             };
             break;
         case Actions.EVERY:
-            response.push(true);
-            next = (node, depth, parent) => {
-                let value = callback(node, depth, parent);
+            response = true;
+            next = (node, depth, path) => {
+                let value = callback(node, depth, path);
                 if (!value) {
-                    response[0] = false;
+                    response = false;
                     found = true;
-                    return;
+                    return [];
                 }
-                iterate(node, depth);
+                return iterate(node, depth, path);
             };
             break;
         case Actions.BY_LEVEL:
-            next = (node, depth) => {
-                if (payload['level'] === depth) {
-                    response.push(node);
-                    return;
+            response = [];
+            next = (node, depth, path) => {
+                if (payload.level === depth) {
+                    response = [...response, node];
+                    return [];
                 }
-                iterate(node, depth);
+                return iterate(node, depth, path);
             };
             break;
         default:
-            next = (node, depth, parent) => {
-                callback(node, depth, parent);
-                iterate(node, depth);
+            next = (node, depth, path) => {
+                callback(node, depth, path);
+                return iterate(node, depth, path);
             };
     }
 
-    if (Array.isArray(this.data)) {
-        iterateArray(this.data, -1);
-    } else if (isObject(this.data)) {
-        queue.push(() => next(this.data, 0, {}));
+    if (isPlainObject(data)) {
+        queue = [() => next(data, 0, [])];
+    } else if (Array.isArray(data)) {
+        queue = iterateArray(data, -1, []);
     }
 
     while (!found && queue.length) {
-        queue.shift()();
+        const [first, ...rest] = queue;
+        queue = [...rest, ...first()];
     }
 
-    switch (action) {
-        case Actions.FIND:
-            return response[0];
-        case Actions.FIND_ALL:
-            return response;
-        case Actions.EVERY:
-            return response[0];
-        case Actions.BY_LEVEL:
-            return response;
-        default:
-            return undefined;
-    }
+    return response;
 }
 
 module.exports = breadthFirst;

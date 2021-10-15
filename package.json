@@ -1,18 +1,16 @@
 {
     "name": "d-forest",
-    "version": "1.6.3",
+    "version": "2.1.5",
     "description": "Find nested object in a tree-like structure",
     "main": "src/index.js",
     "types": "dist/index.d.ts",
     "keywords": [
         "deep",
-        "filter",
         "find",
         "nested",
         "object",
         "search",
-        "tree",
-        "trie"
+        "tree"
     ],
     "scripts": {
         "build": "tsc --build",

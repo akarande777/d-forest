@@ -1,26 +1,22 @@
-declare type Parent = {
-    element: any | any[];
-    key: string | number;
-};
-declare type Callback<T> = (node: any, depth: number, parent: Parent) => T;
-declare type Reducer = (prev: any, curr: any, depth: number, parent: Parent) => any;
+declare type Path = Array<string | number>;
+declare type Callback<T> = (node: any, depth: number, path: Path) => T;
+declare type Reducer = (prev: any, curr: any, depth: number, path: Path) => any;
 declare class Forest {
-    private data;
-    constructor(data: any);
-    forEachLeaf: (callback: Callback<void>) => void;
-    forEachNode: (callback: Callback<void>) => void;
-    findLeaf: (callback: Callback<boolean>) => any;
-    findNode: (callback: Callback<boolean>) => any;
-    everyLeaf: (callback: Callback<boolean>) => boolean;
-    everyNode: (callback: Callback<boolean>) => boolean;
-    findLeaves: (callback: Callback<boolean>) => any[];
-    findNodes: (callback: Callback<boolean>) => any[];
-    mapLeaves: (callback: Callback<any>) => any[];
-    minHeight: () => number;
-    maxHeight: () => number;
-    nodesByLevel: (level: number) => any[];
-    reduce: (callback: Reducer, initial: any) => any[];
-    hierarchy: (callback: Callback<boolean>) => any[];
+    forEachLeaf(data: any, callback: Callback<void>): void;
+    forEachNode(data: any, callback: Callback<void>): void;
+    findLeaf(data: any, callback: Callback<boolean>): any;
+    findNode(data: any, callback: Callback<boolean>): any;
+    everyLeaf(data: any, callback: Callback<boolean>): boolean;
+    everyNode(data: any, callback: Callback<boolean>): boolean;
+    findLeaves(data: any, callback: Callback<boolean>): any[];
+    findNodes(data: any, callback: Callback<boolean>): any[];
+    mapLeaves(data: any, callback: Callback<any>): any[];
+    minHeight(data: any): number;
+    maxHeight(data: any): number;
+    nodesByLevel(data: any, level: number): any[];
+    reduce(data: any, callback: Reducer, initial: any): any[];
+    hierarchy(data: any, callback: Callback<boolean>): any[];
+    findPath(data: any, callback: Callback<boolean>): Path;
 }
-declare const _default: (data: any) => Forest;
+declare const _default: Forest;
 export default _default;

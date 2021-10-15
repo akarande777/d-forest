@@ -38,11 +38,11 @@ const data = {
 };
 
 // "node" can be any object on the tree
-df(data).findNode((node) => node.name === 'category3');
+df.findNode(data, (node) => node.name === 'category3');
 // { name: 'category3', active: true, products: [Object] }
 
 // "leaf" can be any object which don't have children i.e. bottom nodes
-df(data).findLeaf((leaf) => leaf.name === 'product22');
+df.findLeaf(data, (leaf) => leaf.name === 'product22');
 // { name: 'product22', active: true }
 
 // it is useful when you know that the object you want to find is a leaf
@@ -61,31 +61,31 @@ df(data).findLeaf((leaf) => leaf.name === 'product22');
 -   #### mapLeaves
 
 ```javascript
-df(data).mapLeaves((leaf) => leaf.name);
+df.mapLeaves(data, (leaf) => leaf.name);
 // ['category1', 'product21', 'product22', 'product23', 'product31', 'product32']
 ```
 
 -   #### everyNode | everyLeaf
 
 ```javascript
-df(data).everyNode((node) => node.hasOwnProperty('active'));
+df.everyNode(data, (node) => node.hasOwnProperty('active'));
 // false
-df(data).everyLeaf((leaf) => leaf.hasOwnProperty('active'));
+df.everyLeaf(data, (leaf) => leaf.hasOwnProperty('active'));
 // true
 ```
 
 -   #### minHeight | maxHeight
 
 ```javascript
-df(data).minHeight(); // 2
-df(data).maxHeight(); // 4
+df.minHeight(data); // 2
+df.maxHeight(data); // 4
 ```
 
 -   #### nodesByLevel
 
 ```javascript
 // returns an array containing all nodes at given level
-df(data).nodesByLevel(1); // level >= 0
+df.nodesByLevel(data, 1); // level >= 0
 // [
 //   { name: 'category1', active: false },
 //   { name: 'category2', active: true, products: [Object] },
@@ -97,10 +97,8 @@ df(data).nodesByLevel(1); // level >= 0
 
 ```javascript
 // returns single output value for each path from top to bottom
-df(data).reduce(
-    (acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc),
-    '' // initial value must be provided
-);
+// initial value must be provided
+df.reduce(data, (acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc), '');
 // [
 //    '/category1',
 //    '/category2/product21',
@@ -115,7 +113,14 @@ df(data).reduce(
 
 ```javascript
 // returns object hierarchy from root
-const hierarchy = df(data).hierarchy((node) => node.name === 'product22');
-hierarchy.map((node) => node.name).filter(Boolean);
+const nodes = df(data).hierarchy((node) => node.name === 'product22');
+nodes.map((node) => node.name).filter(Boolean);
 // ['category2', 'product22']
+```
+
+-   #### findPath
+
+```javascript
+df.findPath(data, (node) => node.name === 'product22');
+// [ 'c2', 'products', 'p2' ]
 ```

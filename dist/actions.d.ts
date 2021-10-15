@@ -8,6 +8,6 @@ declare const _exports: {
     readonly MAX_HEIGHT: string;
     readonly BY_LEVEL: string;
     readonly REDUCE: string;
-    readonly HIERARCHY: string;
+    readonly PATH: string;
 };
 export = _exports;
