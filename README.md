@@ -113,7 +113,7 @@ df.reduce(data, (acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc), '');
 
 ```javascript
 // returns object hierarchy from root
-const nodes = df(data).hierarchy((node) => node.name === 'product22');
+const nodes = df.hierarchy(data, (node) => node.name === 'product22');
 nodes.map((node) => node.name).filter(Boolean);
 // ['category2', 'product22']
 ```
