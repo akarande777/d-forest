@@ -42,3 +42,13 @@ test('nodes by level', () => {
     expect(df.nodesByLevel(data2, 3)).toStrictEqual(expected);
     expect(df.nodesByLevel(data3, 1)).toStrictEqual(expected);
 });
+
+test('hierarchy', () => {
+    let expected = [data[1], data[1].products[1]];
+    expect(df.hierarchy(data, (node) => node.name === 'product22')).toStrictEqual(expected);
+    let { products } = data2.c2;
+    expected = [data2, data2.c2, products, products.p2];
+    expect(df.hierarchy(data2, (node) => node.name === 'product22')).toStrictEqual(expected);
+    expected = [data2, data2.c3];
+    expect(df.hierarchy(data2, (node) => node.name === 'category3')).toStrictEqual(expected);
+});

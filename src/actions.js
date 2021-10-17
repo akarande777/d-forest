@@ -8,5 +8,4 @@ module.exports = Object.freeze({
     MAX_HEIGHT: 'max-height',
     BY_LEVEL: 'by-level',
     REDUCE: 'reduce',
-    PATH: 'path',
 });

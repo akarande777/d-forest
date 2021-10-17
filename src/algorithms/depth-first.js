@@ -119,17 +119,6 @@ function depthFirst(data, callback, action, payload = {}) {
                 }
             };
             break;
-        case Actions.PATH:
-            next = (node, depth, path) => {
-                let value = callback(node, depth, path);
-                if (!value) {
-                    iterate(node, depth, path);
-                } else {
-                    response = path;
-                    found = true;
-                }
-            };
-            break;
         default:
             next = (node, depth, path) => {
                 let hasChildren = iterate(node, depth, path);

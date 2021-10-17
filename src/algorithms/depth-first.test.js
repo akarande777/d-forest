@@ -59,8 +59,7 @@ test('max height', () => {
 });
 
 test('reduce', () => {
-    let reducer = (acc, cur) => `${acc}/${cur.name}`;
-    expect(df.reduce(data, reducer, '')).toStrictEqual([
+    expect(df.reduce(data, (acc, cur) => `${acc}/${cur.name}`, '')).toStrictEqual([
         '/category1',
         '/category2/product21',
         '/category2/product22',
@@ -68,7 +67,7 @@ test('reduce', () => {
         '/category3/product31',
         '/category3/product32',
     ]);
-    reducer = (acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc);
+    let reducer = (acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc);
     expect(df.reduce(data2, reducer, '')).toStrictEqual([
         '/category1',
         '/category2/product21',
@@ -77,14 +76,4 @@ test('reduce', () => {
         '/category3/product31',
         '/category3/product32',
     ]);
-});
-
-test('hierarchy', () => {
-    let expected = [data[1], data[1].products[1]];
-    expect(df.hierarchy(data, (node) => node.name === 'product22')).toStrictEqual(expected);
-    let { products } = data2.c2;
-    expected = [data2, data2.c2, products, products.p2];
-    expect(df.hierarchy(data2, (node) => node.name === 'product22')).toStrictEqual(expected);
-    expected = [data2, data2.c3];
-    expect(df.hierarchy(data2, (node) => node.name === 'category3')).toStrictEqual(expected);
 });
