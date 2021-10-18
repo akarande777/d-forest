@@ -45,8 +45,10 @@ function depthFirst(data, callback, action, payload = {}) {
             next = (node, depth, path) => {
                 let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    let value = callback(node, depth, path);
-                    response = [...response, value];
+                    if (payload.level > -1 ? payload.level === depth : true) {
+                        let value = callback(node, depth, path);
+                        response = [...response, value];
+                    }
                 }
             };
             break;

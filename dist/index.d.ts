@@ -10,7 +10,7 @@ declare class Forest {
     everyNode: (data: any, callback: Callback<boolean>) => boolean;
     findLeaves: (data: any, callback: Callback<boolean>) => any[];
     findNodes: (data: any, callback: Callback<boolean>) => any[];
-    mapLeaves: (data: any, callback: Callback<any>) => any[];
+    mapLeaves: (data: any, callback: Callback<any>, level?: number) => any[];
     minHeight: (data: any) => number;
     maxHeight: (data: any) => number;
     nodesByLevel: (data: any, level: number) => any[];

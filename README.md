@@ -61,8 +61,10 @@ df.findLeaf(data, (leaf) => leaf.name === 'product22');
 -   #### mapLeaves
 
 ```javascript
-df.mapLeaves(data, (leaf) => leaf.name);
-// ['category1', 'product21', 'product22', 'product23', 'product31', 'product32']
+let level = df.maxHeight(data) - 1;
+// level argument (optional) can be used to map leaves at specific level
+df.mapLeaves(data, (leaf) => leaf.name, level);
+// ['product21', 'product22', 'product23', 'product31', 'product32']
 ```
 
 -   #### everyNode | everyLeaf

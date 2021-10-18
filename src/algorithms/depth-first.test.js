@@ -36,7 +36,11 @@ test('find leaves', () => {
 test('map leaves', () => {
     let expected = ['category1', 'product21', 'product22', 'product23', 'product31', 'product32'];
     expect(df.mapLeaves(data, (leaf) => leaf.name)).toStrictEqual(expected);
+    let maxLevel = df.maxHeight(data) - 1;
+    expect(df.mapLeaves(data, (leaf) => leaf.name, maxLevel)).toStrictEqual(expected.slice(1));
     expect(df.mapLeaves(data2, (leaf) => leaf.name)).toStrictEqual(expected);
+    maxLevel = df.maxHeight(data2) - 1;
+    expect(df.mapLeaves(data2, (leaf) => leaf.name, maxLevel)).toStrictEqual(expected.slice(1));
     expect(df.mapLeaves(data3, (leaf) => leaf.name)).toStrictEqual(expected.slice(1));
 });
 

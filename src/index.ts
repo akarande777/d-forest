@@ -41,8 +41,8 @@ class Forest {
         return breadthFirst(data, callback, Actions.FIND_ALL);
     };
 
-    mapLeaves = (data, callback: Callback<any>): any[] => {
-        return depthFirst(data, callback, Actions.MAP);
+    mapLeaves = (data, callback: Callback<any>, level: number = -1): any[] => {
+        return depthFirst(data, callback, Actions.MAP, { level });
     };
 
     minHeight = (data): number => {

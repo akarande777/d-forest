@@ -34,8 +34,11 @@ var Forest = /** @class */ (function () {
         this.findNodes = function (data, callback) {
             return breadthFirst(data, callback, Actions.FIND_ALL);
         };
-        this.mapLeaves = function (data, callback) {
-            return depthFirst(data, callback, Actions.MAP);
+        this.mapLeaves = function (data, callback, level) {
+            if (level === void 0) {
+                level = -1;
+            }
+            return depthFirst(data, callback, Actions.MAP, { level: level });
         };
         this.minHeight = function (data) {
             return depthFirst(data, function () {}, Actions.MIN_HEIGHT);
