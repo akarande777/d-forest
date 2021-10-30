@@ -1,7 +1,7 @@
 const Actions = require('../actions');
 
 function isPlainObject(el) {
-    return typeof el === 'object' && el?.constructor === Object;
+    return el && typeof el === 'object' && el.constructor === Object;
 }
 
 function breadthFirst(data, callback, action, payload = {}) {

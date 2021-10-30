@@ -1,6 +1,6 @@
 {
     "name": "d-forest",
-    "version": "2.1.7",
+    "version": "2.1.8",
     "description": "Find nested object in a tree-like structure",
     "main": "src/index.js",
     "types": "dist/index.d.ts",
