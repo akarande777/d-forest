@@ -65,10 +65,10 @@ var Forest = /** @class */ (function () {
         };
         this.findPath = function (data, callback) {
             var response = [];
-            _this.forEachNode(data, function (node, depth, path) {
-                if (callback(node, depth, path)) {
-                    response = path;
-                }
+            _this.findNode(data, function (node, depth, path) {
+                var value = callback(node, depth, path);
+                if (value) response = path;
+                return value;
             });
             return response;
         };

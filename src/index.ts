@@ -71,10 +71,10 @@ class Forest {
 
     findPath = (data, callback: Callback<boolean>): Path => {
         var response = [];
-        this.forEachNode(data, (node, depth, path) => {
-            if (callback(node, depth, path)) {
-                response = path;
-            }
+        this.findNode(data, (node, depth, path) => {
+            let value = callback(node, depth, path);
+            if (value) response = path;
+            return value;
         });
         return response;
     };

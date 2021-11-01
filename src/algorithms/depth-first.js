@@ -1,7 +1,7 @@
 const Actions = require('../actions');
 
-function isPlainObject(el) {
-    return el && typeof el === 'object' && el.constructor === Object;
+function isObject(el) {
+    return typeof el === 'object' && el !== null;
 }
 
 function depthFirst(data, callback, action, payload = {}) {
@@ -13,11 +13,11 @@ function depthFirst(data, callback, action, payload = {}) {
         let hasChildren = false;
         array.some((el, i) => {
             const nextPath = [...path, i];
-            if (isPlainObject(el)) {
+            if (Array.isArray(el)) {
+                hasChildren = iterateArray(el, depth + 1, nextPath, acc) || hasChildren;
+            } else if (isObject(el)) {
                 next(el, depth + 1, nextPath, acc);
                 hasChildren = true;
-            } else if (Array.isArray(el)) {
-                hasChildren = iterateArray(el, depth + 1, nextPath, acc) || hasChildren;
             }
             return found;
         });
@@ -28,11 +28,11 @@ function depthFirst(data, callback, action, payload = {}) {
         let hasChildren = false;
         Object.entries(element).some(([key, value]) => {
             const nextPath = [...path, key];
-            if (isPlainObject(value)) {
+            if (Array.isArray(value)) {
+                hasChildren = iterateArray(value, depth, nextPath, acc) || hasChildren;
+            } else if (isObject(value)) {
                 next(value, depth + 1, nextPath, acc);
                 hasChildren = true;
-            } else if (Array.isArray(value)) {
-                hasChildren = iterateArray(value, depth, nextPath, acc) || hasChildren;
             }
             return found;
         });
@@ -130,10 +130,10 @@ function depthFirst(data, callback, action, payload = {}) {
             };
     }
 
-    if (isPlainObject(data)) {
-        next(data, 0, [], payload.initial);
-    } else if (Array.isArray(data)) {
+    if (Array.isArray(data)) {
         iterateArray(data, -1, [], payload.initial);
+    } else if (isObject(data)) {
+        next(data, 0, [], payload.initial);
     }
 
     return response;

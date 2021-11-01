@@ -1,7 +1,7 @@
 const Actions = require('../actions');
 
-function isPlainObject(el) {
-    return el && typeof el === 'object' && el.constructor === Object;
+function isObject(el) {
+    return typeof el === 'object' && el !== null;
 }
 
 function breadthFirst(data, callback, action, payload = {}) {
@@ -13,11 +13,11 @@ function breadthFirst(data, callback, action, payload = {}) {
     const iterateArray = (array, depth, path) => {
         return array.reduce((acc, el, i) => {
             const nextPath = [...path, i];
-            if (isPlainObject(el)) {
-                return [...acc, () => next(el, depth + 1, nextPath)];
-            }
             if (Array.isArray(el)) {
                 return [...acc, () => iterateArray(el, depth + 1, nextPath)];
+            }
+            if (isObject(el)) {
+                return [...acc, () => next(el, depth + 1, nextPath)];
             }
             return acc;
         }, []);
@@ -26,11 +26,11 @@ function breadthFirst(data, callback, action, payload = {}) {
     const iterate = (element, depth, path) => {
         const arrays = Object.entries(element).map(([key, value]) => {
             const nextPath = [...path, key];
-            if (isPlainObject(value)) {
-                return () => next(value, depth + 1, nextPath);
-            }
             if (Array.isArray(value)) {
                 return iterateArray(value, depth, nextPath);
+            }
+            if (isObject(value)) {
+                return () => next(value, depth + 1, nextPath);
             }
             return [];
         });
@@ -88,10 +88,10 @@ function breadthFirst(data, callback, action, payload = {}) {
             };
     }
 
-    if (isPlainObject(data)) {
-        queue = [() => next(data, 0, [])];
-    } else if (Array.isArray(data)) {
+    if (Array.isArray(data)) {
         queue = iterateArray(data, -1, []);
+    } else if (isObject(data)) {
+        queue = [() => next(data, 0, [])];
     }
 
     while (!found && queue.length) {
