@@ -126,3 +126,28 @@ nodes.map((node) => node.name).filter(Boolean);
 df.findPath(data, (node) => node.name === 'product22');
 // [ 'c2', 'products', 'p2' ]
 ```
+
+-   #### findByPath | removeByPath
+
+-   #### removeNodes
+
+```javascript
+// this method don't mutate object
+df.removeNodes(data, (node) => !node.active);
+// {
+//   c2: {
+//     name: 'category2',
+//     active: true,
+//     products: {
+//       p2: { name: 'product22', active: true }
+//     },
+//   },
+//   c3: {
+//     name: 'category3',
+//     active: true,
+//     products: {
+//       p2: { name: 'product32', active: true }
+//     },
+//   },
+// }
+```

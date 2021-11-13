@@ -7,6 +7,9 @@ var __spreadArray =
 var depthFirst = require('./algorithms/depth-first');
 var breadthFirst = require('./algorithms/breadth-first');
 var Actions = require('./actions');
+var _a = require('./utils'),
+    isObject = _a.isObject,
+    shallowCopy = _a.shallowCopy;
 var Forest = /** @class */ (function () {
     function Forest() {
         var _this = this;
@@ -70,6 +73,34 @@ var Forest = /** @class */ (function () {
                 if (value) response = path;
                 return value;
             });
+            return response;
+        };
+        this.findByPath = function (data, path) {
+            return path.reduce(function (acc, key) {
+                if (isObject(acc)) return acc[key];
+            }, data);
+        };
+        this.removeByPath = function (data, path) {
+            var root = shallowCopy(data);
+            var parent = path.slice(0, -1).reduce(function (acc, key) {
+                acc[key] = shallowCopy(acc[key]);
+                return acc[key];
+            }, root);
+            var key = path[path.length - 1];
+            if (Array.isArray(parent)) {
+                parent.splice(key, 1);
+            } else {
+                delete parent[key];
+            }
+            return root;
+        };
+        this.removeNodes = function (data, callback) {
+            var path = _this.findPath(data, callback);
+            var response = data;
+            while (path.length) {
+                response = _this.removeByPath(response, path);
+                path = _this.findPath(response, callback);
+            }
             return response;
         };
     }

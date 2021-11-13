@@ -1,22 +1,25 @@
 declare type Path = Array<string | number>;
 declare type Callback<T> = (node: any, depth: number, path: Path) => T;
-declare type Reducer = (prev: any, curr: any, depth: number, path: Path) => any;
+declare type Reducer<T> = (acc: T, node: any, depth: number, path: Path) => T;
 declare class Forest {
     forEachLeaf: (data: any, callback: Callback<void>) => void;
     forEachNode: (data: any, callback: Callback<void>) => void;
-    findLeaf: (data: any, callback: Callback<boolean>) => any;
-    findNode: (data: any, callback: Callback<boolean>) => any;
+    findLeaf: <Type>(data: any, callback: Callback<boolean>) => Type;
+    findNode: <Type>(data: any, callback: Callback<boolean>) => Type;
     everyLeaf: (data: any, callback: Callback<boolean>) => boolean;
     everyNode: (data: any, callback: Callback<boolean>) => boolean;
-    findLeaves: (data: any, callback: Callback<boolean>) => any[];
-    findNodes: (data: any, callback: Callback<boolean>) => any[];
-    mapLeaves: (data: any, callback: Callback<any>, level?: number) => any[];
+    findLeaves: <Type>(data: any, callback: Callback<boolean>) => Type[];
+    findNodes: <Type>(data: any, callback: Callback<boolean>) => Type[];
+    mapLeaves: <Type>(data: any, callback: Callback<Type>, level?: number) => Type[];
     minHeight: (data: any) => number;
     maxHeight: (data: any) => number;
-    nodesByLevel: (data: any, level: number) => any[];
-    reduce: (data: any, callback: Reducer, initial: any) => any[];
-    hierarchy: (data: any, callback: Callback<boolean>) => any[];
+    nodesByLevel: <Type>(data: any, level: number) => Type[];
+    reduce: <Type>(data: any, callback: Reducer<Type>, initial: Type) => Type[];
+    hierarchy: <Type>(data: any, callback: Callback<boolean>) => Type[];
     findPath: (data: any, callback: Callback<boolean>) => Path;
+    findByPath: <Type>(data: any, path: Path) => Type;
+    removeByPath: <Type>(data: any, path: Path) => Type;
+    removeNodes: <Type>(data: any, callback: Callback<boolean>) => Type;
 }
 declare const _default: Forest;
 export default _default;

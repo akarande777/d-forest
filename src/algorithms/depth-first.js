@@ -1,8 +1,5 @@
 const Actions = require('../actions');
-
-function isObject(el) {
-    return typeof el === 'object' && el !== null;
-}
+const { isObject } = require('../utils');
 
 function depthFirst(data, callback, action, payload = {}) {
     let response;
@@ -45,7 +42,8 @@ function depthFirst(data, callback, action, payload = {}) {
             next = (node, depth, path) => {
                 let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    if (payload.level > -1 ? payload.level === depth : true) {
+                    let { level } = payload;
+                    if (level > -1 ? level === depth : true) {
                         let value = callback(node, depth, path);
                         response = [...response, value];
                     }

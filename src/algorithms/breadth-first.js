@@ -1,8 +1,5 @@
 const Actions = require('../actions');
-
-function isObject(el) {
-    return typeof el === 'object' && el !== null;
-}
+const { isObject } = require('../utils');
 
 function breadthFirst(data, callback, action, payload = {}) {
     let queue = [];
