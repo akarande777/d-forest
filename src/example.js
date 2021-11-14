@@ -22,19 +22,16 @@ const data = {
     },
 };
 
-// "node" can be any object on the tree
-const res1 = df.findNode(data, (node) => node.name === 'category3');
-console.log(res1);
-// { name: 'category3', active: true, products: [Object] }
+const results = [
+    df.findNode(data, (node) => node.name === 'category3'),
+    df.findLeaf(data, (leaf) => leaf.name === 'product22'),
+    df.findPath(data, (node) => node.name === 'product22'),
+    df.removeNode(data, (node) => node.name === 'product23'),
+    df.updateNode(
+        data,
+        (node) => node.name === 'category1',
+        (node) => ({ ...node, active: true })
+    ),
+];
 
-// "leaf" can be any object which don't have children i.e. bottom nodes
-const res2 = df.findLeaf(data, (leaf) => leaf.name === 'product22');
-console.log(res2);
-// { name: 'product22', active: true }
-
-const res3 = df.findPath(data, (node) => node.name === 'product22');
-console.log(res3);
-// [ 'c2', 'products', 'p2' ]
-
-const res4 = df.removeNodes(data, (node) => node.active === false);
-console.log(res4);
+results.forEach((el, i) => console.log(i, el));

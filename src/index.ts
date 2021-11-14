@@ -1,7 +1,7 @@
 var depthFirst = require('./algorithms/depth-first');
 var breadthFirst = require('./algorithms/breadth-first');
 var Actions = require('./actions');
-var { isObject, shallowCopy } = require('./utils');
+var { isObject, copyByPath } = require('./utils');
 
 type Path = Array<string | number>;
 
@@ -9,37 +9,39 @@ type Callback<T> = (node: any, depth: number, path: Path) => T;
 
 type Reducer<T> = (acc: T, node: any, depth: number, path: Path) => T;
 
+type PureFn<T> = (value: any) => T;
+
 class Forest {
-    forEachLeaf = (data, callback: Callback<void>): void => {
+    forEachLeaf = (data, callback: Callback<void>) => {
         depthFirst(data, callback, Actions.FOR_EACH);
     };
 
-    forEachNode = (data, callback: Callback<void>): void => {
+    forEachNode = (data, callback: Callback<void>) => {
         breadthFirst(data, callback, Actions.FOR_EACH);
     };
 
-    findLeaf = <Type>(data, callback: Callback<boolean>): Type => {
-        return depthFirst(data, callback, Actions.FIND);
+    findLeaf = <Type>(data, predicate: Callback<boolean>): Type => {
+        return depthFirst(data, predicate, Actions.FIND);
     };
 
-    findNode = <Type>(data, callback: Callback<boolean>): Type => {
-        return breadthFirst(data, callback, Actions.FIND);
+    findNode = <Type>(data, predicate: Callback<boolean>): Type => {
+        return breadthFirst(data, predicate, Actions.FIND);
     };
 
-    everyLeaf = (data, callback: Callback<boolean>): boolean => {
-        return depthFirst(data, callback, Actions.EVERY);
+    everyLeaf = (data, predicate: Callback<boolean>): boolean => {
+        return depthFirst(data, predicate, Actions.EVERY);
     };
 
-    everyNode = (data, callback: Callback<boolean>): boolean => {
-        return breadthFirst(data, callback, Actions.EVERY);
+    everyNode = (data, predicate: Callback<boolean>): boolean => {
+        return breadthFirst(data, predicate, Actions.EVERY);
     };
 
-    findLeaves = <Type>(data, callback: Callback<boolean>): Type[] => {
-        return depthFirst(data, callback, Actions.FIND_ALL);
+    findLeaves = <Type>(data, predicate: Callback<boolean>): Type[] => {
+        return depthFirst(data, predicate, Actions.FIND_ALL);
     };
 
-    findNodes = <Type>(data, callback: Callback<boolean>): Type[] => {
-        return breadthFirst(data, callback, Actions.FIND_ALL);
+    findNodes = <Type>(data, predicate: Callback<boolean>): Type[] => {
+        return breadthFirst(data, predicate, Actions.FIND_ALL);
     };
 
     mapLeaves = <Type>(data, callback: Callback<Type>, level: number = -1): Type[] => {
@@ -63,17 +65,17 @@ class Forest {
         return depthFirst(data, callback, Actions.REDUCE, { initial });
     };
 
-    hierarchy = (data, callback: Callback<boolean>): any[] => {
-        var path = this.findPath(data, callback);
+    hierarchy = (data, predicate: Callback<boolean>) => {
+        var path = this.findPath(data, predicate);
         var last = data;
         var nodes = path.map((key) => (last = last[key]));
         return [data].concat(nodes).filter((el) => !Array.isArray(el));
     };
 
-    findPath = (data, callback: Callback<boolean>): Path => {
+    findPath = (data, predicate: Callback<boolean>): Path => {
         var response = [];
         this.findNode(data, (node, depth, path) => {
-            var value = callback(node, depth, path);
+            var value = predicate(node, depth, path);
             if (value) response = path;
             return value;
         });
@@ -86,29 +88,34 @@ class Forest {
         }, data);
     };
 
-    removeByPath = (data, path: Path): any => {
-        var root = shallowCopy(data);
-        var parent = path.slice(0, -1).reduce((acc, key) => {
-            acc[key] = shallowCopy(acc[key]);
-            return acc[key];
-        }, root);
-        var key = path[path.length - 1];
+    removeByPath = (data, path: Path) => {
+        var { root, parent, key } = copyByPath(data, path);
         if (Array.isArray(parent)) {
-            parent.splice(key as number, 1);
+            parent.splice(key, 1);
         } else {
             delete parent[key];
         }
         return root;
     };
 
-    removeNodes = (data, callback: Callback<boolean>): any => {
-        var path = this.findPath(data, callback);
-        var response = data;
-        while (path.length) {
-            response = this.removeByPath(response, path);
-            path = this.findPath(response, callback);
+    updateByPath = <T>(data, path: Path, callback: PureFn<T>) => {
+        var { root, parent, key } = copyByPath(data, path);
+        parent[key] = callback(parent[key]);
+        return root;
+    };
+
+    removeNode = (data, predicate: Callback<boolean>) => {
+        var path = this.findPath(data, predicate);
+        if (path.length) {
+            return this.removeByPath(data, path);
         }
-        return response;
+    };
+
+    updateNode = <T>(data, predicate: Callback<boolean>, callback: PureFn<T>) => {
+        var path = this.findPath(data, predicate);
+        if (path.length) {
+            return this.updateByPath(data, path, callback);
+        }
     };
 }
 

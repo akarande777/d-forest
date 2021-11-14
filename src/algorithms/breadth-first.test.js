@@ -53,26 +53,25 @@ test('hierarchy', () => {
     expect(df.hierarchy(data2, (node) => node.name === 'category3')).toStrictEqual(expected);
 });
 
-test('remove nodes', () => {
-    let expected = [
-        {
-            name: 'category2',
-            active: true,
-            products: [{ name: 'product22', active: true }],
-        },
-        {
-            name: 'category3',
-            active: true,
-            products: [{ name: 'product32', active: true }],
-        },
+test('remove node', () => {
+    let expected = data.slice(0, -1);
+    expect(df.removeNode(data, (node) => node.name === 'category3')).toStrictEqual(expected);
+    expected = [data3[0], [data3[1][1]]];
+    expect(df.removeNode(data3, (node) => node.name === 'product31')).toStrictEqual(expected);
+});
+
+test('update node', () => {
+    let products = [
+        { name: 'product31', active: true },
+        { name: 'product32', active: true },
     ];
-    expect(df.removeNodes(data, (node) => !node.active)).toStrictEqual(expected);
-    expected = [
-        [
-            { name: 'product21', active: false },
-            { name: 'product23', active: false },
-        ],
-        [{ name: 'product31', active: false }],
-    ];
-    expect(df.removeNodes(data3, (node) => node.active)).toStrictEqual(expected);
+    let receive = (data) =>
+        df.updateNode(
+            data,
+            (node) => node.name === 'product31',
+            (node) => ({ ...node, active: true })
+        );
+    let expected = [...data.slice(0, -1), { name: 'category3', active: true, products }];
+    expect(receive(data)).toStrictEqual(expected);
+    expect(receive(data3)).toStrictEqual([data3[0], products]);
 });

@@ -1,2 +1,6 @@
 export function isObject(el: any): boolean;
-export function shallowCopy(el: any): any;
+export function copyByPath(data: any, path: any): {
+    root: any;
+    parent: any;
+    key: any;
+};

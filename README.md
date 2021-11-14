@@ -119,30 +119,49 @@ nodes.map((node) => node.name).filter(Boolean);
 // ['category2', 'product22']
 ```
 
--   #### findPath
+-   #### findPath | findByPath
 
 ```javascript
 df.findPath(data, (node) => node.name === 'product22');
 // [ 'c2', 'products', 'p2' ]
+df.findByPath(data, ['c2', 'products', 'p2']);
+// { name: 'product22', active: true }
 ```
 
--   #### findByPath | removeByPath
-
--   #### removeNodes
+-   #### removeNode | removeByPath
 
 ```javascript
-// this method doesn't mutate object
-df.removeNodes(data, (node) => node.active === false);
+// this method doesn't mutate data
+df.removeNode(data, (node) => node.name === 'product23');
+// or
+df.removeByPath(data, (node) => ['c2', 'products', 'p3']);
 // {
+//   c1: { name: 'category1', active: false },
 //   c2: {
 //     name: 'category2',
 //     active: true,
-//     products: { p2: [Object] }
+//     products: { p1: [Object], p2: [Object] }
 //   },
 //   c3: {
 //     name: 'category3',
 //     active: true,
-//     products: { p2: [Object] }
+//     products: { p1: [Object], p2: [Object] }
 //   }
 // }
+```
+
+-   #### updateNode | updateByPath
+
+```javascript
+// this method doesn't mutate data
+df.updateNode(
+    data,
+    (node) => node.name === 'category1',
+    (node) => ({ ...node, active: true })
+);
+// [
+//   { name: 'category1', active: true },
+//   { name: 'category2', active: true, products: [Object] },
+//   { name: 'category3', active: true, products: [Object] }
+// ]
 ```

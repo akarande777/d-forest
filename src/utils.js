@@ -3,7 +3,19 @@ function isObject(el) {
 }
 
 function shallowCopy(el) {
-    return Array.isArray(el) ? [...el] : isObject(el) ? { ...el } : el;
+    if (Array.isArray(el)) return el.slice();
+    if (isObject(el)) return { ...el };
+    return el;
 }
 
-module.exports = { isObject, shallowCopy };
+function copyByPath(data, path) {
+    var root = shallowCopy(data);
+    var parent = path.slice(0, -1).reduce((acc, key) => {
+        acc[key] = shallowCopy(acc[key]);
+        return acc[key];
+    }, root);
+    var key = path[path.length - 1];
+    return { root, parent, key };
+}
+
+module.exports = { isObject, copyByPath };
