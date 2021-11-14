@@ -1,7 +1,7 @@
 var depthFirst = require('./algorithms/depth-first');
 var breadthFirst = require('./algorithms/breadth-first');
 var Actions = require('./actions');
-const { isObject, shallowCopy } = require('./utils');
+var { isObject, shallowCopy } = require('./utils');
 
 type Path = Array<string | number>;
 
@@ -63,11 +63,11 @@ class Forest {
         return depthFirst(data, callback, Actions.REDUCE, { initial });
     };
 
-    hierarchy = <Type>(data, callback: Callback<boolean>): Type[] => {
+    hierarchy = (data, callback: Callback<boolean>): any[] => {
         var path = this.findPath(data, callback);
         var last = data;
         var nodes = path.map((key) => (last = last[key]));
-        return [data, ...nodes].filter((el) => !Array.isArray(el));
+        return [data].concat(nodes).filter((el) => !Array.isArray(el));
     };
 
     findPath = (data, callback: Callback<boolean>): Path => {
@@ -86,7 +86,7 @@ class Forest {
         }, data);
     };
 
-    removeByPath = <Type>(data, path: Path): Type => {
+    removeByPath = (data, path: Path): any => {
         var root = shallowCopy(data);
         var parent = path.slice(0, -1).reduce((acc, key) => {
             acc[key] = shallowCopy(acc[key]);
@@ -101,7 +101,7 @@ class Forest {
         return root;
     };
 
-    removeNodes = <Type>(data, callback: Callback<boolean>): Type => {
+    removeNodes = (data, callback: Callback<boolean>): any => {
         var path = this.findPath(data, callback);
         var response = data;
         while (path.length) {

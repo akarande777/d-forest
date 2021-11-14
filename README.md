@@ -45,8 +45,7 @@ df.findNode(data, (node) => node.name === 'category3');
 df.findLeaf(data, (leaf) => leaf.name === 'product22');
 // { name: 'product22', active: true }
 
-// it is useful when you know that the object you want to find is a leaf
-// it has better performance over "findNode" as it skips unnecessary comparisons
+// this method is useful when you know that the object you want to find is a leaf
 // note that every leaf is a node but not every node is a leaf
 ```
 
@@ -132,22 +131,18 @@ df.findPath(data, (node) => node.name === 'product22');
 -   #### removeNodes
 
 ```javascript
-// this method don't mutate object
-df.removeNodes(data, (node) => !node.active);
+// this method doesn't mutate object
+df.removeNodes(data, (node) => node.active === false);
 // {
 //   c2: {
 //     name: 'category2',
 //     active: true,
-//     products: {
-//       p2: { name: 'product22', active: true }
-//     },
+//     products: { p2: [Object] }
 //   },
 //   c3: {
 //     name: 'category3',
 //     active: true,
-//     products: {
-//       p2: { name: 'product32', active: true }
-//     },
-//   },
+//     products: { p2: [Object] }
+//   }
 // }
 ```

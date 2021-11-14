@@ -1,9 +1,3 @@
-var __spreadArray =
-    (this && this.__spreadArray) ||
-    function (to, from) {
-        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) to[j] = from[i];
-        return to;
-    };
 var depthFirst = require('./algorithms/depth-first');
 var breadthFirst = require('./algorithms/breadth-first');
 var Actions = require('./actions');
@@ -62,7 +56,7 @@ var Forest = /** @class */ (function () {
             var nodes = path.map(function (key) {
                 return (last = last[key]);
             });
-            return __spreadArray([data], nodes).filter(function (el) {
+            return [data].concat(nodes).filter(function (el) {
                 return !Array.isArray(el);
             });
         };

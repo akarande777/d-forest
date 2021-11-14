@@ -15,11 +15,11 @@ declare class Forest {
     maxHeight: (data: any) => number;
     nodesByLevel: <Type>(data: any, level: number) => Type[];
     reduce: <Type>(data: any, callback: Reducer<Type>, initial: Type) => Type[];
-    hierarchy: <Type>(data: any, callback: Callback<boolean>) => Type[];
+    hierarchy: (data: any, callback: Callback<boolean>) => any[];
     findPath: (data: any, callback: Callback<boolean>) => Path;
     findByPath: <Type>(data: any, path: Path) => Type;
-    removeByPath: <Type>(data: any, path: Path) => Type;
-    removeNodes: <Type>(data: any, callback: Callback<boolean>) => Type;
+    removeByPath: (data: any, path: Path) => any;
+    removeNodes: (data: any, callback: Callback<boolean>) => any;
 }
 declare const _default: Forest;
 export default _default;

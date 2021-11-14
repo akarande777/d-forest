@@ -35,3 +35,6 @@ console.log(res2);
 const res3 = df.findPath(data, (node) => node.name === 'product22');
 console.log(res3);
 // [ 'c2', 'products', 'p2' ]
+
+const res4 = df.removeNodes(data, (node) => node.active === false);
+console.log(res4);
