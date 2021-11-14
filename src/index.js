@@ -53,6 +53,16 @@ var Forest = /** @class */ (function () {
             var nodes = path.map(function (key) { return (last = last[key]); });
             return [data].concat(nodes).filter(function (el) { return !Array.isArray(el); });
         };
+        this.findLevel = function (data, predicate) {
+            var level = -1;
+            _this.findNode(data, function (node, depth, path) {
+                var value = predicate(node, depth, path);
+                if (value)
+                    level = depth;
+                return value;
+            });
+            return level;
+        };
         this.findPath = function (data, predicate) {
             var response = [];
             _this.findNode(data, function (node, depth, path) {
@@ -71,17 +81,7 @@ var Forest = /** @class */ (function () {
         };
         this.removeByPath = function (data, path) {
             var _a = copyByPath(data, path), root = _a.root, parent = _a.parent, key = _a.key;
-            if (Array.isArray(parent)) {
-                parent.splice(key, 1);
-            }
-            else {
-                delete parent[key];
-            }
-            return root;
-        };
-        this.updateByPath = function (data, path, callback) {
-            var _a = copyByPath(data, path), root = _a.root, parent = _a.parent, key = _a.key;
-            parent[key] = callback(parent[key]);
+            Array.isArray(parent) ? parent.splice(key, 1) : delete parent[key];
             return root;
         };
         this.removeNode = function (data, predicate) {
@@ -89,6 +89,11 @@ var Forest = /** @class */ (function () {
             if (path.length) {
                 return _this.removeByPath(data, path);
             }
+        };
+        this.updateByPath = function (data, path, callback) {
+            var _a = copyByPath(data, path), root = _a.root, parent = _a.parent, key = _a.key;
+            parent[key] = callback(parent[key]);
+            return root;
         };
         this.updateNode = function (data, predicate, callback) {
             var path = _this.findPath(data, predicate);

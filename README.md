@@ -119,6 +119,13 @@ nodes.map((node) => node.name).filter(Boolean);
 // ['category2', 'product22']
 ```
 
+-   #### findLevel
+
+```javascript
+df.findLevel(data, (node) => node.name === 'category2'); // 1
+df.findLevel(data, (node) => node.name === 'product32'); // 3
+```
+
 -   #### findPath | findByPath
 
 ```javascript

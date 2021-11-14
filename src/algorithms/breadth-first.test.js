@@ -75,3 +75,10 @@ test('update node', () => {
     expect(receive(data)).toStrictEqual(expected);
     expect(receive(data3)).toStrictEqual([data3[0], products]);
 });
+
+test('find level', () => {
+    expect(df.findLevel(data, (node) => node.name === 'product22')).toBe(1);
+    expect(df.findLevel(data2, (node) => node.name === 'category1')).toBe(1);
+    expect(df.findLevel(data2, (node) => node.name === 'product23')).toBe(3);
+    expect(df.findLevel(data3, (node) => node.name === 'product31')).toBe(1);
+});

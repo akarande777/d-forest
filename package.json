@@ -1,14 +1,16 @@
 {
     "name": "d-forest",
-    "version": "2.2.6",
+    "version": "2.2.7",
     "description": "Find nested object in a tree-like structure",
     "main": "src/index.js",
     "types": "dist/index.d.ts",
     "keywords": [
         "deep",
         "find",
+        "immutable",
         "nested",
         "object",
+        "remove",
         "search",
         "tree"
     ],

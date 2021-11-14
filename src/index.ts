@@ -72,6 +72,16 @@ class Forest {
         return [data].concat(nodes).filter((el) => !Array.isArray(el));
     };
 
+    findLevel = (data, predicate: Callback<boolean>): number => {
+        var level = -1;
+        this.findNode(data, (node, depth, path) => {
+            var value = predicate(node, depth, path);
+            if (value) level = depth;
+            return value;
+        });
+        return level;
+    };
+
     findPath = (data, predicate: Callback<boolean>): Path => {
         var response = [];
         this.findNode(data, (node, depth, path) => {
@@ -90,17 +100,7 @@ class Forest {
 
     removeByPath = (data, path: Path) => {
         var { root, parent, key } = copyByPath(data, path);
-        if (Array.isArray(parent)) {
-            parent.splice(key, 1);
-        } else {
-            delete parent[key];
-        }
-        return root;
-    };
-
-    updateByPath = <T>(data, path: Path, callback: PureFn<T>) => {
-        var { root, parent, key } = copyByPath(data, path);
-        parent[key] = callback(parent[key]);
+        Array.isArray(parent) ? parent.splice(key, 1) : delete parent[key];
         return root;
     };
 
@@ -109,6 +109,12 @@ class Forest {
         if (path.length) {
             return this.removeByPath(data, path);
         }
+    };
+
+    updateByPath = <T>(data, path: Path, callback: PureFn<T>) => {
+        var { root, parent, key } = copyByPath(data, path);
+        parent[key] = callback(parent[key]);
+        return root;
     };
 
     updateNode = <T>(data, predicate: Callback<boolean>, callback: PureFn<T>) => {
