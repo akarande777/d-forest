@@ -135,7 +135,7 @@ df.findByPath(data, ['c2', 'products', 'p2']);
 // { name: 'product22', active: true }
 ```
 
-Following methods don't mutate data, instead return new one with shared mutable state.
+> Following methods don't mutate data, instead return new one with shared mutable state.
 
 -   #### removeNode | removeLeaf
 
