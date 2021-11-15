@@ -114,16 +114,16 @@ df.reduce(data, (acc, cur) => (cur.name ? `${acc}/${cur.name}` : acc), '');
 
 ```javascript
 // returns object hierarchy from root
-const nodes = df.hierarchy(data, (node) => node.name === 'product22');
+const nodes = df.hierarchy(data, (node) => node.name === 'product31');
 nodes.map((node) => node.name).filter(Boolean);
-// ['category2', 'product22']
+// ['category3', 'product31']
 ```
 
 -   #### findLevel
 
 ```javascript
 df.findLevel(data, (node) => node.name === 'category2'); // 1
-df.findLevel(data, (node) => node.name === 'product32'); // 3
+df.findLevel(data, (node) => node.name === 'product21'); // 3
 ```
 
 -   #### findPath | findByPath
@@ -135,13 +135,12 @@ df.findByPath(data, ['c2', 'products', 'p2']);
 // { name: 'product22', active: true }
 ```
 
--   #### removeNode | removeByPath
+Following methods don't mutate data, instead return new one with shared mutable state.
+
+-   #### removeNode | removeLeaf
 
 ```javascript
-// this method doesn't mutate data
-df.removeNode(data, (node) => node.name === 'product23');
-// or
-df.removeByPath(data, (node) => ['c2', 'products', 'p3']);
+df.removeLeaf(data, (leaf) => leaf.name === 'product23');
 // {
 //   c1: { name: 'category1', active: false },
 //   c2: {
@@ -157,18 +156,23 @@ df.removeByPath(data, (node) => ['c2', 'products', 'p3']);
 // }
 ```
 
--   #### updateNode | updateByPath
+-   #### updateNode | updateLeaf
 
 ```javascript
-// this method doesn't mutate data
 df.updateNode(
     data,
-    (node) => node.name === 'category1',
-    (node) => ({ ...node, active: true })
+    (node) => node.name === 'category2',
+    (node) => ({ ...node, active: false, products: null })
 );
-// [
-//   { name: 'category1', active: true },
-//   { name: 'category2', active: true, products: [Object] },
-//   { name: 'category3', active: true, products: [Object] }
-// ]
+// {
+//   c1: { name: 'category1', active: false },
+//   c2: { name: 'category2', active: false, products: null },
+//   c3: { name: 'category3', active: true, products: [Object] }
+// }
 ```
+
+-   #### removeByPath | updateByPath
+
+-   #### removeNodes
+
+-   #### updateLeaves

@@ -22,8 +22,12 @@ declare class Forest {
     findByPath: <Type>(data: any, path: Path) => Type;
     removeByPath: (data: any, path: Path) => any;
     removeNode: (data: any, predicate: Callback<boolean>) => any;
+    removeLeaf: (data: any, predicate: Callback<boolean>) => any;
+    removeNodes: (data: any, predicate: Callback<boolean>) => any;
     updateByPath: <T>(data: any, path: Path, callback: PureFn<T>) => any;
     updateNode: <T>(data: any, predicate: Callback<boolean>, callback: PureFn<T>) => any;
+    updateLeaf: <T>(data: any, predicate: Callback<boolean>, callback: PureFn<T>) => any;
+    updateLeaves: <T>(data: any, predicate: Callback<boolean>, callback: PureFn<T>) => any;
 }
 declare const _default: Forest;
 export default _default;

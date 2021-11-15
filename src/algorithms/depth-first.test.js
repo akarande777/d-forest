@@ -15,15 +15,15 @@ test('for-each leaf', () => {
 });
 
 test('find leaf', () => {
-    expect(df.findLeaf(data, (leaf) => leaf.name === 'product31')).toBe(data[2].products[0]);
+    expect(df.findLeaf(data, (leaf) => leaf.name === 'product21')).toBe(data[1].products[0]);
     expect(df.findLeaf(data, (leaf) => leaf.name === 'category2')).toBe(undefined);
     expect(df.findLeaf(data, (leaf) => leaf.name === 'category1')).toBe(data[0]);
     // data2
     expect(df.findLeaf(data2, (leaf) => leaf.name === 'product31')).toBe(data2.c3.products.p1);
-    expect(df.findLeaf(data2, (leaf) => leaf.name === 'category2')).toBe(undefined);
+    expect(df.findLeaf(data2, (leaf) => leaf.name === 'category3')).toBe(undefined);
     expect(df.findLeaf(data2, (leaf) => leaf.name === 'category1')).toBe(data2.c1);
     // data3
-    expect(df.findLeaf(data3, (leaf) => leaf.name === 'product31')).toBe(data3[1][0]);
+    expect(df.findLeaf(data3, (leaf) => leaf.name === 'product32')).toBe(data3[1][1]);
 });
 
 test('find leaves', () => {
@@ -45,9 +45,9 @@ test('map leaves', () => {
 });
 
 test('every leaf', () => {
-    expect(df.everyLeaf(data, (leaf) => leaf.name?.includes('product'))).toBe(false);
-    expect(df.everyLeaf(data2, (leaf) => leaf.name?.includes('product'))).toBe(false);
-    expect(df.everyLeaf(data3, (leaf) => leaf.name?.includes('product'))).toBe(true);
+    expect(df.everyLeaf(data, (_, depth) => depth === 1)).toBe(false);
+    expect(df.everyLeaf(data2, (_, depth) => depth === 1)).toBe(false);
+    expect(df.everyLeaf(data3, (_, depth) => depth === 1)).toBe(true);
 });
 
 test('min height', () => {
@@ -80,4 +80,16 @@ test('reduce', () => {
         '/category3/product31',
         '/category3/product32',
     ]);
+});
+
+test('update leaf', () => {
+    let receive = (data) =>
+        df.updateLeaf(
+            data,
+            (node) => node.name === 'category1',
+            (node) => ({ ...node, active: true })
+        );
+    let c1 = { name: 'category1', active: true };
+    expect(receive(data)).toStrictEqual([c1, ...data.slice(1)]);
+    expect(receive(data2)).toStrictEqual({ ...data2, c1 });
 });

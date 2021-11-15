@@ -89,6 +89,29 @@ var Forest = /** @class */ (function () {
             if (path.length) {
                 return _this.removeByPath(data, path);
             }
+            return data;
+        };
+        this.removeLeaf = function (data, predicate) {
+            var _path = [];
+            _this.findLeaf(data, function (node, depth, path) {
+                var value = predicate(node, depth, path);
+                if (value)
+                    _path = path;
+                return value;
+            });
+            if (_path.length) {
+                return _this.removeByPath(data, _path);
+            }
+            return data;
+        };
+        this.removeNodes = function (data, predicate) {
+            var response = data;
+            var last = null;
+            while (response !== last) {
+                last = response;
+                response = _this.removeNode(last, predicate);
+            }
+            return response;
         };
         this.updateByPath = function (data, path, callback) {
             var _a = copyByPath(data, path), root = _a.root, parent = _a.parent, key = _a.key;
@@ -100,6 +123,32 @@ var Forest = /** @class */ (function () {
             if (path.length) {
                 return _this.updateByPath(data, path, callback);
             }
+            return data;
+        };
+        this.updateLeaf = function (data, predicate, callback) {
+            var _path = [];
+            _this.findLeaf(data, function (node, depth, path) {
+                var value = predicate(node, depth, path);
+                if (value)
+                    _path = path;
+                return value;
+            });
+            if (_path.length) {
+                return _this.updateByPath(data, _path, callback);
+            }
+            return data;
+        };
+        this.updateLeaves = function (data, predicate, callback) {
+            var _paths = _this.mapLeaves(data, function (node, depth, path) {
+                var value = predicate(node, depth, path);
+                if (value)
+                    return path;
+            });
+            var response = data;
+            _paths.filter(Boolean).forEach(function (path) {
+                response = _this.updateByPath(response, path, callback);
+            });
+            return response;
         };
     }
     return Forest;

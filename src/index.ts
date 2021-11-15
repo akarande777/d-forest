@@ -44,7 +44,7 @@ class Forest {
         return breadthFirst(data, predicate, Actions.FIND_ALL);
     };
 
-    mapLeaves = <Type>(data, callback: Callback<Type>, level: number = -1): Type[] => {
+    mapLeaves = <Type>(data, callback: Callback<Type>, level = -1): Type[] => {
         return depthFirst(data, callback, Actions.MAP, { level });
     };
 
@@ -109,6 +109,30 @@ class Forest {
         if (path.length) {
             return this.removeByPath(data, path);
         }
+        return data;
+    };
+
+    removeLeaf = (data, predicate: Callback<boolean>) => {
+        var _path = [];
+        this.findLeaf(data, (node, depth, path) => {
+            var value = predicate(node, depth, path);
+            if (value) _path = path;
+            return value;
+        });
+        if (_path.length) {
+            return this.removeByPath(data, _path);
+        }
+        return data;
+    };
+
+    removeNodes = (data, predicate: Callback<boolean>) => {
+        var response = data;
+        var last = null;
+        while (response !== last) {
+            last = response;
+            response = this.removeNode(last, predicate);
+        }
+        return response;
     };
 
     updateByPath = <T>(data, path: Path, callback: PureFn<T>) => {
@@ -122,6 +146,32 @@ class Forest {
         if (path.length) {
             return this.updateByPath(data, path, callback);
         }
+        return data;
+    };
+
+    updateLeaf = <T>(data, predicate: Callback<boolean>, callback: PureFn<T>) => {
+        var _path = [];
+        this.findLeaf(data, (node, depth, path) => {
+            var value = predicate(node, depth, path);
+            if (value) _path = path;
+            return value;
+        });
+        if (_path.length) {
+            return this.updateByPath(data, _path, callback);
+        }
+        return data;
+    };
+
+    updateLeaves = <T>(data, predicate: Callback<boolean>, callback: PureFn<T>) => {
+        var _paths = this.mapLeaves(data, (node, depth, path) => {
+            var value = predicate(node, depth, path);
+            if (value) return path;
+        });
+        var response = data;
+        _paths.filter(Boolean).forEach((path) => {
+            response = this.updateByPath(response, path, callback);
+        });
+        return response;
     };
 }
 

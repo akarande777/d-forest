@@ -23,8 +23,6 @@ const data = {
 };
 
 const results = [
-    df.findNode(data, (node) => node.name === 'category3'),
-    df.findLeaf(data, (leaf) => leaf.name === 'product22'),
     df.findPath(data, (node) => node.name === 'product22'),
     df.removeNode(data, (node) => node.name === 'product23'),
     df.updateNode(
