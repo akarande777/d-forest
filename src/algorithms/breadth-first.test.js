@@ -53,6 +53,20 @@ test('hierarchy', () => {
     expect(df.hierarchy(data2, (node) => node.name === 'category3')).toStrictEqual(expected);
 });
 
+test('find level', () => {
+    expect(df.findLevel(data, (node) => node.name === 'product21')).toBe(1);
+    expect(df.findLevel(data2, (node) => node.name === 'category1')).toBe(1);
+    expect(df.findLevel(data2, (node) => node.name === 'product31')).toBe(3);
+    expect(df.findLevel(data3, (node) => node.name === 'product22')).toBe(1);
+});
+
+test('find by path', () => {
+    expect(df.findByPath(data, [1, 'products', 0])).toStrictEqual(data[1].products[0]);
+    expect(df.findByPath(data2, ['c2', 'products'])).toBe(data2.c2.products);
+    expect(df.findByPath(data2, ['c3', 'products', 'p3'])).toBe();
+    expect(df.findByPath(data3, [2, 1])).toBe(data[2][1]);
+});
+
 test('remove nodes', () => {
     let p22 = { name: 'product22', active: true };
     let p32 = { name: 'product32', active: true };
@@ -68,9 +82,9 @@ test('remove nodes', () => {
     expect(df.removeNodes(data3, pred)).toStrictEqual([[p22], [p32]]);
 });
 
-test('update node', () => {
+test('update nodes', () => {
     let receive = (data) =>
-        df.updateNode(
+        df.updateNodes(
             data,
             (node) => node.name === 'category1',
             (node) => ({ ...node, active: true })
@@ -78,11 +92,4 @@ test('update node', () => {
     let c1 = { name: 'category1', active: true };
     expect(receive(data)).toStrictEqual([c1, ...data.slice(1)]);
     expect(receive(data2)).toStrictEqual({ ...data2, c1 });
-});
-
-test('find level', () => {
-    expect(df.findLevel(data, (node) => node.name === 'product21')).toBe(1);
-    expect(df.findLevel(data2, (node) => node.name === 'category1')).toBe(1);
-    expect(df.findLevel(data2, (node) => node.name === 'product31')).toBe(3);
-    expect(df.findLevel(data3, (node) => node.name === 'product22')).toBe(1);
 });

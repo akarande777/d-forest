@@ -1,3 +1,5 @@
+## d-forest
+
 [![npm version](https://img.shields.io/npm/v/d-forest)](https://www.npmjs.com/package/d-forest)
 [![Build Status](https://travis-ci.com/akarande777/d-forest.svg?branch=master)](https://travis-ci.com/akarande777/d-forest)
 [![Coverage Status](https://coveralls.io/repos/github/akarande777/d-forest/badge.svg?branch=master)](https://coveralls.io/github/akarande777/d-forest?branch=master)
@@ -137,42 +139,39 @@ df.findByPath(data, ['c2', 'products', 'p2']);
 
 > Following methods don't mutate data, instead return new one with shared mutable state.
 
--   #### removeNode | removeLeaf
+-   #### removeByPath
+
+-   #### removeNodes | removeLeaves
 
 ```javascript
-df.removeLeaf(data, (leaf) => leaf.name === 'product23');
+df.removeLeaves(data, (leaf) => leaf.active === false);
 // {
-//   c1: { name: 'category1', active: false },
 //   c2: {
 //     name: 'category2',
 //     active: true,
-//     products: { p1: [Object], p2: [Object] }
+//     products: { p2: [Object] }
 //   },
 //   c3: {
 //     name: 'category3',
 //     active: true,
-//     products: { p1: [Object], p2: [Object] }
+//     products: { p2: [Object] }
 //   }
 // }
 ```
 
--   #### updateNode | updateLeaf
+-   #### updateByPath
+
+-   #### updateNodes | updateLeaves
 
 ```javascript
-df.updateNode(
+df.updateNodes(
     data,
-    (node) => node.name === 'category2',
-    (node) => ({ ...node, active: false, products: null })
+    (node, depth) => depth === 1 && node.active,
+    (node) => ({ ...node, products: [] })
 );
 // {
 //   c1: { name: 'category1', active: false },
-//   c2: { name: 'category2', active: false, products: null },
-//   c3: { name: 'category3', active: true, products: [Object] }
+//   c2: { name: 'category2', active: true, products: [] },
+//   c3: { name: 'category3', active: true, products: [] }
 // }
 ```
-
--   #### removeByPath | updateByPath
-
--   #### removeNodes
-
--   #### updateLeaves

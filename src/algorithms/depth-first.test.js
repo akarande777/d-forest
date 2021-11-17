@@ -16,11 +16,11 @@ test('for-each leaf', () => {
 
 test('find leaf', () => {
     expect(df.findLeaf(data, (leaf) => leaf.name === 'product21')).toBe(data[1].products[0]);
-    expect(df.findLeaf(data, (leaf) => leaf.name === 'category2')).toBe(undefined);
+    expect(df.findLeaf(data, (leaf) => leaf.name === 'category2')).toBe();
     expect(df.findLeaf(data, (leaf) => leaf.name === 'category1')).toBe(data[0]);
     // data2
     expect(df.findLeaf(data2, (leaf) => leaf.name === 'product31')).toBe(data2.c3.products.p1);
-    expect(df.findLeaf(data2, (leaf) => leaf.name === 'category3')).toBe(undefined);
+    expect(df.findLeaf(data2, (leaf) => leaf.name === 'category3')).toBe();
     expect(df.findLeaf(data2, (leaf) => leaf.name === 'category1')).toBe(data2.c1);
     // data3
     expect(df.findLeaf(data3, (leaf) => leaf.name === 'product32')).toBe(data3[1][1]);
@@ -82,14 +82,29 @@ test('reduce', () => {
     ]);
 });
 
-test('update leaf', () => {
+test('remove leaves', () => {
+    let p22 = { name: 'product22', active: true };
+    let p32 = { name: 'product32', active: true };
+    let pred = (node) => node.active === false;
+    expect(df.removeLeaves(data, pred)).toStrictEqual([
+        { name: 'category2', active: true, products: [p22] },
+        { name: 'category3', active: true, products: [p32] },
+    ]);
+    expect(df.removeLeaves(data2, pred)).toStrictEqual({
+        c2: { name: 'category2', active: true, products: { p2: p22 } },
+        c3: { name: 'category3', active: true, products: { p2: p32 } },
+    });
+    expect(df.removeLeaves(data3, pred)).toStrictEqual([[p22], [p32]]);
+});
+
+test('update leaves', () => {
     let receive = (data) =>
-        df.updateLeaf(
+        df.updateLeaves(
             data,
             (node) => node.name === 'category1',
-            (node) => ({ ...node, active: true })
+            (node) => ({ ...node, products: [] })
         );
-    let c1 = { name: 'category1', active: true };
+    let c1 = { ...data[0], products: [] };
     expect(receive(data)).toStrictEqual([c1, ...data.slice(1)]);
     expect(receive(data2)).toStrictEqual({ ...data2, c1 });
 });

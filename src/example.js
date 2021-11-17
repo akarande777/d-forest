@@ -23,12 +23,11 @@ const data = {
 };
 
 const results = [
-    df.findPath(data, (node) => node.name === 'product22'),
-    df.removeNode(data, (node) => node.name === 'product23'),
-    df.updateNode(
+    df.removeLeaves(data, (node) => node.active),
+    df.updateNodes(
         data,
-        (node) => node.name === 'category1',
-        (node) => ({ ...node, active: true })
+        (node, depth) => depth === 1 && node.active,
+        (node) => ({ ...node, products: [] })
     ),
 ];
 
