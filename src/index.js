@@ -42,7 +42,10 @@ var Forest = /** @class */ (function () {
         this.nodesByLevel = function (data, level) {
             if (level <= 0)
                 return data;
-            return breadthFirst(data, function () { }, Actions.BY_LEVEL, { level: level });
+            return breadthFirst(data, function (_a) {
+                var node = _a.node;
+                return node;
+            }, Actions.BY_LEVEL, { level: level });
         };
         this.reduce = function (data, callback, initial) {
             return depthFirst(data, callback, Actions.REDUCE, { initial: initial });
@@ -63,27 +66,15 @@ var Forest = /** @class */ (function () {
             });
             return level;
         };
-        this.findPath = function (data, predicate, type) {
+        this.findPath = function (data, predicate) {
             var _path = [];
-            var findNode = type === 'leaf' ? _this.findLeaf : _this.findNode;
-            findNode(data, function (node, depth, path) {
+            _this.findNode(data, function (node, depth, path) {
                 var value = predicate(node, depth, path);
                 if (value)
                     _path = path;
                 return value;
             });
             return _path;
-        };
-        this.findPathAll = function (data, predicate, type) {
-            var _paths = [];
-            var findNodes = type === 'leaf' ? _this.findLeaves : _this.findNodes;
-            findNodes(data, function (node, depth, path) {
-                var value = predicate(node, depth, path);
-                if (value)
-                    _paths.push(path);
-                return value;
-            });
-            return _paths;
         };
         this.findByPath = function (data, path) {
             return path.reduce(function (acc, key) {
@@ -97,7 +88,7 @@ var Forest = /** @class */ (function () {
             return root;
         };
         this.removeNodes = function (data, predicate) {
-            var _paths = _this.findPathAll(data, predicate, 'node');
+            var _paths = breadthFirst(data, predicate, Actions.FIND_PATH);
             var response = data;
             _paths.reverse().forEach(function (path) {
                 response = _this.removeByPath(response, path);
@@ -105,7 +96,7 @@ var Forest = /** @class */ (function () {
             return response;
         };
         this.removeLeaves = function (data, predicate) {
-            var _paths = _this.findPathAll(data, predicate, 'leaf');
+            var _paths = depthFirst(data, predicate, Actions.FIND_PATH);
             var response = data;
             _paths.reverse().forEach(function (path) {
                 response = _this.removeByPath(response, path);
@@ -118,7 +109,7 @@ var Forest = /** @class */ (function () {
             return root;
         };
         this.updateNodes = function (data, predicate, callback) {
-            var _paths = _this.findPathAll(data, predicate, 'node');
+            var _paths = breadthFirst(data, predicate, Actions.FIND_PATH);
             var response = data;
             _paths.reverse().forEach(function (path) {
                 response = _this.updateByPath(response, path, callback);
@@ -126,10 +117,22 @@ var Forest = /** @class */ (function () {
             return response;
         };
         this.updateLeaves = function (data, predicate, callback) {
-            var _paths = _this.findPathAll(data, predicate, 'leaf');
+            var _paths = depthFirst(data, predicate, Actions.FIND_PATH);
             var response = data;
             _paths.forEach(function (path) {
                 response = _this.updateByPath(response, path, callback);
+            });
+            return response;
+        };
+        this.removeByLevel = function (data, level) {
+            var callback = function (_a) {
+                var path = _a.path;
+                return path;
+            };
+            var _paths = breadthFirst(data, callback, Actions.BY_LEVEL, { level: level });
+            var response = data;
+            _paths.reverse().forEach(function (path) {
+                response = _this.removeByPath(response, path);
             });
             return response;
         };

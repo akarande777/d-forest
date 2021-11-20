@@ -93,3 +93,14 @@ test('update nodes', () => {
     expect(receive(data)).toStrictEqual([c1, ...data.slice(1)]);
     expect(receive(data2)).toStrictEqual({ ...data2, c1 });
 });
+
+test('remove by level', () => {
+    let c1 = { name: 'category1', active: false };
+    let c2 = { name: 'category2', active: true, products: [] };
+    let c3 = { name: 'category3', active: true, products: [] };
+    expect(df.removeByLevel(data, 1)).toStrictEqual([c1, c2, c3]);
+    delete c2.products;
+    delete c3.products;
+    expect(df.removeByLevel(data2, 2)).toStrictEqual({ c1, c2, c3 });
+    expect(df.removeByLevel(data3, 1)).toStrictEqual([[], []]);
+});

@@ -1,12 +1,7 @@
-declare var depthFirst: any;
-declare var breadthFirst: any;
-declare var Actions: any;
-declare var isObject: any, copyByPath: any;
 declare type Path = Array<string | number>;
 declare type Callback<T> = (node: any, depth: number, path: Path) => T;
 declare type Reducer<T> = (acc: T, node: any, depth: number, path: Path) => T;
 declare type PureFn<T> = (value: any) => T;
-declare type NodeType = 'node' | 'leaf';
 declare class Forest {
     forEachLeaf: (data: any, callback: Callback<void>) => void;
     forEachNode: (data: any, callback: Callback<void>) => void;
@@ -23,8 +18,7 @@ declare class Forest {
     reduce: <Type>(data: any, callback: Reducer<Type>, initial: Type) => Type[];
     hierarchy: (data: any, predicate: Callback<boolean>) => any[];
     findLevel: (data: any, predicate: Callback<boolean>) => number;
-    findPath: (data: any, predicate: Callback<boolean>, type?: NodeType) => Path;
-    findPathAll: (data: any, predicate: Callback<boolean>, type?: NodeType) => Path[];
+    findPath: (data: any, predicate: Callback<boolean>) => Path;
     findByPath: <Type>(data: any, path: Path) => Type;
     removeByPath: (data: any, path: Path) => any;
     removeNodes: (data: any, predicate: Callback<boolean>) => any;
@@ -32,6 +26,7 @@ declare class Forest {
     updateByPath: <T>(data: any, path: Path, callback: PureFn<T>) => any;
     updateNodes: <T>(data: any, predicate: Callback<boolean>, callback: PureFn<T>) => any;
     updateLeaves: <T>(data: any, predicate: Callback<boolean>, callback: PureFn<T>) => any;
+    removeByLevel: (data: any, level: number) => any;
 }
 declare const _default: Forest;
 export default _default;

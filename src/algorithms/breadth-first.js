@@ -50,9 +50,7 @@ function breadthFirst(data, callback, action, payload = {}) {
             response = [];
             next = (node, depth, path) => {
                 let value = callback(node, depth, path);
-                if (value) {
-                    response = [...response, node];
-                }
+                if (value) response.push(node);
                 return iterate(node, depth, path);
             };
             break;
@@ -72,9 +70,18 @@ function breadthFirst(data, callback, action, payload = {}) {
             response = [];
             next = (node, depth, path) => {
                 if (payload.level === depth) {
-                    response = [...response, node];
+                    let value = callback({ node, path });
+                    response.push(value);
                     return [];
                 }
+                return iterate(node, depth, path);
+            };
+            break;
+        case Actions.FIND_PATH:
+            response = [];
+            next = (node, depth, path) => {
+                let value = callback(node, depth, path);
+                if (value) response.push(path);
                 return iterate(node, depth, path);
             };
             break;

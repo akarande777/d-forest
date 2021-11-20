@@ -11,8 +11,6 @@ type Reducer<T> = (acc: T, node: any, depth: number, path: Path) => T;
 
 type PureFn<T> = (value: any) => T;
 
-type NodeType = 'node' | 'leaf';
-
 class Forest {
     forEachLeaf = (data, callback: Callback<void>) => {
         depthFirst(data, callback, Actions.FOR_EACH);
@@ -60,7 +58,7 @@ class Forest {
 
     nodesByLevel = <Type>(data, level: number): Type[] => {
         if (level <= 0) return data;
-        return breadthFirst(data, () => {}, Actions.BY_LEVEL, { level });
+        return breadthFirst(data, ({ node }) => node, Actions.BY_LEVEL, { level });
     };
 
     reduce = <Type>(data, callback: Reducer<Type>, initial: Type): Type[] => {
@@ -84,26 +82,14 @@ class Forest {
         return level;
     };
 
-    findPath = (data, predicate: Callback<boolean>, type?: NodeType): Path => {
+    findPath = (data, predicate: Callback<boolean>): Path => {
         var _path = [];
-        var findNode = type === 'leaf' ? this.findLeaf : this.findNode;
-        findNode(data, (node, depth, path) => {
+        this.findNode(data, (node, depth, path) => {
             var value = predicate(node, depth, path);
             if (value) _path = path;
             return value;
         });
         return _path;
-    };
-
-    findPathAll = (data, predicate: Callback<boolean>, type?: NodeType): Path[] => {
-        var _paths = [];
-        var findNodes = type === 'leaf' ? this.findLeaves : this.findNodes;
-        findNodes(data, (node, depth, path) => {
-            var value = predicate(node, depth, path);
-            if (value) _paths.push(path);
-            return value;
-        });
-        return _paths;
     };
 
     findByPath = <Type>(data, path: Path): Type => {
@@ -119,7 +105,7 @@ class Forest {
     };
 
     removeNodes = (data, predicate: Callback<boolean>) => {
-        var _paths = this.findPathAll(data, predicate, 'node');
+        var _paths = breadthFirst(data, predicate, Actions.FIND_PATH);
         var response = data;
         _paths.reverse().forEach((path) => {
             response = this.removeByPath(response, path);
@@ -128,7 +114,7 @@ class Forest {
     };
 
     removeLeaves = (data, predicate: Callback<boolean>) => {
-        var _paths = this.findPathAll(data, predicate, 'leaf');
+        var _paths = depthFirst(data, predicate, Actions.FIND_PATH);
         var response = data;
         _paths.reverse().forEach((path) => {
             response = this.removeByPath(response, path);
@@ -143,7 +129,7 @@ class Forest {
     };
 
     updateNodes = <T>(data, predicate: Callback<boolean>, callback: PureFn<T>) => {
-        var _paths = this.findPathAll(data, predicate, 'node');
+        var _paths = breadthFirst(data, predicate, Actions.FIND_PATH);
         var response = data;
         _paths.reverse().forEach((path) => {
             response = this.updateByPath(response, path, callback);
@@ -152,10 +138,20 @@ class Forest {
     };
 
     updateLeaves = <T>(data, predicate: Callback<boolean>, callback: PureFn<T>) => {
-        var _paths = this.findPathAll(data, predicate, 'leaf');
+        var _paths = depthFirst(data, predicate, Actions.FIND_PATH);
         var response = data;
         _paths.forEach((path) => {
             response = this.updateByPath(response, path, callback);
+        });
+        return response;
+    };
+
+    removeByLevel = (data, level: number) => {
+        var callback = ({ path }) => path;
+        var _paths = breadthFirst(data, callback, Actions.BY_LEVEL, { level });
+        var response = data;
+        _paths.reverse().forEach((path) => {
+            response = this.removeByPath(response, path);
         });
         return response;
     };

@@ -45,7 +45,7 @@ function depthFirst(data, callback, action, payload = {}) {
                     let { level } = payload;
                     if (level > -1 ? level === depth : true) {
                         let value = callback(node, depth, path);
-                        response = [...response, value];
+                        response.push(value);
                     }
                 }
             };
@@ -68,9 +68,7 @@ function depthFirst(data, callback, action, payload = {}) {
                 let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
                     let value = callback(node, depth, path);
-                    if (value) {
-                        response = [...response, node];
-                    }
+                    if (value) response.push(node);
                 }
             };
             break;
@@ -114,8 +112,16 @@ function depthFirst(data, callback, action, payload = {}) {
             next = (node, depth, path, acc) => {
                 let value = callback(acc, node, depth, path);
                 let hasChildren = iterate(node, depth, path, value);
+                if (!hasChildren) response.push(value);
+            };
+            break;
+        case Actions.FIND_PATH:
+            response = [];
+            next = (node, depth, path) => {
+                let hasChildren = iterate(node, depth, path);
                 if (!hasChildren) {
-                    response = [...response, value];
+                    let value = callback(node, depth, path);
+                    if (value) response.push(path);
                 }
             };
             break;

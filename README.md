@@ -167,11 +167,22 @@ df.removeLeaves(data, (leaf) => leaf.active === false);
 df.updateNodes(
     data,
     (node, depth) => depth === 1 && node.active,
-    (node) => ({ ...node, products: [] })
+    (node) => ({ ...node, products: null })
 );
 // {
 //   c1: { name: 'category1', active: false },
-//   c2: { name: 'category2', active: true, products: [] },
-//   c3: { name: 'category3', active: true, products: [] }
+//   c2: { name: 'category2', active: true, products: null },
+//   c3: { name: 'category3', active: true, products: null }
+// }
+```
+
+-   #### removeByLevel
+
+```javascript
+df.removeByLevel(data, 2);
+// {
+//   c1: { name: 'category1', active: false },
+//   c2: { name: 'category2', active: true },
+//   c3: { name: 'category3', active: true }
 // }
 ```
