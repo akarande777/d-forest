@@ -157,4 +157,5 @@ class Forest {
     };
 }
 
-module.exports = new Forest();
+var df = new Forest();
+module.exports = df;

@@ -6,6 +6,8 @@ function breadthFirst(data, callback, action, payload = {}) {
     let response;
     let found = false;
     let next = () => {};
+    let visited = [];
+    let isFresh = (obj) => visited.indexOf(obj) === -1;
 
     const iterateArray = (array, depth, path) => {
         return array.reduce((acc, el, i) => {
@@ -13,7 +15,8 @@ function breadthFirst(data, callback, action, payload = {}) {
             if (Array.isArray(el)) {
                 return [...acc, () => iterateArray(el, depth + 1, nextPath)];
             }
-            if (isObject(el)) {
+            if (isObject(el) && isFresh(el)) {
+                visited.push(el);
                 return [...acc, () => next(el, depth + 1, nextPath)];
             }
             return acc;
@@ -26,7 +29,8 @@ function breadthFirst(data, callback, action, payload = {}) {
             if (Array.isArray(value)) {
                 return iterateArray(value, depth, nextPath);
             }
-            if (isObject(value)) {
+            if (isObject(value) && isFresh(value)) {
+                visited.push(value)
                 return () => next(value, depth + 1, nextPath);
             }
             return [];
@@ -95,6 +99,7 @@ function breadthFirst(data, callback, action, payload = {}) {
     if (Array.isArray(data)) {
         queue = iterateArray(data, -1, []);
     } else if (isObject(data)) {
+        visited.push(data);
         queue = [() => next(data, 0, [])];
     }
 

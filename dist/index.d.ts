@@ -28,5 +28,5 @@ declare class Forest {
     updateLeaves: <T>(data: any, predicate: Callback<boolean>, callback: PureFn<T>) => any;
     removeByLevel: (data: any, level: number) => any;
 }
-declare const _default: Forest;
-export default _default;
+declare var df: Forest;
+export = df;

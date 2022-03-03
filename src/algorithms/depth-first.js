@@ -5,6 +5,8 @@ function depthFirst(data, callback, action, payload = {}) {
     let response;
     let found = false;
     let next = () => {};
+    let visited = [];
+    let isFresh = (obj) => visited.indexOf(obj) === -1;
 
     const iterateArray = (array, depth, path, acc) => {
         let hasChildren = false;
@@ -12,7 +14,8 @@ function depthFirst(data, callback, action, payload = {}) {
             const nextPath = [...path, i];
             if (Array.isArray(el)) {
                 hasChildren = iterateArray(el, depth + 1, nextPath, acc) || hasChildren;
-            } else if (isObject(el)) {
+            } else if (isObject(el) && isFresh(el)) {
+                visited.push(el);
                 next(el, depth + 1, nextPath, acc);
                 hasChildren = true;
             }
@@ -27,7 +30,8 @@ function depthFirst(data, callback, action, payload = {}) {
             const nextPath = [...path, key];
             if (Array.isArray(value)) {
                 hasChildren = iterateArray(value, depth, nextPath, acc) || hasChildren;
-            } else if (isObject(value)) {
+            } else if (isObject(value) && isFresh(value)) {
+                visited.push(value);
                 next(value, depth + 1, nextPath, acc);
                 hasChildren = true;
             }
@@ -137,6 +141,7 @@ function depthFirst(data, callback, action, payload = {}) {
     if (Array.isArray(data)) {
         iterateArray(data, -1, [], payload.initial);
     } else if (isObject(data)) {
+        visited.push(data);
         next(data, 0, [], payload.initial);
     }
 
